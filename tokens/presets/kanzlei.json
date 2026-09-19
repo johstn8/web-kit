@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "name": "Kanzlei",
+    "description": "Kanzlei, Steuerberatung, Beratung, Verwaltung. Redaktionell und zurueckhaltend: schmale Lesestrecke, Haarlinien, Serifen-Fliesstext, keine Flaechenwechsel. Belegt an sacherer-partner.de, ko-mon.de und dediq.com aus dem Website Reference Pool.",
+    "version": "1.0.0", "updated": "2026-09-19"
+  },
+  "grammar": {
+    "abgrenzung": "linie",
+    "tiefe": "keine",
+    "versalbeschriftung": false,
+    "sektionstrenner": "linie",
+    "ziffernmarken": "nur bei echter Abfolge"
+  },
+  "font": [
+    { "name": "display", "value": "Spectral, Georgia, serif", "usage": "Serife mit ruhigem, amtlichem Charakter; traegt Text ohne Hochglanz", "quelle": "Google Fonts, SIL OFL 1.1" },
+    { "name": "body", "value": "Spectral, Georgia, serif", "usage": "dieselbe Familie im Fliesstext; die Website liest sich wie ein Dokument, nicht wie eine Oberflaeche", "quelle": "Google Fonts, SIL OFL 1.1" },
+    { "name": "mono", "value": "JetBrains Mono, ui-monospace, monospace", "usage": "Aktenzeichen und Paragrafen, sonst nicht", "quelle": "Google Fonts, SIL OFL 1.1" }
+  ],
+  "color": [
+    { "name": "bg",              "value": { "light": "#fbfaf8", "dark": "#121212" }, "usage": "Seitengrund, papiernah" },
+    { "name": "surface",         "value": { "light": "#fbfaf8", "dark": "#121212" }, "usage": "identisch mit dem Grund; die Abgrenzung traegt allein die Linie" },
+    { "name": "surface-alt",     "value": { "light": "#f2f0eb", "dark": "#1a1a1a" }, "usage": "sparsam eingesetzte abgesetzte Flaeche" },
+    { "name": "text",            "value": { "light": "#1a1a18", "dark": "#f0efeb" }, "usage": "Ueberschriften und primaerer Text" },
+    { "name": "text-secondary",  "value": { "light": "#4d4d48", "dark": "#a8a7a1" }, "usage": "Lead und Fliesstext zweiter Ordnung" },
+    { "name": "text-tertiary",   "value": { "light": "#6b6b64", "dark": "#8c8b85" }, "usage": "Metazeile und Beschriftung" },
+    { "name": "border",          "value": { "light": "#c9c6bd", "dark": "#333330" }, "usage": "Haarlinie; traegt die gesamte Gliederung" },
+    { "name": "border-hover",    "value": { "light": "#8a867a", "dark": "#57564f" }, "usage": "Linie bei Hover" },
+    { "name": "accent",          "value": { "light": "#2c4a7c", "dark": "#93b4e8" }, "usage": "gedecktes Aktenblau; sparsam und nie flaechig" },
+    { "name": "accent-subtle",   "value": { "light": "#e3eaf5", "dark": "#1b2740" }, "usage": "getoente Flaeche fuer Hinweise" },
+    { "name": "accent-contrast", "value": { "light": "#ffffff", "dark": "#121212" }, "usage": "Schrift auf gefuellter Akzentflaeche" },
+    { "name": "focus",           "value": { "light": "#9c4a00", "dark": "#ffab5e" }, "usage": "Fokusring, warm gegen das kuehle Blau" },
+    { "name": "success",         "value": { "light": "#1f6b33", "dark": "#5fcc7a" }, "usage": "Erfolgszustand" },
+    { "name": "success-subtle",  "value": { "light": "#dcf0e1", "dark": "#14301c" }, "usage": "getoente Erfolgsflaeche" },
+    { "name": "warning",         "value": { "light": "#8a5a00", "dark": "#f0b429" }, "usage": "Warnzustand" },
+    { "name": "warning-subtle",  "value": { "light": "#faeecc", "dark": "#332a0a" }, "usage": "getoente Warnflaeche" },
+    { "name": "danger",          "value": { "light": "#a81b1b", "dark": "#ff6b6b" }, "usage": "Fehlerzustand" },
+    { "name": "danger-subtle",   "value": { "light": "#f7dcdc", "dark": "#3b1414" }, "usage": "getoente Fehlerflaeche" }
+  ],
+  "radius": [
+    { "name": "radius-sm",   "value": "0",      "usage": "kantig; die Seite ist ein Dokument" },
+    { "name": "radius-md",   "value": "0",      "usage": "kantig" },
+    { "name": "radius-lg",   "value": "0",      "usage": "kantig" },
+    { "name": "radius-full", "value": "9999px", "usage": "nur Statuspillen" }
+  ],
+  "layout": [
+    { "name": "container", "value": "62rem",                    "usage": "schmalere Inhaltsbreite als im Basissystem" },
+    { "name": "prose",     "value": "38rem",                    "usage": "enge Lesestrecke, rund 60 Zeichen" },
+    { "name": "gutter",    "value": "clamp(1.25rem, 6vw, 3rem)","usage": "Seitenpolster" }
+  ],
+  "typography": [
+    { "name": "display", "value": { "size": "clamp(2.25rem, 4.5vw, 3.5rem)", "line-height": "1.15", "weight": "400", "tracking": "-0.01em" }, "usage": "Auftaktzeile, zurueckhaltend" },
+    { "name": "h1",      "value": { "size": "clamp(1.75rem, 3.5vw, 2.5rem)", "line-height": "1.2", "weight": "500", "tracking": "-0.005em" }, "usage": "Seitentitel" },
+    { "name": "h2",      "value": { "size": "1.5rem", "line-height": "1.3", "weight": "600", "tracking": "0" }, "usage": "Sektionstitel" },
+    { "name": "h3",      "value": { "size": "1.125rem", "line-height": "1.4", "weight": "600", "tracking": "0" }, "usage": "Untertitel" },
+    { "name": "lead",    "value": { "size": "1.1875rem", "line-height": "1.7", "weight": "400", "tracking": "0" }, "usage": "Erklaerzeile" },
+    { "name": "body",    "value": { "size": "1.0625rem", "line-height": "1.75", "weight": "400", "tracking": "0" }, "usage": "Fliesstext in der Serife, mehr Zeilenhoehe" },
+    { "name": "small",   "value": { "size": "0.9375rem", "line-height": "1.55", "weight": "400", "tracking": "0" }, "usage": "Nebentext" },
+    { "name": "label",   "value": { "size": "0.875rem", "line-height": "1.35", "weight": "600", "tracking": "0" }, "usage": "Beschriftung in Satzschreibung" }
+  ],
+  "motion": [
+    { "name": "duration-fast", "value": "100ms", "usage": "Zustandswechsel" },
+    { "name": "duration-base", "value": "160ms", "usage": "Ein- und Ausblenden" },
+    { "name": "duration-slow", "value": "240ms", "usage": "Overlay" },
+    { "name": "ease-out",      "value": "cubic-bezier(0.3, 0, 0, 1)", "usage": "Eintritt, sachlich" },
+    { "name": "ease-in-out",   "value": "cubic-bezier(0.5, 0, 0.3, 1)", "usage": "Positionswechsel" }
+  ]
+}

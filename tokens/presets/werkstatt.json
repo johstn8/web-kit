@@ -1,0 +1,312 @@
+{
+  "meta": {
+    "name": "Werkstatt",
+    "description": "Handwerk, Fahrzeugservice, Logistik, Bau. Technisch und robust: Kante statt Rundung, Rahmen statt Schatten, Gewicht statt Farbe. Belegt an car-tex.de, spedition-stuckmann.de und fahrschule-gosink.de aus dem Website Reference Pool.",
+    "version": "1.0.0",
+    "updated": "2026-09-19"
+  },
+  "grammar": {
+    "abgrenzung": "rahmen",
+    "tiefe": "keine",
+    "versalbeschriftung": false,
+    "sektionstrenner": "linie",
+    "ziffernmarken": "nur bei echter Abfolge"
+  },
+  "font": [
+    {
+      "name": "display",
+      "value": "Archivo, Helvetica Neue, sans-serif",
+      "usage": "Grotesk mit weitem Gewichtsraum; Hierarchie entsteht ueber Gewicht, nicht ueber Farbe",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    },
+    {
+      "name": "body",
+      "value": "Public Sans, Helvetica Neue, sans-serif",
+      "usage": "sachlicher Fliesstext, gut lesbar in kleinen Groessen",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    },
+    {
+      "name": "mono",
+      "value": "JetBrains Mono, ui-monospace, monospace",
+      "usage": "Auftragsnummern und technische Kennwerte, sonst nicht",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    }
+  ],
+  "color": [
+    {
+      "name": "bg",
+      "value": {
+        "light": "#f2f2ef",
+        "dark": "#141413"
+      },
+      "usage": "Seitengrund, minimal entsaettigtes Werkstattgrau"
+    },
+    {
+      "name": "surface",
+      "value": {
+        "light": "#ffffff",
+        "dark": "#1d1d1b"
+      },
+      "usage": "primaere Inhaltsflaeche"
+    },
+    {
+      "name": "surface-alt",
+      "value": {
+        "light": "#e7e7e2",
+        "dark": "#262624"
+      },
+      "usage": "abgesetzte Flaeche, deutlicher Wechsel statt zarter Abstufung"
+    },
+    {
+      "name": "text",
+      "value": {
+        "light": "#16160f",
+        "dark": "#f5f5f0"
+      },
+      "usage": "Ueberschriften und primaerer Text"
+    },
+    {
+      "name": "text-secondary",
+      "value": {
+        "light": "#4a4a42",
+        "dark": "#a8a89e"
+      },
+      "usage": "Lead und Fliesstext zweiter Ordnung"
+    },
+    {
+      "name": "text-tertiary",
+      "value": {
+        "light": "#66665c",
+        "dark": "#8d8d83"
+      },
+      "usage": "Metazeile und Beschriftung"
+    },
+    {
+      "name": "border",
+      "value": {
+        "light": "#16160f",
+        "dark": "#f5f5f0"
+      },
+      "usage": "Rahmen traegt hier die gesamte Abgrenzung und ist deshalb kraeftig, nicht zart"
+    },
+    {
+      "name": "border-hover",
+      "value": {
+        "light": "#c8501e",
+        "dark": "#ff7a3d"
+      },
+      "usage": "Rahmen wechselt bei Hover auf den Akzent; deutlicher Wechsel statt Graustufe"
+    },
+    {
+      "name": "accent",
+      "value": {
+        "light": "#c8501e",
+        "dark": "#ff7a3d"
+      },
+      "usage": "Signalorange aus Warnweste und Maschinenlack, nicht aus einer Palettenbibliothek"
+    },
+    {
+      "name": "accent-subtle",
+      "value": {
+        "light": "#f7e2d7",
+        "dark": "#3d2317"
+      },
+      "usage": "getoente Flaeche fuer Status und Tags"
+    },
+    {
+      "name": "accent-contrast",
+      "value": {
+        "light": "#ffffff",
+        "dark": "#16160f"
+      },
+      "usage": "Schrift auf gefuellter Akzentflaeche"
+    },
+    {
+      "name": "focus",
+      "value": {
+        "light": "#1746a2",
+        "dark": "#7fa8ff"
+      },
+      "usage": "Fokusring, klar vom Orange unterscheidbar"
+    },
+    {
+      "name": "success",
+      "value": {
+        "light": "#1f6b33",
+        "dark": "#5fcc7a"
+      },
+      "usage": "Erfolgszustand"
+    },
+    {
+      "name": "success-subtle",
+      "value": {
+        "light": "#dcf0e1",
+        "dark": "#14301c"
+      },
+      "usage": "getoente Erfolgsflaeche"
+    },
+    {
+      "name": "warning",
+      "value": {
+        "light": "#8a5a00",
+        "dark": "#f0b429"
+      },
+      "usage": "Warnzustand"
+    },
+    {
+      "name": "warning-subtle",
+      "value": {
+        "light": "#faeecc",
+        "dark": "#332a0a"
+      },
+      "usage": "getoente Warnflaeche"
+    },
+    {
+      "name": "danger",
+      "value": {
+        "light": "#a81b1b",
+        "dark": "#ff6b6b"
+      },
+      "usage": "Fehlerzustand"
+    },
+    {
+      "name": "danger-subtle",
+      "value": {
+        "light": "#f7dcdc",
+        "dark": "#3b1414"
+      },
+      "usage": "getoente Fehlerflaeche"
+    }
+  ],
+  "radius": [
+    {
+      "name": "radius-sm",
+      "value": "0",
+      "usage": "Controls bleiben kantig; die Formsprache stammt von Blech und Kante"
+    },
+    {
+      "name": "radius-md",
+      "value": "0",
+      "usage": "Container bleiben kantig"
+    },
+    {
+      "name": "radius-lg",
+      "value": "0",
+      "usage": "Medien bleiben kantig"
+    },
+    {
+      "name": "radius-full",
+      "value": "9999px",
+      "usage": "nur Statuspillen"
+    }
+  ],
+  "typography": [
+    {
+      "name": "display",
+      "value": {
+        "size": "clamp(2.75rem, 7vw, 5.5rem)",
+        "line-height": "0.95",
+        "weight": "800",
+        "tracking": "-0.04em"
+      },
+      "usage": "Auftaktzeile, gross und schwer"
+    },
+    {
+      "name": "h1",
+      "value": {
+        "size": "clamp(2rem, 4.5vw, 3.25rem)",
+        "line-height": "1.05",
+        "weight": "800",
+        "tracking": "-0.03em"
+      },
+      "usage": "Seitentitel"
+    },
+    {
+      "name": "h2",
+      "value": {
+        "size": "1.75rem",
+        "line-height": "1.15",
+        "weight": "700",
+        "tracking": "-0.02em"
+      },
+      "usage": "Sektionstitel"
+    },
+    {
+      "name": "h3",
+      "value": {
+        "size": "1.125rem",
+        "line-height": "1.35",
+        "weight": "700",
+        "tracking": "-0.01em"
+      },
+      "usage": "Untertitel"
+    },
+    {
+      "name": "lead",
+      "value": {
+        "size": "1.25rem",
+        "line-height": "1.5",
+        "weight": "300",
+        "tracking": "0"
+      },
+      "usage": "Erklaerzeile, leicht gegen die schweren Titel"
+    },
+    {
+      "name": "body",
+      "value": {
+        "size": "1rem",
+        "line-height": "1.6",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Fliesstext"
+    },
+    {
+      "name": "small",
+      "value": {
+        "size": "0.875rem",
+        "line-height": "1.45",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Nebentext"
+    },
+    {
+      "name": "label",
+      "value": {
+        "size": "0.8125rem",
+        "line-height": "1.3",
+        "weight": "600",
+        "tracking": "0"
+      },
+      "usage": "Beschriftung in Satzschreibung, nicht in Versalien"
+    }
+  ],
+  "motion": [
+    {
+      "name": "duration-fast",
+      "value": "90ms",
+      "usage": "Zustandswechsel, knapp"
+    },
+    {
+      "name": "duration-base",
+      "value": "150ms",
+      "usage": "Ein- und Ausblenden"
+    },
+    {
+      "name": "duration-slow",
+      "value": "240ms",
+      "usage": "Overlay"
+    },
+    {
+      "name": "ease-out",
+      "value": "cubic-bezier(0.2, 0, 0, 1)",
+      "usage": "Eintritt, mechanisch statt federnd"
+    },
+    {
+      "name": "ease-in-out",
+      "value": "cubic-bezier(0.5, 0, 0.2, 1)",
+      "usage": "Positionswechsel"
+    }
+  ]
+}

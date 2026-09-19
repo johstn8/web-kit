@@ -11,6 +11,7 @@ schreibt, den es hier gibt, hat den falschen Weg genommen.
 
 ```
 tokens/     tokens.json als Quelle, tokens.css generiert, Theme-Ableitung
+tokens/presets/  fünf Art-Direction-Presets als Datei statt als Prosa
 blocks/     Kopfzeile, auftakt/ (vier Kompositionen), Leistungen,
             Öffnungszeiten, Anfahrt, Team, Kontaktformular, Bewertungen,
             Preise, FAQ, Fußzeile
@@ -18,7 +19,8 @@ legal/      Impressum, Datenschutz, consent/
 content/    schema.json - Datenmodell für Betriebsdaten
 scripts/    extract-old-site.ts, render-shots.ts, check-axe.ts,
             check-contrast.ts, link-check.ts, tokens-*.ts, qa.sh,
-            deploy.sh, kontakt-endpoint.mjs, nginx-site.conf.template
+            deploy.sh, kontakt-endpoint.mjs, nginx-site.conf.template,
+            fetch-fonts.ts
 starter/    lauffähiges Astro-Projekt, das alles einbindet
 ```
 
@@ -34,6 +36,22 @@ npm run build      # statischer Build nach starter/dist
 
 Node 22 oder neuer. Die Skripte sind TypeScript und laufen ohne Buildschritt
 über `node --experimental-strip-types`.
+
+## Art Direction
+
+```bash
+node --experimental-strip-types scripts/tokens-to-css.ts  --preset werkstatt --out tokens/tokens.css
+node --experimental-strip-types scripts/fetch-fonts.ts    --preset werkstatt
+```
+
+Fünf Richtungen — `werkstatt`, `praxis`, `tisch`, `kanzlei`, `atelier` —
+mit je eigener Schrift, Palette, Radius- und Trenngrammatik, belegt an
+konkreten Seiten aus dem Website Reference Pool des Brains. Einzelheiten in
+[tokens/presets/README.md](tokens/presets/README.md).
+
+Der Sinn: Wer eine Richtung wählt, startet nicht beim statistischen Mittel.
+Genau dieses Mittel ist der Grund, warum generierte Websites einander
+gleichen.
 
 ## Tokens
 

@@ -24,17 +24,29 @@
   --color-danger: #b91c1c;
   --color-danger-subtle: #fee2e2;
 
+  --font-display: Archivo, Helvetica Neue, sans-serif;
+  --font-body: Public Sans, Helvetica Neue, sans-serif;
+  --font-mono: JetBrains Mono, ui-monospace, monospace;
+
+  --container-rahmen: 1px solid var(--color-border);
+  --container-flaeche: var(--color-surface);
+  --container-tiefe: none;
+  --sektion-trennlinie: none;
+  --sektion-flaechenwechsel: 0;
+  --beschriftung-versalien: none;
+  --beschriftung-sperrung: 0;
+
   --text-display: clamp(2.5rem, 6vw, 4.5rem);
   --text-display--line-height: 1;
-  --text-display--font-weight: 650;
+  --text-display--font-weight: 800;
   --text-display--letter-spacing: -0.03em;
   --text-h1: clamp(2rem, 4vw, 3rem);
   --text-h1--line-height: 1.08;
-  --text-h1--font-weight: 600;
+  --text-h1--font-weight: 800;
   --text-h1--letter-spacing: -0.025em;
   --text-h2: 1.875rem;
   --text-h2--line-height: 1.2;
-  --text-h2--font-weight: 600;
+  --text-h2--font-weight: 700;
   --text-h2--letter-spacing: -0.025em;
   --text-h3: 1.25rem;
   --text-h3--line-height: 1.4;
@@ -42,7 +54,7 @@
   --text-h3--letter-spacing: -0.015em;
   --text-lead: 1.125rem;
   --text-lead--line-height: 1.6;
-  --text-lead--font-weight: 400;
+  --text-lead--font-weight: 300;
   --text-lead--letter-spacing: 0;
   --text-body: 1rem;
   --text-body--line-height: 1.625;
@@ -50,11 +62,11 @@
   --text-body--letter-spacing: 0;
   --text-small: 0.875rem;
   --text-small--line-height: 1.45;
-  --text-small--font-weight: 450;
+  --text-small--font-weight: 400;
   --text-small--letter-spacing: 0;
   --text-label: 0.75rem;
   --text-label--line-height: 1.35;
-  --text-label--font-weight: 500;
+  --text-label--font-weight: 600;
   --text-label--letter-spacing: 0.01em;
 
   --space-1: 0.25rem;

@@ -1,6 +1,7 @@
 /* Tokens sind die einzige Quelle fuer Farbe, Typografie, Abstand und Radius.
    Generiert aus tokens/tokens.json - siehe npm run tokens. */
 @import '../../../tokens/tokens.css';
+@import './fonts.css';
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -10,17 +11,28 @@ body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   font-variant-numeric: proportional-nums;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Die Display-Schrift traegt Auftakt und Sektionstitel, die Textschrift
+   alles darunter. Die Zuordnung steht kanonisch in scripts/tokens-lib.ts
+   (STUFE_ZU_SCHRIFT), damit CSS und Schriftbeschaffung nicht auseinanderlaufen. */
+h1, h2 { font-family: var(--font-display); }
 h1, h2, h3, h4 { text-wrap: balance; }
 p, li { text-wrap: pretty; }
 
 img, picture, video, canvas, svg { display: block; max-width: 100%; }
+
+/* Links im Fliesstext brauchen eine Tokenfarbe. Ohne sie greift die
+   Browserfarbe #0000EE, und die ist auf jedem dunklen Preset unlesbar -
+   ein Fehler, den die Tokenpruefung nicht findet, weil sie nur Rollen
+   gegeneinander rechnet, die es gibt. */
+a { color: var(--color-accent); text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
 input, button, textarea, select { font: inherit; }
 
 :where(a):focus-visible,

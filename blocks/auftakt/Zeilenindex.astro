@@ -1,22 +1,36 @@
 ---
 /** Auftakt, Komposition "zeilenindex": das Angebot wird als Index der
- *  realen Leistungen gezeigt. Traegt sich ohne Bild. */
+ *  realen Leistungen gezeigt. Traegt sich ohne Bild.
+ *
+ *  `abfolge` schaltet die Nummerierung. Nummerierte Marken 01 / 02 / 03
+ *  gehoeren nur an Inhalte, die wirklich eine Reihenfolge haben - einen
+ *  Prozess, einen Ablauf, eine Zeitleiste. Auf eine ungeordnete
+ *  Leistungsliste gesetzt, sind sie eine der haeufigsten Signaturen
+ *  generierter Seiten: Redaktionsanmutung ohne Redaktion. */
 import type { Aktion } from '../_lib.ts';
-interface Props { titel: string; lead?: string; zeilen: { label: string; ziel?: string }[]; aktion?: Aktion }
-const { titel, lead, zeilen, aktion } = Astro.props;
+interface Props { titel: string; lead?: string; zeilen: { label: string; ziel?: string }[]; aktion?: Aktion; abfolge?: boolean }
+const { titel, lead, zeilen, aktion, abfolge = false } = Astro.props;
 ---
 <section class="auftakt">
   <div class="inner">
     <h1>{titel}</h1>
     {lead && <p class="lead">{lead}</p>}
-    <ol class="index">
-      {zeilen.map((z, i) => (
-        <li>
-          <span class="nr">{String(i + 1).padStart(2, '0')}</span>
-          {z.ziel ? <a href={z.ziel}>{z.label}</a> : <span>{z.label}</span>}
-        </li>
-      ))}
-    </ol>
+    {abfolge ? (
+      <ol class="index">
+        {zeilen.map((z, i) => (
+          <li>
+            <span class="nr">{String(i + 1).padStart(2, '0')}</span>
+            {z.ziel ? <a href={z.ziel}>{z.label}</a> : <span>{z.label}</span>}
+          </li>
+        ))}
+      </ol>
+    ) : (
+      <ul class="index">
+        {zeilen.map((z) => (
+          <li>{z.ziel ? <a href={z.ziel}>{z.label}</a> : <span>{z.label}</span>}</li>
+        ))}
+      </ul>
+    )}
     {aktion && <p class="handlung"><a href={aktion.ziel}>{aktion.label}</a></p>}
   </div>
 </section>

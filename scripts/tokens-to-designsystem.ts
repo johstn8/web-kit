@@ -59,6 +59,7 @@ const merged: TokenFile = {
   meta: { ...base.meta, ...(project?.meta ?? {}) },
   color:      merge(base.color,      project?.color),
   typography: merge(base.typography, project?.typography),
+  font:       merge(base.font,       project?.font),
   spacing:    merge(base.spacing,    project?.spacing),
   radius:     merge(base.radius,     project?.radius),
   layout:     merge(base.layout,     project?.layout),
@@ -94,6 +95,7 @@ const output = {
   source: projectPath ? resolve(projectPath) : 'web-kit/tokens/tokens.json',
   tokens: {
     color: colors,
+    font: merged.font.map((t) => ({ name: t.name, value: t.value, usage: t.usage })),
     typography: merged.typography.map((t) => ({ name: t.name, value: { ...t.value }, usage: t.usage })),
     spacing: merged.spacing.map((t) => ({ name: t.name, value: t.value, usage: t.usage })),
     radius:  merged.radius.map((t)  => ({ name: t.name, value: t.value, usage: t.usage })),

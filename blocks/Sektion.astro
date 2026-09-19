@@ -13,10 +13,14 @@ const { titel, lead, id, flaeche = 'bg' } = Astro.props;
 </section>
 
 <style>
+  /* Trennmittel zwischen Sektionen folgt der Grammatik des Presets:
+     Linie, Flaechenwechsel oder allein Weissraum. Alle drei sind gueltig;
+     was nicht gueltig ist, ist zwei davon gleichzeitig. */
   .sektion { padding: var(--space-12) 0; }
+  .sektion + .sektion { border-top: var(--sektion-trennlinie); }
   .flaeche-bg { background: var(--color-bg); }
-  .flaeche-surface { background: var(--color-surface); }
-  .flaeche-surface-alt { background: var(--color-surface-alt); }
+  .flaeche-surface { background: color-mix(in srgb, var(--color-surface) calc(var(--sektion-flaechenwechsel) * 100%), var(--color-bg)); }
+  .flaeche-surface-alt { background: color-mix(in srgb, var(--color-surface-alt) calc(var(--sektion-flaechenwechsel) * 100%), var(--color-bg)); }
   .inner { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
   h2 { font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); letter-spacing: var(--text-h2--letter-spacing); text-wrap: balance; margin: 0; }
   .lead { font-size: var(--text-lead); color: var(--color-text-secondary); max-width: var(--prose); text-wrap: pretty; margin: var(--space-4) 0 0; }

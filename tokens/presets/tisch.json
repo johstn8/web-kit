@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "name": "Tisch",
+    "description": "Gastronomie, Baeckerei, Hofladen, Hotellerie. Warm und redaktionell: das Bild fuehrt, die Schrift begleitet, dunkle Grundflaeche traegt Speisefotografie. Belegt an amritpalace.com, munrooftoprome.com und meracinque.com aus dem Website Reference Pool.",
+    "version": "1.0.0", "updated": "2026-09-19"
+  },
+  "grammar": {
+    "abgrenzung": "flaeche",
+    "tiefe": "ueberlagerung",
+    "versalbeschriftung": false,
+    "sektionstrenner": "bild",
+    "ziffernmarken": "nur bei echter Abfolge"
+  },
+  "font": [
+    { "name": "display", "value": "Fraunces, Georgia, serif", "usage": "Serife mit eigenwilligen Formen; traegt Handwerk und Genuss ohne Hochglanz", "quelle": "Google Fonts, SIL OFL 1.1" },
+    { "name": "body", "value": "Work Sans, Helvetica Neue, sans-serif", "usage": "warme Grotesk, ruhig neben der Display-Serife", "quelle": "Google Fonts, SIL OFL 1.1" },
+    { "name": "mono", "value": "JetBrains Mono, ui-monospace, monospace", "usage": "nur fuer benannte technische Rollen", "quelle": "Google Fonts, SIL OFL 1.1" }
+  ],
+  "color": [
+    { "name": "bg",              "value": { "light": "#1a1613", "dark": "#120f0d" }, "usage": "dunkler Grund in beiden Themes; Speisefotografie traegt auf dunkel besser" },
+    { "name": "surface",         "value": { "light": "#242019", "dark": "#1b1714" }, "usage": "primaere Inhaltsflaeche" },
+    { "name": "surface-alt",     "value": { "light": "#2f2a21", "dark": "#241f1a" }, "usage": "abgesetzte Flaeche" },
+    { "name": "text",            "value": { "light": "#f7f2e8", "dark": "#f2ece1" }, "usage": "Ueberschriften und primaerer Text" },
+    { "name": "text-secondary",  "value": { "light": "#c7bda9", "dark": "#bcb2a0" }, "usage": "Lead und Fliesstext zweiter Ordnung" },
+    { "name": "text-tertiary",   "value": { "light": "#a1978a", "dark": "#9a9083" }, "usage": "Metazeile und Beschriftung" },
+    { "name": "border",          "value": { "light": "#3a332a", "dark": "#2e2822" }, "usage": "Trennlinie, sehr zurueckhaltend" },
+    { "name": "border-hover",    "value": { "light": "#6b5f4d", "dark": "#544a3c" }, "usage": "Rahmen bei Hover" },
+    { "name": "accent",          "value": { "light": "#d4a017", "dark": "#e0b136" }, "usage": "Messinggelb aus Lampe, Besteck und Kruste; kein Terrakotta, das ist der Generator-Default" },
+    { "name": "accent-subtle",   "value": { "light": "#40361f", "dark": "#38301c" }, "usage": "getoente Flaeche fuer Tags und Auszeichnung" },
+    { "name": "accent-contrast", "value": { "light": "#1a1613", "dark": "#120f0d" }, "usage": "Schrift auf gefuellter Akzentflaeche" },
+    { "name": "focus",           "value": { "light": "#7fb3ff", "dark": "#7fb3ff" }, "usage": "Fokusring, kuehl gegen die warme Palette" },
+    { "name": "success",         "value": { "light": "#6fce86", "dark": "#6fce86" }, "usage": "Erfolgszustand" },
+    { "name": "success-subtle",  "value": { "light": "#1c3322", "dark": "#182d1e" }, "usage": "getoente Erfolgsflaeche" },
+    { "name": "warning",         "value": { "light": "#f2bd3e", "dark": "#f2bd3e" }, "usage": "Warnzustand" },
+    { "name": "warning-subtle",  "value": { "light": "#3a2f13", "dark": "#332a11" }, "usage": "getoente Warnflaeche" },
+    { "name": "danger",          "value": { "light": "#ff7d7d", "dark": "#ff7d7d" }, "usage": "Fehlerzustand" },
+    { "name": "danger-subtle",   "value": { "light": "#3d1f1f", "dark": "#361b1b" }, "usage": "getoente Fehlerflaeche" }
+  ],
+  "radius": [
+    { "name": "radius-sm",   "value": "0.125rem", "usage": "Controls fast kantig" },
+    { "name": "radius-md",   "value": "0.25rem",  "usage": "Container" },
+    { "name": "radius-lg",   "value": "0",        "usage": "Medien randlos und kantig; das Bild soll nicht wie eine Karte wirken" },
+    { "name": "radius-full", "value": "9999px",   "usage": "nur Statuspillen" }
+  ],
+  "typography": [
+    { "name": "display", "value": { "size": "clamp(3rem, 8vw, 6rem)", "line-height": "0.98", "weight": "300", "tracking": "-0.02em" }, "usage": "grosse, leichte Serife als Auftakt" },
+    { "name": "h1",      "value": { "size": "clamp(2rem, 5vw, 3.5rem)", "line-height": "1.08", "weight": "300", "tracking": "-0.015em" }, "usage": "Seitentitel" },
+    { "name": "h2",      "value": { "size": "1.875rem", "line-height": "1.2", "weight": "400", "tracking": "-0.01em" }, "usage": "Sektionstitel" },
+    { "name": "h3",      "value": { "size": "1.125rem", "line-height": "1.4", "weight": "600", "tracking": "0" }, "usage": "Untertitel in der Grotesk" },
+    { "name": "lead",    "value": { "size": "1.1875rem", "line-height": "1.65", "weight": "400", "tracking": "0" }, "usage": "Erklaerzeile" },
+    { "name": "body",    "value": { "size": "1rem", "line-height": "1.7", "weight": "400", "tracking": "0" }, "usage": "Fliesstext" },
+    { "name": "small",   "value": { "size": "0.875rem", "line-height": "1.5", "weight": "400", "tracking": "0" }, "usage": "Nebentext" },
+    { "name": "label",   "value": { "size": "0.875rem", "line-height": "1.35", "weight": "500", "tracking": "0" }, "usage": "Beschriftung in Satzschreibung" }
+  ],
+  "motion": [
+    { "name": "duration-fast", "value": "160ms", "usage": "Zustandswechsel" },
+    { "name": "duration-base", "value": "280ms", "usage": "Ein- und Ausblenden" },
+    { "name": "duration-slow", "value": "520ms", "usage": "Bildwechsel" },
+    { "name": "ease-out",      "value": "cubic-bezier(0.16, 1, 0.3, 1)", "usage": "Eintritt, langer Auslauf" },
+    { "name": "ease-in-out",   "value": "cubic-bezier(0.65, 0, 0.35, 1)", "usage": "Positionswechsel" }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "monochrom": true,
+  "meta": {
+    "name": "Atelier",
+    "description": "Studio, Architektur, Fotografie, Portfolio. Radikal reduziert: Weissraum ist das einzige Trennmittel, die Schrift ist gross, Farbe kommt nur aus dem Bild. Belegt an kononenkogroup.com, phillipohren.com und huts.com aus dem Website Reference Pool.",
+    "version": "1.0.0", "updated": "2026-09-19"
+  },
+  "grammar": {
+    "abgrenzung": "weissraum",
+    "tiefe": "keine",
+    "versalbeschriftung": false,
+    "sektionstrenner": "weissraum",
+    "ziffernmarken": "nur bei echter Abfolge"
+  },
+  "font": [
+    { "name": "display", "value": "Bricolage Grotesque, Helvetica Neue, sans-serif", "usage": "Grotesk mit eigenwilligen Formen und weitem Gewichtsraum; sie ist hier das Gestaltungsmittel, nicht der Traeger", "quelle": "Google Fonts, SIL OFL 1.1" },
+    { "name": "body", "value": "Instrument Sans, Helvetica Neue, sans-serif", "usage": "neutrale Begleitung, damit das Display wirken kann", "quelle": "Google Fonts, SIL OFL 1.1" },
+    { "name": "mono", "value": "JetBrains Mono, ui-monospace, monospace", "usage": "nur fuer benannte technische Rollen", "quelle": "Google Fonts, SIL OFL 1.1" }
+  ],
+  "color": [
+    { "name": "bg",              "value": { "light": "#ffffff", "dark": "#000000" }, "usage": "reines Weiss beziehungsweise reines Schwarz; getoentes Fast-Schwarz ist ein Generator-Merkmal" },
+    { "name": "surface",         "value": { "light": "#ffffff", "dark": "#000000" }, "usage": "identisch mit dem Grund; es gibt keine Flaechenstufen" },
+    { "name": "surface-alt",     "value": { "light": "#f4f4f4", "dark": "#0f0f0f" }, "usage": "einzige Ausnahme, sehr sparsam" },
+    { "name": "text",            "value": { "light": "#000000", "dark": "#ffffff" }, "usage": "Ueberschriften und primaerer Text" },
+    { "name": "text-secondary",  "value": { "light": "#454545", "dark": "#b0b0b0" }, "usage": "Lead und Fliesstext zweiter Ordnung" },
+    { "name": "text-tertiary",   "value": { "light": "#666666", "dark": "#8f8f8f" }, "usage": "Metazeile und Beschriftung" },
+    { "name": "border",          "value": { "light": "#e0e0e0", "dark": "#222222" }, "usage": "nur dort, wo Weissraum nicht reicht" },
+    { "name": "border-hover",    "value": { "light": "#000000", "dark": "#ffffff" }, "usage": "Linie springt auf volle Deckung" },
+    { "name": "accent",          "value": { "light": "#000000", "dark": "#ffffff" }, "usage": "die Marke ist die Typografie; Farbe kommt ausschliesslich aus dem Bildmaterial" },
+    { "name": "accent-subtle",   "value": { "light": "#ededed", "dark": "#1a1a1a" }, "usage": "getoente Flaeche" },
+    { "name": "accent-contrast", "value": { "light": "#ffffff", "dark": "#000000" }, "usage": "Schrift auf gefuellter Akzentflaeche" },
+    { "name": "focus",           "value": { "light": "#0040ff", "dark": "#6690ff" }, "usage": "der einzige Farbwert der Oberflaeche, deshalb unuebersehbar" },
+    { "name": "success",         "value": { "light": "#1f6b33", "dark": "#5fcc7a" }, "usage": "Erfolgszustand" },
+    { "name": "success-subtle",  "value": { "light": "#dcf0e1", "dark": "#14301c" }, "usage": "getoente Erfolgsflaeche" },
+    { "name": "warning",         "value": { "light": "#8a5a00", "dark": "#f0b429" }, "usage": "Warnzustand" },
+    { "name": "warning-subtle",  "value": { "light": "#faeecc", "dark": "#332a0a" }, "usage": "getoente Warnflaeche" },
+    { "name": "danger",          "value": { "light": "#a81b1b", "dark": "#ff6b6b" }, "usage": "Fehlerzustand" },
+    { "name": "danger-subtle",   "value": { "light": "#f7dcdc", "dark": "#3b1414" }, "usage": "getoente Fehlerflaeche" }
+  ],
+  "radius": [
+    { "name": "radius-sm",   "value": "0",      "usage": "kantig" },
+    { "name": "radius-md",   "value": "0",      "usage": "kantig" },
+    { "name": "radius-lg",   "value": "0",      "usage": "kantig" },
+    { "name": "radius-full", "value": "9999px", "usage": "nur Statuspillen" }
+  ],
+  "spacing": [
+    { "name": "space-1",  "value": "0.25rem", "usage": "kleinster Abstand" },
+    { "name": "space-2",  "value": "0.5rem",  "usage": "innerhalb einer Zeile" },
+    { "name": "space-3",  "value": "0.75rem", "usage": "Control-Innenabstand" },
+    { "name": "space-4",  "value": "1rem",    "usage": "Grundeinheit" },
+    { "name": "space-5",  "value": "2rem",    "usage": "Rasterabstand" },
+    { "name": "space-6",  "value": "3.5rem",  "usage": "Abstand zwischen Gruppen, hier deutlich groesser" },
+    { "name": "space-8",  "value": "6rem",    "usage": "Blockabstand" },
+    { "name": "space-12", "value": "clamp(7rem, 18vw, 14rem)", "usage": "Sektionspolster; Weissraum ist hier das Trennmittel" }
+  ],
+  "typography": [
+    { "name": "display", "value": { "size": "clamp(3.5rem, 12vw, 11rem)", "line-height": "0.88", "weight": "500", "tracking": "-0.045em" }, "usage": "die Auftaktzeile ist das Bild der Seite" },
+    { "name": "h1",      "value": { "size": "clamp(2.25rem, 6vw, 4.5rem)", "line-height": "0.98", "weight": "500", "tracking": "-0.035em" }, "usage": "Seitentitel" },
+    { "name": "h2",      "value": { "size": "clamp(1.75rem, 3.5vw, 2.5rem)", "line-height": "1.1", "weight": "500", "tracking": "-0.025em" }, "usage": "Sektionstitel" },
+    { "name": "h3",      "value": { "size": "1.0625rem", "line-height": "1.4", "weight": "600", "tracking": "0" }, "usage": "Untertitel, bewusst klein gegen die grossen Stufen" },
+    { "name": "lead",    "value": { "size": "1.25rem", "line-height": "1.55", "weight": "200", "tracking": "-0.01em" }, "usage": "Erklaerzeile, sehr leicht gegen das schwere Display" },
+    { "name": "body",    "value": { "size": "1rem", "line-height": "1.65", "weight": "400", "tracking": "0" }, "usage": "Fliesstext" },
+    { "name": "small",   "value": { "size": "0.875rem", "line-height": "1.45", "weight": "400", "tracking": "0" }, "usage": "Nebentext" },
+    { "name": "label",   "value": { "size": "0.8125rem", "line-height": "1.3", "weight": "500", "tracking": "0" }, "usage": "Beschriftung in Satzschreibung" }
+  ],
+  "motion": [
+    { "name": "duration-fast", "value": "120ms", "usage": "Zustandswechsel" },
+    { "name": "duration-base", "value": "400ms", "usage": "der eine orchestrierte Seitenaufbau" },
+    { "name": "duration-slow", "value": "700ms", "usage": "Bildwechsel" },
+    { "name": "ease-out",      "value": "cubic-bezier(0.19, 1, 0.22, 1)", "usage": "sehr langer Auslauf" },
+    { "name": "ease-in-out",   "value": "cubic-bezier(0.83, 0, 0.17, 1)", "usage": "Positionswechsel" }
+  ]
+}

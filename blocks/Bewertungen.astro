@@ -24,7 +24,7 @@ const { titel = 'Was Kundinnen und Kunden sagen', bewertungen } = Astro.props;
 
 <style>
   .raster { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); list-style: none; margin: 0; padding: 0; }
-  li { padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+  li { padding: var(--space-5); border: var(--container-rahmen); border-radius: var(--radius-md); background: var(--container-flaeche); box-shadow: var(--container-tiefe); }
   blockquote { margin: 0; }
   blockquote p { font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text); margin: 0; text-wrap: pretty; }
   .quelle { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0 0; font-size: var(--text-small); color: var(--color-text-tertiary); }

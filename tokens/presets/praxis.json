@@ -1,0 +1,312 @@
+{
+  "meta": {
+    "name": "Praxis",
+    "description": "Gesundheit, Pflege, Therapie. Ruhig und vertrauensnah: Flaechenwechsel statt Rahmen, grosszuegiger Raum, weiche aber nicht blasige Rundung. Belegt an zahnarztpraxis-uhlenhorst.de, drquidenus.at und daylight-health.com aus dem Website Reference Pool.",
+    "version": "1.0.0",
+    "updated": "2026-09-19"
+  },
+  "grammar": {
+    "abgrenzung": "flaeche",
+    "tiefe": "keine",
+    "versalbeschriftung": false,
+    "sektionstrenner": "weissraum",
+    "ziffernmarken": "nur bei echter Abfolge"
+  },
+  "font": [
+    {
+      "name": "display",
+      "value": "Newsreader, Georgia, serif",
+      "usage": "Serifen-Display traegt Ruhe und Zuwendung, ohne in Luxusanmutung zu kippen",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    },
+    {
+      "name": "body",
+      "value": "Public Sans, Helvetica Neue, sans-serif",
+      "usage": "sachlicher, gut lesbarer Fliesstext als Gegengewicht zur Serife",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    },
+    {
+      "name": "mono",
+      "value": "JetBrains Mono, ui-monospace, monospace",
+      "usage": "nur fuer benannte technische Rollen",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    }
+  ],
+  "color": [
+    {
+      "name": "bg",
+      "value": {
+        "light": "#f7f9f8",
+        "dark": "#0d1211"
+      },
+      "usage": "Seitengrund mit minimalem Gruenstich, aus Praxisraum und Textil"
+    },
+    {
+      "name": "surface",
+      "value": {
+        "light": "#ffffff",
+        "dark": "#151b1a"
+      },
+      "usage": "primaere Inhaltsflaeche"
+    },
+    {
+      "name": "surface-alt",
+      "value": {
+        "light": "#eaf1ef",
+        "dark": "#1c2422"
+      },
+      "usage": "abgesetzte Flaeche, traegt hier die Abgrenzung anstelle von Rahmen"
+    },
+    {
+      "name": "text",
+      "value": {
+        "light": "#10201d",
+        "dark": "#f0f5f3"
+      },
+      "usage": "Ueberschriften und primaerer Text"
+    },
+    {
+      "name": "text-secondary",
+      "value": {
+        "light": "#3f5450",
+        "dark": "#a3b5b1"
+      },
+      "usage": "Lead und Fliesstext zweiter Ordnung"
+    },
+    {
+      "name": "text-tertiary",
+      "value": {
+        "light": "#5c716d",
+        "dark": "#889996"
+      },
+      "usage": "Metazeile und Beschriftung"
+    },
+    {
+      "name": "border",
+      "value": {
+        "light": "#dbe6e3",
+        "dark": "#243230"
+      },
+      "usage": "sehr zurueckhaltende Trennlinie; die Flaeche traegt die Abgrenzung"
+    },
+    {
+      "name": "border-hover",
+      "value": {
+        "light": "#9fb5b0",
+        "dark": "#425450"
+      },
+      "usage": "Rahmen bei Hover, deutlich wahrnehmbar"
+    },
+    {
+      "name": "accent",
+      "value": {
+        "light": "#1f6f63",
+        "dark": "#68c9b8"
+      },
+      "usage": "gedaempftes Petrolgruen, aus Praxisfarbe und Berufskleidung hergeleitet"
+    },
+    {
+      "name": "accent-subtle",
+      "value": {
+        "light": "#dcecE8",
+        "dark": "#173832"
+      },
+      "usage": "getoente Flaeche fuer Termine und Status"
+    },
+    {
+      "name": "accent-contrast",
+      "value": {
+        "light": "#ffffff",
+        "dark": "#0d1211"
+      },
+      "usage": "Schrift auf gefuellter Akzentflaeche"
+    },
+    {
+      "name": "focus",
+      "value": {
+        "light": "#1d4ed8",
+        "dark": "#8ab4ff"
+      },
+      "usage": "Fokusring, klar vom Gruen unterscheidbar"
+    },
+    {
+      "name": "success",
+      "value": {
+        "light": "#1f6b33",
+        "dark": "#5fcc7a"
+      },
+      "usage": "Erfolgszustand"
+    },
+    {
+      "name": "success-subtle",
+      "value": {
+        "light": "#dcf0e1",
+        "dark": "#14301c"
+      },
+      "usage": "getoente Erfolgsflaeche"
+    },
+    {
+      "name": "warning",
+      "value": {
+        "light": "#8a5a00",
+        "dark": "#f0b429"
+      },
+      "usage": "Warnzustand"
+    },
+    {
+      "name": "warning-subtle",
+      "value": {
+        "light": "#faeecc",
+        "dark": "#332a0a"
+      },
+      "usage": "getoente Warnflaeche"
+    },
+    {
+      "name": "danger",
+      "value": {
+        "light": "#a81b1b",
+        "dark": "#ff6b6b"
+      },
+      "usage": "Fehlerzustand"
+    },
+    {
+      "name": "danger-subtle",
+      "value": {
+        "light": "#f7dcdc",
+        "dark": "#3b1414"
+      },
+      "usage": "getoente Fehlerflaeche"
+    }
+  ],
+  "radius": [
+    {
+      "name": "radius-sm",
+      "value": "0.5rem",
+      "usage": "Controls, weich aber nicht blasig"
+    },
+    {
+      "name": "radius-md",
+      "value": "0.875rem",
+      "usage": "Container"
+    },
+    {
+      "name": "radius-lg",
+      "value": "1.5rem",
+      "usage": "Medien und grosse Flaechen"
+    },
+    {
+      "name": "radius-full",
+      "value": "9999px",
+      "usage": "nur Statuspillen"
+    }
+  ],
+  "typography": [
+    {
+      "name": "display",
+      "value": {
+        "size": "clamp(2.5rem, 5.5vw, 4rem)",
+        "line-height": "1.1",
+        "weight": "400",
+        "tracking": "-0.015em"
+      },
+      "usage": "Auftaktzeile in der Serife, ruhig statt laut"
+    },
+    {
+      "name": "h1",
+      "value": {
+        "size": "clamp(1.875rem, 4vw, 2.75rem)",
+        "line-height": "1.15",
+        "weight": "400",
+        "tracking": "-0.01em"
+      },
+      "usage": "Seitentitel"
+    },
+    {
+      "name": "h2",
+      "value": {
+        "size": "1.625rem",
+        "line-height": "1.25",
+        "weight": "500",
+        "tracking": "-0.01em"
+      },
+      "usage": "Sektionstitel"
+    },
+    {
+      "name": "h3",
+      "value": {
+        "size": "1.125rem",
+        "line-height": "1.4",
+        "weight": "600",
+        "tracking": "0"
+      },
+      "usage": "Untertitel in der Grotesk"
+    },
+    {
+      "name": "lead",
+      "value": {
+        "size": "1.1875rem",
+        "line-height": "1.65",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Erklaerzeile"
+    },
+    {
+      "name": "body",
+      "value": {
+        "size": "1.0625rem",
+        "line-height": "1.7",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Fliesstext, etwas groesser und luftiger fuer aeltere Zielgruppen"
+    },
+    {
+      "name": "small",
+      "value": {
+        "size": "0.9375rem",
+        "line-height": "1.5",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Nebentext"
+    },
+    {
+      "name": "label",
+      "value": {
+        "size": "0.875rem",
+        "line-height": "1.35",
+        "weight": "600",
+        "tracking": "0"
+      },
+      "usage": "Beschriftung in Satzschreibung"
+    }
+  ],
+  "motion": [
+    {
+      "name": "duration-fast",
+      "value": "140ms",
+      "usage": "Zustandswechsel"
+    },
+    {
+      "name": "duration-base",
+      "value": "240ms",
+      "usage": "Ein- und Ausblenden"
+    },
+    {
+      "name": "duration-slow",
+      "value": "380ms",
+      "usage": "Overlay"
+    },
+    {
+      "name": "ease-out",
+      "value": "cubic-bezier(0.25, 0.8, 0.3, 1)",
+      "usage": "Eintritt, weich"
+    },
+    {
+      "name": "ease-in-out",
+      "value": "cubic-bezier(0.6, 0, 0.3, 1)",
+      "usage": "Positionswechsel"
+    }
+  ]
+}

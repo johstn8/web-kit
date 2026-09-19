@@ -10,11 +10,19 @@
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { kontrastPruefen, type TokenFile } from './tokens-lib.ts';
+import { kontrastPruefen, applyPreset, type TokenFile, type Preset } from './tokens-lib.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const src = resolve(process.argv[2] ?? resolve(here, '../tokens/tokens.json'));
-const tokens: TokenFile = JSON.parse(readFileSync(src, 'utf8'));
+const i = process.argv.indexOf('--preset');
+const presetName = i === -1 ? undefined : process.argv[i + 1];
+const frei = process.argv.slice(2).filter((a, n, alle) => !a.startsWith('--') && !alle[n - 1]?.startsWith('--'));
+
+const src = resolve(frei[0] ?? resolve(here, '../tokens/tokens.json'));
+const basis: TokenFile = JSON.parse(readFileSync(src, 'utf8'));
+const preset: Preset | undefined = presetName
+  ? JSON.parse(readFileSync(resolve(here, `../tokens/presets/${presetName}.json`), 'utf8'))
+  : undefined;
+const tokens: TokenFile = applyPreset(basis, preset);
 
 const befunde = kontrastPruefen(tokens);
 const gefallen = befunde.filter((b) => !b.bestanden);

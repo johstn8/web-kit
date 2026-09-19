@@ -30,6 +30,7 @@ export interface TokenFile {
   meta: { name: string; description: string; version: string; updated: string };
   color: ColorToken[];
   typography: TypographyToken[];
+  font: ScalarToken[];
   spacing: ScalarToken[];
   radius: ScalarToken[];
   layout: ScalarToken[];
@@ -105,7 +106,7 @@ export function validate(tokens: TokenFile): string[] {
       if (!check.ok) problems.push(`${token.name} (${theme}): ${check.reason}`);
     }
   }
-  for (const family of ['spacing', 'radius', 'layout', 'motion'] as const) {
+  for (const family of ['font', 'spacing', 'radius', 'layout', 'motion'] as const) {
     for (const token of tokens[family]) {
       if (!token.usage?.trim()) problems.push(`${family}/${token.name}: Usage-Notiz fehlt`);
       if (!token.value?.trim()) problems.push(`${family}/${token.name}: Wert fehlt`);
@@ -210,4 +211,75 @@ export function kontrastPruefen(tokens: TokenFile): Kontrastbefund[] {
     }
   }
   return befunde;
+}
+
+// ---------------------------------------------------------------- Presets
+
+/**
+ * Ein Preset ist eine vollstaendige Art Direction als Datei: Schriftrollen,
+ * Palette, Radius-, Abstands- und Bewegungsgrammatik. Es ueberschreibt das
+ * Basissystem je Rollenname; Rollen kommen nie hinzu oder weg.
+ *
+ * Der Sinn: eine Stilrichtung ist dann ein Artefakt und keine Prosa mehr.
+ * Wer eine Richtung waehlt, startet nicht beim statistischen Mittel.
+ */
+export interface Grammar {
+  /** Was traegt die Abgrenzung: Rahmen, Flaeche, Linie oder Weissraum. */
+  abgrenzung: 'rahmen' | 'flaeche' | 'linie' | 'weissraum';
+  tiefe: 'keine' | 'schatten' | 'ueberlagerung';
+  /** Versalbeschriftungen sind ein Generator-Merkmal und deshalb je Preset zu entscheiden. */
+  versalbeschriftung: boolean;
+  sektionstrenner: 'linie' | 'flaeche' | 'weissraum' | 'bild';
+  ziffernmarken: string;
+}
+
+export type Preset = Partial<TokenFile> & { grammar?: Grammar };
+
+export function mergeTokens<T extends { name: string }>(basis: T[], ueber: T[] | undefined): T[] {
+  if (!ueber) return basis;
+  const byName = new Map(ueber.map((t) => [t.name, t]));
+  const unbekannt = ueber.filter((t) => !basis.some((b) => b.name === t.name));
+  if (unbekannt.length) {
+    throw new Error(
+      `Unbekannte Rollennamen: ${unbekannt.map((t) => t.name).join(', ')}. ` +
+      'Die Rollennamen des Tokenvertrags sind fix; nur die Werte wechseln.',
+    );
+  }
+  return basis.map((b) => byName.get(b.name) ?? b);
+}
+
+export function applyPreset(basis: TokenFile, preset?: Preset): TokenFile {
+  if (!preset) return basis;
+  return {
+    meta:       { ...basis.meta, ...(preset.meta ?? {}) },
+    color:      mergeTokens(basis.color,      preset.color),
+    typography: mergeTokens(basis.typography, preset.typography),
+    font:       mergeTokens(basis.font,       preset.font),
+    spacing:    mergeTokens(basis.spacing,    preset.spacing),
+    radius:     mergeTokens(basis.radius,     preset.radius),
+    layout:     mergeTokens(basis.layout,     preset.layout),
+    motion:     mergeTokens(basis.motion,     preset.motion),
+  };
+}
+
+/**
+ * Welche Stufe der Type Ramp welche Schriftrolle traegt.
+ *
+ * Eine Festlegung an einer Stelle, damit fetch-fonts.ts und tokens.css
+ * nicht auseinanderlaufen: sonst laedt das eine Schnitte, die das andere
+ * nie anfordert, oder umgekehrt.
+ */
+export const STUFE_ZU_SCHRIFT: Record<string, 'display' | 'body'> = {
+  display: 'display', h1: 'display', h2: 'display',
+  h3: 'body', lead: 'body', body: 'body', small: 'body', label: 'body',
+};
+
+/** Gewichte je Schriftrolle, aus der tatsaechlich gesetzten Type Ramp. */
+export function gewichteJeRolle(tokens: TokenFile): Record<string, Set<number>> {
+  const aus: Record<string, Set<number>> = { display: new Set(), body: new Set(), mono: new Set([400]) };
+  for (const stufe of tokens.typography) {
+    const rolle = STUFE_ZU_SCHRIFT[stufe.name] ?? 'body';
+    aus[rolle].add(Number(stufe.value.weight));
+  }
+  return aus;
 }
