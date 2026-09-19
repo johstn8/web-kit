@@ -1,0 +1,31 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Zweispaltig from '../../../blocks/auftakt/Zweispaltig.astro';
+import Kontaktformular from '../../../blocks/Kontaktformular.astro';
+import Anfahrt from '../../../blocks/Anfahrt.astro';
+import Oeffnungszeiten from '../../../blocks/Oeffnungszeiten.astro';
+import { inhalt } from '../content/index.ts';
+
+const seite = inhalt.seiten.find((s) => s.slug === 'kontakt')!;
+const fakten = [
+  { label: 'Telefon', wert: inhalt.kontakt.telefon },
+  { label: 'Ort', wert: inhalt.kontakt.adresse.ort },
+];
+---
+<Seite titel={seite.titel} beschreibung={seite.beschreibung}>
+  <Zweispaltig
+    titel="So erreichen Sie uns"
+    lead="Am schnellsten per Telefon. Schriftlich antworten wir innerhalb eines Werktags."
+    fakten={fakten}
+  />
+  <Kontaktformular />
+  <Anfahrt
+    adresse={inhalt.kontakt.adresse}
+    beschreibung={inhalt.anfahrt?.beschreibung}
+    oepnv={inhalt.anfahrt?.oepnv}
+    parken={inhalt.anfahrt?.parken}
+    maps_url={inhalt.kontakt.maps_url}
+    karte_eingebettet={inhalt.anfahrt?.karte_eingebettet}
+  />
+  {inhalt.oeffnungszeiten && <Oeffnungszeiten zeiten={inhalt.oeffnungszeiten} hinweis={inhalt.oeffnungszeiten_hinweis} />}
+</Seite>

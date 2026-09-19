@@ -1,0 +1,33 @@
+---
+/** Nur real vorhandene Bewertungen mit Quelle. Keine Stimme wird erfunden;
+ *  ohne Eintraege entfaellt der Block ersatzlos statt eine Logo-Wand zu zeigen. */
+import Sektion from './Sektion.astro';
+interface Props { titel?: string; bewertungen: { text: string; autor?: string; quelle: string; url?: string; datum?: string }[] }
+const { titel = 'Was Kundinnen und Kunden sagen', bewertungen } = Astro.props;
+---
+{bewertungen.length > 0 && (
+  <Sektion titel={titel} id="bewertungen" flaeche="surface-alt">
+    <ul class="raster">
+      {bewertungen.map((b) => (
+        <li>
+          <blockquote><p>{b.text}</p></blockquote>
+          <p class="quelle">
+            {b.autor && <span class="autor">{b.autor}</span>}
+            {b.url ? <a href={b.url} rel="noopener nofollow">{b.quelle}</a> : <span>{b.quelle}</span>}
+            {b.datum && <time datetime={b.datum}>{new Date(b.datum).toLocaleDateString('de-DE')}</time>}
+          </p>
+        </li>
+      ))}
+    </ul>
+  </Sektion>
+)}
+
+<style>
+  .raster { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); list-style: none; margin: 0; padding: 0; }
+  li { padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+  blockquote { margin: 0; }
+  blockquote p { font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text); margin: 0; text-wrap: pretty; }
+  .quelle { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0 0; font-size: var(--text-small); color: var(--color-text-tertiary); }
+  .autor { color: var(--color-text-secondary); font-weight: 500; }
+  a { color: var(--color-text-tertiary); }
+</style>

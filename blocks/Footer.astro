@@ -1,0 +1,50 @@
+---
+/** Fusszeile. Der Copyright-Hinweis steht immer; Rechtsseiten sind Pflicht. */
+import { telHref } from './_lib.ts';
+interface Props {
+  name: string;
+  telefon: string;
+  email: string;
+  adresse: { strasse: string; plz: string; ort: string };
+  rechtsseiten?: { label: string; ziel: string }[];
+}
+const { name, telefon, email, adresse, rechtsseiten = [
+  { label: 'Impressum', ziel: '/impressum' },
+  { label: 'Datenschutz', ziel: '/datenschutz' },
+] } = Astro.props;
+const jahr = new Date().getFullYear();
+---
+<footer>
+  <div class="inner">
+    <div>
+      <p class="name">{name}</p>
+      <address>
+        {adresse.strasse}<br />{adresse.plz} {adresse.ort}
+      </address>
+    </div>
+    <div>
+      <p class="label">Kontakt</p>
+      <p><a href={telHref(telefon)}>{telefon}</a></p>
+      <p><a href={`mailto:${email}`}>{email}</a></p>
+    </div>
+    <div>
+      <p class="label">Rechtliches</p>
+      <ul>{rechtsseiten.map((s) => <li><a href={s.ziel}>{s.label}</a></li>)}</ul>
+    </div>
+  </div>
+  <p class="copyright">© {jahr} {name}</p>
+</footer>
+
+<style>
+  footer { border-top: 1px solid var(--color-border); background: var(--color-surface-alt); margin-top: var(--space-12); }
+  .inner { display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); max-width: var(--container); margin-inline: auto; padding: var(--space-8) var(--gutter) var(--space-6); }
+  .name { font-weight: 600; margin: 0 0 var(--space-2); }
+  .label { font-size: var(--text-label); letter-spacing: var(--text-label--letter-spacing); text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 var(--space-2); }
+  address { font-style: normal; color: var(--color-text-secondary); font-size: var(--text-small); line-height: 1.6; }
+  p { margin: 0 0 var(--space-1); font-size: var(--text-small); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { font-size: var(--text-small); margin-bottom: var(--space-1); }
+  a { color: var(--color-text-secondary); text-decoration: none; }
+  a:hover { color: var(--color-text); text-decoration: underline; }
+  .copyright { max-width: var(--container); margin-inline: auto; padding: 0 var(--gutter) var(--space-6); font-size: var(--text-label); color: var(--color-text-tertiary); }
+</style>

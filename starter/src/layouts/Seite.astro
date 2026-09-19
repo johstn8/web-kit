@@ -1,0 +1,69 @@
+---
+import Header from '../../../blocks/Header.astro';
+import Footer from '../../../blocks/Footer.astro';
+import { inhalt } from '../content/index.ts';
+import '../styles/global.css';
+
+interface Props { titel: string; beschreibung?: string; indexieren?: boolean }
+const { titel, beschreibung, indexieren = true } = Astro.props;
+
+// Die primaere Aktion der Kopfzeile doppelt keinen Navigationspunkt:
+// zwei Wege zum selben Ziel nebeneinander sind ein Anti-Slop-Befund.
+const aktion = { label: 'Termin anfragen', ziel: '/kontakt' };
+const navigation = inhalt.seiten
+  .filter((s) => s.slug !== '')
+  .map((s) => ({ label: s.titel, ziel: `/${s.slug}` }));
+
+const kanonisch = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com').href;
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titel}</title>
+    {beschreibung && <meta name="description" content={beschreibung} />}
+    {!indexieren && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={kanonisch} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={titel} />
+    {beschreibung && <meta property="og:description" content={beschreibung} />}
+    <meta property="og:type" content="website" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      name: inhalt.betrieb.name,
+      description: inhalt.betrieb.kurzbeschreibung,
+      telephone: inhalt.kontakt.telefon,
+      email: inhalt.kontakt.email,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: inhalt.kontakt.adresse.strasse,
+        postalCode: inhalt.kontakt.adresse.plz,
+        addressLocality: inhalt.kontakt.adresse.ort,
+        addressCountry: inhalt.kontakt.adresse.land ?? 'DE',
+      },
+      openingHoursSpecification: (inhalt.oeffnungszeiten ?? []).map((z) => ({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: { mo: 'Monday', di: 'Tuesday', mi: 'Wednesday', do: 'Thursday', fr: 'Friday', sa: 'Saturday', so: 'Sunday' }[z.tag],
+        opens: z.von,
+        closes: z.bis,
+      })),
+    })} />
+  </head>
+  <body>
+    <Header
+      name={inhalt.betrieb.name}
+      navigation={navigation}
+      aktion={aktion}
+      aktiv={Astro.url.pathname === '/' ? undefined : Astro.url.pathname.replace(/\/$/, '')}
+    />
+    <main id="inhalt"><slot /></main>
+    <Footer
+      name={inhalt.betrieb.name}
+      telefon={inhalt.kontakt.telefon}
+      email={inhalt.kontakt.email}
+      adresse={inhalt.kontakt.adresse}
+    />
+  </body>
+</html>

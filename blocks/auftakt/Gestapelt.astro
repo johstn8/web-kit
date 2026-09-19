@@ -1,0 +1,29 @@
+---
+/** Auftakt, Komposition "gestapelt": Angebot, Erklaerzeile, Handlung,
+ *  Beweisanker untereinander. Alle sechs Auftaktrollen sind besetzt.
+ *  Repertoire kanonisch in web-brain 20-design/landing-page-craft.md#Auftakt-Repertoire. */
+import type { Aktion } from '../_lib.ts';
+interface Props { titel: string; lead: string; aktion?: Aktion; beweis?: string; ort?: string }
+const { titel, lead, aktion, beweis, ort } = Astro.props;
+---
+<section class="auftakt">
+  <div class="inner">
+    {ort && <p class="ort">{ort}</p>}
+    <h1>{titel}</h1>
+    <p class="lead">{lead}</p>
+    {aktion && <p class="handlung"><a href={aktion.ziel}>{aktion.label}</a></p>}
+    {beweis && <p class="beweis">{beweis}</p>}
+  </div>
+</section>
+
+<style>
+  .auftakt { padding: var(--space-12) 0 var(--space-8); }
+  .inner { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+  .ort { font-size: var(--text-label); letter-spacing: var(--text-label--letter-spacing); text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 var(--space-3); }
+  h1 { font-size: var(--text-display); line-height: var(--text-display--line-height); font-weight: var(--text-display--font-weight); letter-spacing: var(--text-display--letter-spacing); text-wrap: balance; max-width: 18ch; margin: 0; }
+  .lead { font-size: var(--text-lead); line-height: var(--text-lead--line-height); color: var(--color-text-secondary); text-wrap: pretty; max-width: var(--prose); margin: var(--space-5) 0 0; }
+  .handlung { margin: var(--space-6) 0 0; }
+  .handlung a { display: inline-block; font-weight: 500; padding: var(--space-3) var(--space-5); border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; transition: opacity var(--duration-fast) var(--ease-out); }
+  .handlung a:hover { opacity: 0.88; }
+  .beweis { margin: var(--space-5) 0 0; font-size: var(--text-small); color: var(--color-text-tertiary); max-width: var(--prose); }
+</style>

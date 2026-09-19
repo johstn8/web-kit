@@ -1,0 +1,52 @@
+{
+  "betrieb": {
+    "name": "Beispielbetrieb",
+    "rechtsform": "Einzelunternehmen",
+    "inhaber": "Vorname Nachname",
+    "kurzbeschreibung": "Handwerk und Beratung aus einer Hand, seit zehn Jahren am Musterplatz.",
+    "gegruendet": "2015"
+  },
+  "kontakt": {
+    "telefon": "030 12345678",
+    "email": "kontakt@example.com",
+    "adresse": { "strasse": "Musterstraße 1", "plz": "12345", "ort": "Berlin", "land": "DE" }
+  },
+  "oeffnungszeiten": [
+    { "tag": "mo", "von": "09:00", "bis": "18:00" },
+    { "tag": "di", "von": "09:00", "bis": "18:00" },
+    { "tag": "mi", "von": "09:00", "bis": "18:00" },
+    { "tag": "do", "von": "09:00", "bis": "18:00" },
+    { "tag": "fr", "von": "09:00", "bis": "16:00" },
+    { "tag": "sa", "von": "10:00", "bis": "13:00", "hinweis": "nur mit Termin" }
+  ],
+  "oeffnungszeiten_hinweis": "An gesetzlichen Feiertagen geschlossen.",
+  "leistungen": [
+    { "titel": "Erstberatung", "beschreibung": "Ein Gespräch über Ihr Anliegen, ohne Vorbereitung Ihrerseits.", "preis": { "betrag": 0, "waehrung": "EUR" } },
+    { "titel": "Zweite Leistung", "beschreibung": "Wird im echten Projekt durch die reale Leistung ersetzt." },
+    { "titel": "Dritte Leistung", "beschreibung": "Wird im echten Projekt durch die reale Leistung ersetzt." }
+  ],
+  "preise": [
+    { "position": "Erstberatung", "preis": { "betrag": 0, "waehrung": "EUR" }, "hinweis": "bis 30 Minuten" },
+    { "position": "Folgetermin", "preis": { "betrag": 89, "waehrung": "EUR", "ab": true } }
+  ],
+  "team": [
+    { "name": "Vorname Nachname", "rolle": "Inhaberin", "text": "Wird im echten Projekt durch den realen Text ersetzt." }
+  ],
+  "bewertungen": [],
+  "faq": [
+    { "frage": "Brauche ich einen Termin?", "antwort": "Für die Erstberatung nicht, für alles Weitere ja. Rufen Sie an oder schreiben Sie über das Formular." },
+    { "frage": "Wie schnell bekomme ich eine Antwort?", "antwort": "Innerhalb eines Werktags." }
+  ],
+  "anfahrt": {
+    "beschreibung": "Der Eingang liegt an der Straßenseite, ebenerdig und ohne Stufe.",
+    "oepnv": "Bus 123, Haltestelle Musterplatz, zwei Minuten zu Fuß.",
+    "parken": "Kostenfreie Parkplaetze vor dem Haus.",
+    "karte_eingebettet": false
+  },
+  "seiten": [
+    { "slug": "", "titel": "Beispielbetrieb", "beschreibung": "Startseite des Beispielbetriebs.", "bloecke": [ { "typ": "auftakt", "komposition": "gestapelt" }, { "typ": "leistungen" }, { "typ": "oeffnungszeiten" }, { "typ": "faq" }, { "typ": "kontaktformular" } ] },
+    { "slug": "leistungen", "titel": "Leistungen", "beschreibung": "Was der Betrieb anbietet.", "bloecke": [ { "typ": "leistungen" }, { "typ": "preise" } ] },
+    { "slug": "kontakt", "titel": "Kontakt", "beschreibung": "Kontakt, Öffnungszeiten und Anfahrt.", "bloecke": [ { "typ": "kontaktformular" }, { "typ": "anfahrt" }, { "typ": "oeffnungszeiten" } ] }
+  ],
+  "recht": { "verantwortlich_inhalt": "Vorname Nachname", "streitschlichtung": true }
+}

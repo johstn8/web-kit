@@ -1,0 +1,77 @@
+---
+/** Pruefpflichtiger Entwurf. Die Abschnitte spiegeln die realen Datenfluesse
+ *  dieser Website; ein nicht eingesetzter Dienst wird geloescht, nicht
+ *  vorsorglich stehen gelassen. */
+import Text from '../blocks/Text.astro';
+interface Props {
+  betrieb: { name: string };
+  kontakt: { email: string; adresse: { strasse: string; plz: string; ort: string } };
+  /** Nur tatsaechlich eingebundene Dienste. Leeres Array bedeutet: keiner. */
+  dienste?: { name: string; zweck: string; anbieter: string; grundlage: string }[];
+  formularAktiv?: boolean;
+}
+const { betrieb, kontakt, dienste = [], formularAktiv = true } = Astro.props;
+---
+<Text titel="Datenschutzerklärung">
+  <h2>Verantwortlicher</h2>
+  <p>
+    {betrieb.name}<br />
+    {kontakt.adresse.strasse}, {kontakt.adresse.plz} {kontakt.adresse.ort}<br />
+    <a href={`mailto:${kontakt.email}`}>{kontakt.email}</a>
+  </p>
+
+  <h2>Aufruf dieser Website</h2>
+  <p>
+    Beim Aufruf verarbeitet der Server technisch notwendige Zugriffsdaten:
+    IP-Adresse, Zeitpunkt, aufgerufene Adresse, übertragene Datenmenge und
+    Fehlermeldungen. Rechtsgrundlage ist das berechtigte Interesse am sicheren
+    Betrieb nach Artikel 6 Absatz 1 Buchstabe f DSGVO. Die Daten werden nach
+    kurzer Frist gelöscht und nicht mit anderen Quellen zusammengeführt.
+  </p>
+
+  {formularAktiv && (
+    <>
+      <h2>Kontaktformular</h2>
+      <p>
+        Die im Formular eingegebenen Angaben verarbeiten wir ausschließlich zur
+        Beantwortung Ihrer Anfrage. Rechtsgrundlage ist Ihre Einwilligung nach
+        Artikel 6 Absatz 1 Buchstabe a DSGVO sowie, bei Anbahnung eines Vertrags,
+        Artikel 6 Absatz 1 Buchstabe b DSGVO. Sie können die Einwilligung
+        jederzeit für die Zukunft widerrufen. Wir löschen die Angaben, sobald die
+        Anfrage abschließend bearbeitet ist und keine Aufbewahrungspflicht
+        entgegensteht.
+      </p>
+    </>
+  )}
+
+  {dienste.length > 0 ? (
+    <>
+      <h2>Eingebundene Dienste</h2>
+      <ul>
+        {dienste.map((d) => (
+          <li><strong>{d.name}</strong> ({d.anbieter}): {d.zweck}. Rechtsgrundlage: {d.grundlage}.</li>
+        ))}
+      </ul>
+      <p>
+        Dienste, die nicht technisch notwendig sind, laden erst nach Ihrer
+        Zustimmung. Ohne Zustimmung sehen Sie an ihrer Stelle einen Hinweis.
+      </p>
+    </>
+  ) : (
+    <>
+      <h2>Eingebundene Dienste</h2>
+      <p>
+        Diese Website bindet keine Dienste Dritter ein. Es gibt keine Analyse,
+        kein Tracking und keine externen Schriften oder Karten.
+      </p>
+    </>
+  )}
+
+  <h2>Ihre Rechte</h2>
+  <p>
+    Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der
+    Verarbeitung, Datenübertragbarkeit und Widerspruch. Wenden Sie sich dafür an
+    die oben genannte Adresse. Außerdem können Sie sich bei einer
+    Datenschutz-Aufsichtsbehörde beschweren.
+  </p>
+</Text>

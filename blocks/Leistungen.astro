@@ -1,0 +1,25 @@
+---
+import Sektion from './Sektion.astro';
+import { preis, type Preis } from './_lib.ts';
+interface Props { titel?: string; lead?: string; leistungen: { titel: string; beschreibung: string; preis?: Preis }[] }
+const { titel = 'Leistungen', lead, leistungen } = Astro.props;
+---
+<Sektion titel={titel} lead={lead} id="leistungen">
+  <ul class="raster">
+    {leistungen.map((l) => (
+      <li>
+        <h3>{l.titel}</h3>
+        <p>{l.beschreibung}</p>
+        {l.preis && <p class="preis">{preis(l.preis)}</p>}
+      </li>
+    ))}
+  </ul>
+</Sektion>
+
+<style>
+  .raster { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); list-style: none; margin: 0; padding: 0; }
+  li { padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+  h3 { font-size: var(--text-h3); font-weight: var(--text-h3--font-weight); letter-spacing: var(--text-h3--letter-spacing); margin: 0 0 var(--space-3); }
+  p { font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); margin: 0; text-wrap: pretty; }
+  .preis { margin-top: var(--space-4); color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+</style>

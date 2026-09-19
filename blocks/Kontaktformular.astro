@@ -1,0 +1,102 @@
+---
+/** Kontaktformular. Funktioniert ohne JavaScript als klassischer POST.
+ *  Die Validierung im Browser ist nur Rueckmeldung; verbindlich entscheidet
+ *  der Endpoint. Kanonisch in web-brain 40-backend-security/security-baseline.md. */
+import Sektion from './Sektion.astro';
+interface Props {
+  titel?: string; lead?: string;
+  endpoint?: string;
+  datenschutzZiel?: string;
+  status?: 'idle' | 'success' | 'error';
+  fehler?: string;
+}
+const {
+  titel = 'Kontakt', lead,
+  endpoint = '/api/kontakt',
+  datenschutzZiel = '/datenschutz',
+  status = 'idle',
+  fehler,
+} = Astro.props;
+---
+<Sektion titel={titel} lead={lead} id="kontakt" flaeche="surface-alt">
+  {status === 'success' && (
+    <p class="meldung erfolg" role="status">
+      Ihre Nachricht ist angekommen. Wir melden uns innerhalb eines Werktags.
+    </p>
+  )}
+  {status === 'error' && (
+    <p class="meldung fehler" role="alert">
+      {fehler ?? 'Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie an.'}
+    </p>
+  )}
+
+  <form method="post" action={endpoint} novalidate>
+    {/* Honeypot: fuer Menschen unsichtbar, fuer Bots attraktiv. Der Endpoint verwirft ausgefuellte Eintraege. */}
+    <div class="falle" aria-hidden="true">
+      <label for="website">Website</label>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="feld">
+      <label for="name">Name <span class="pflicht" aria-hidden="true">*</span></label>
+      <input type="text" id="name" name="name" required autocomplete="name" maxlength="80" aria-describedby="name-hilfe" />
+      <p id="name-hilfe" class="hilfe">Damit wir wissen, wen wir ansprechen.</p>
+    </div>
+
+    <div class="feld">
+      <label for="email">E-Mail <span class="pflicht" aria-hidden="true">*</span></label>
+      <input type="email" id="email" name="email" required autocomplete="email" maxlength="160" />
+    </div>
+
+    <div class="feld">
+      <label for="telefon">Telefon</label>
+      <input type="tel" id="telefon" name="telefon" autocomplete="tel" maxlength="40" aria-describedby="telefon-hilfe" />
+      <p id="telefon-hilfe" class="hilfe">Optional, wenn ein Rückruf schneller ist.</p>
+    </div>
+
+    <div class="feld">
+      <label for="nachricht">Nachricht <span class="pflicht" aria-hidden="true">*</span></label>
+      <textarea id="nachricht" name="nachricht" required rows="6" maxlength="4000"></textarea>
+    </div>
+
+    <div class="feld einwilligung">
+      <input type="checkbox" id="einwilligung" name="einwilligung" required value="ja" />
+      <label for="einwilligung">
+        Ich bin damit einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage
+        gespeichert werden. Näheres in der <a href={datenschutzZiel}>Datenschutzerklärung</a>.
+      </label>
+    </div>
+
+    <button type="submit">Nachricht senden</button>
+    <p class="pflichtnote">Felder mit * sind Pflichtfelder.</p>
+  </form>
+</Sektion>
+
+<style>
+  form { display: grid; gap: var(--space-5); max-width: 34rem; }
+  .falle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .feld { display: grid; gap: var(--space-2); }
+  label { font-size: var(--text-small); font-weight: 500; color: var(--color-text); }
+  .pflicht { color: var(--color-danger); }
+  /* Der Feldrahmen zeigt Bedienbarkeit an und faellt damit unter WCAG 1.4.11
+     mit 3:1 gegen die Flaeche. Deshalb traegt er text-tertiary und nicht die
+     dekorative Hairline border, die diesen Wert bewusst nicht erreicht. */
+  input, textarea { font: inherit; font-size: var(--text-body); padding: var(--space-3); border: 1px solid var(--color-text-tertiary); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text); transition: border-color var(--duration-fast) var(--ease-out); }
+  input:hover, textarea:hover { border-color: var(--color-text-secondary); }
+  input:focus-visible, textarea:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; border-color: var(--color-text-secondary); }
+  input:disabled, textarea:disabled { background: var(--color-surface-alt); color: var(--color-text-tertiary); cursor: not-allowed; }
+  input:user-invalid, textarea:user-invalid { border-color: var(--color-danger); }
+  textarea { resize: vertical; min-height: 8rem; }
+  .hilfe { margin: 0; font-size: var(--text-small); color: var(--color-text-tertiary); }
+  .einwilligung { grid-template-columns: auto 1fr; align-items: start; gap: var(--space-3); }
+  .einwilligung input { width: 1.125rem; height: 1.125rem; margin-top: 0.15rem; }
+  .einwilligung label { font-weight: 400; color: var(--color-text-secondary); line-height: 1.5; }
+  button { justify-self: start; font: inherit; font-weight: 500; padding: var(--space-3) var(--space-5); border: 0; border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-accent-contrast); cursor: pointer; transition: opacity var(--duration-fast) var(--ease-out); }
+  button:hover { opacity: 0.88; }
+  button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .pflichtnote { margin: 0; font-size: var(--text-small); color: var(--color-text-tertiary); }
+  .meldung { max-width: 34rem; padding: var(--space-4); border-radius: var(--radius-sm); font-size: var(--text-body); margin: 0 0 var(--space-6); }
+  .erfolg { background: var(--color-success-subtle); color: var(--color-success); }
+  .fehler { background: var(--color-danger-subtle); color: var(--color-danger); }
+</style>

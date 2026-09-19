@@ -1,0 +1,26 @@
+---
+import Sektion from './Sektion.astro';
+import type { Bild } from './_lib.ts';
+interface Props { titel?: string; lead?: string; team: { name: string; rolle?: string; text?: string; bild?: Bild }[] }
+const { titel = 'Team', lead, team } = Astro.props;
+---
+<Sektion titel={titel} lead={lead} id="team">
+  <ul class="raster">
+    {team.map((p) => (
+      <li>
+        {p.bild && <img src={p.bild.src} alt={p.bild.alt} width="320" height="320" loading="lazy" decoding="async" />}
+        <h3>{p.name}</h3>
+        {p.rolle && <p class="rolle">{p.rolle}</p>}
+        {p.text && <p>{p.text}</p>}
+      </li>
+    ))}
+  </ul>
+</Sektion>
+
+<style>
+  .raster { display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); list-style: none; margin: 0; padding: 0; }
+  img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-md); margin-bottom: var(--space-4); background: var(--color-surface-alt); }
+  h3 { font-size: var(--text-h3); font-weight: var(--text-h3--font-weight); margin: 0; }
+  .rolle { font-size: var(--text-label); letter-spacing: var(--text-label--letter-spacing); text-transform: uppercase; color: var(--color-text-tertiary); margin: var(--space-1) 0 var(--space-3); }
+  p { font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); margin: 0; text-wrap: pretty; }
+</style>

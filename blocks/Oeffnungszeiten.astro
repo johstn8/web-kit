@@ -1,0 +1,36 @@
+---
+import Sektion from './Sektion.astro';
+import { zeitenGruppieren, type Zeit } from './_lib.ts';
+interface Props { titel?: string; zeiten: Zeit[]; hinweis?: string }
+const { titel = 'Öffnungszeiten', zeiten, hinweis } = Astro.props;
+const zeilen = zeitenGruppieren(zeiten);
+---
+<Sektion titel={titel} id="oeffnungszeiten" flaeche="surface-alt">
+  {zeilen.length === 0 ? (
+    <p class="leer">Öffnungszeiten werden noch eingetragen. Rufen Sie gern an, wir sagen Ihnen, wann wir da sind.</p>
+  ) : (
+    <table>
+      <caption class="visually-hidden">Öffnungszeiten nach Wochentagen</caption>
+      <tbody>
+        {zeilen.map((z) => (
+          <tr>
+            <th scope="row">{z.tage}</th>
+            <td>{z.zeit}{z.hinweis && <span class="hinweis"> {z.hinweis}</span>}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+  {hinweis && <p class="fussnote">{hinweis}</p>}
+</Sektion>
+
+<style>
+  table { width: 100%; max-width: var(--prose); border-collapse: collapse; }
+  th, td { text-align: start; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-body); font-variant-numeric: tabular-nums; }
+  th { font-weight: 500; color: var(--color-text); }
+  td { color: var(--color-text-secondary); }
+  .hinweis { color: var(--color-text-tertiary); font-size: var(--text-small); }
+  .fussnote { margin-top: var(--space-4); font-size: var(--text-small); color: var(--color-text-tertiary); max-width: var(--prose); }
+  .leer { font-size: var(--text-body); color: var(--color-text-secondary); max-width: var(--prose); }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>

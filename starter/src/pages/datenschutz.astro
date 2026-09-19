@@ -1,0 +1,8 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Datenschutz from '../../../legal/datenschutz.astro';
+import { inhalt } from '../content/index.ts';
+---
+<Seite titel="Datenschutz" beschreibung="Wie diese Website mit Daten umgeht." indexieren={false}>
+  <Datenschutz betrieb={inhalt.betrieb} kontakt={inhalt.kontakt} dienste={[]} />
+</Seite>

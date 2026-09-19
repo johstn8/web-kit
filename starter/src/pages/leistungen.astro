@@ -1,0 +1,21 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Zeilenindex from '../../../blocks/auftakt/Zeilenindex.astro';
+import Leistungen from '../../../blocks/Leistungen.astro';
+import Preise from '../../../blocks/Preise.astro';
+import Team from '../../../blocks/Team.astro';
+import { inhalt } from '../content/index.ts';
+
+const seite = inhalt.seiten.find((s) => s.slug === 'leistungen')!;
+---
+<Seite titel={seite.titel} beschreibung={seite.beschreibung}>
+  <Zeilenindex
+    titel="Was wir tun"
+    lead={inhalt.betrieb.kurzbeschreibung}
+    zeilen={(inhalt.leistungen ?? []).map((l) => ({ label: l.titel }))}
+    aktion={{ label: 'Termin anfragen', ziel: '/kontakt' }}
+  />
+  {inhalt.leistungen && <Leistungen titel="Im Einzelnen" leistungen={inhalt.leistungen} />}
+  {inhalt.preise && <Preise preise={inhalt.preise} lead="Alle Preise inklusive Umsatzsteuer." />}
+  {inhalt.team && <Team team={inhalt.team} />}
+</Seite>

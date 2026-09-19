@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/johstn8/web-kit/content/schema.json",
+  "title": "Betriebsdaten einer Website",
+  "description": "Datenmodell fuer den owner-bearbeitbaren Inhalt einer Website. Eine Datei je Website unter content/<website>.json. Stabile Pointer: ein Schluessel wird nie umbenannt, sondern migriert. Kanonisch in web-brain 60-operations/owner-hosting-interface.md.",
+  "type": "object",
+  "required": ["betrieb", "kontakt", "seiten"],
+  "additionalProperties": false,
+  "properties": {
+    "betrieb": {
+      "type": "object",
+      "required": ["name", "kurzbeschreibung"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "rechtsform": { "type": "string", "maxLength": 80 },
+        "inhaber": { "type": "string", "maxLength": 120 },
+        "kurzbeschreibung": { "type": "string", "maxLength": 240, "description": "Ein Satz: was der Betrieb fuer wen tut." },
+        "gegruendet": { "type": "string", "pattern": "^[0-9]{4}$" },
+        "logo": { "$ref": "#/$defs/bild" }
+      }
+    },
+    "kontakt": {
+      "type": "object",
+      "required": ["telefon", "email", "adresse"],
+      "additionalProperties": false,
+      "properties": {
+        "telefon": { "type": "string", "description": "In Anzeigeform. Der tel:-Verweis wird daraus normalisiert; beide Pointer gehoeren zusammen." },
+        "email": { "type": "string", "format": "email" },
+        "adresse": {
+          "type": "object",
+          "required": ["strasse", "plz", "ort"],
+          "additionalProperties": false,
+          "properties": {
+            "strasse": { "type": "string" },
+            "plz": { "type": "string", "pattern": "^[0-9]{5}$" },
+            "ort": { "type": "string" },
+            "land": { "type": "string", "default": "DE" }
+          }
+        },
+        "maps_url": { "type": "string", "format": "uri", "description": "Nur mit Primaerquellenbestaetigung eintragen." },
+        "profile": {
+          "type": "array",
+          "description": "Verifizierte offizielle Profile.",
+          "items": {
+            "type": "object",
+            "required": ["plattform", "url"],
+            "additionalProperties": false,
+            "properties": { "plattform": { "type": "string" }, "url": { "type": "string", "format": "uri" } }
+          }
+        }
+      }
+    },
+    "oeffnungszeiten": {
+      "type": "array",
+      "description": "Wiederkehrende Zeiten je Wochentag. Ein Tag ohne Eintrag gilt als geschlossen.",
+      "items": {
+        "type": "object",
+        "required": ["tag", "von", "bis"],
+        "additionalProperties": false,
+        "properties": {
+          "tag": { "enum": ["mo", "di", "mi", "do", "fr", "sa", "so"] },
+          "von": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+          "bis": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+          "hinweis": { "type": "string", "maxLength": 120 }
+        }
+      }
+    },
+    "oeffnungszeiten_hinweis": { "type": "string", "maxLength": 240, "description": "Abweichungen, Feiertage, Termin nach Vereinbarung." },
+    "leistungen": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["titel", "beschreibung"],
+        "additionalProperties": false,
+        "properties": {
+          "titel": { "type": "string", "maxLength": 80 },
+          "beschreibung": { "type": "string", "maxLength": 400 },
+          "preis": { "$ref": "#/$defs/preis" },
+          "bild": { "$ref": "#/$defs/bild" }
+        }
+      }
+    },
+    "preise": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["position", "preis"],
+        "additionalProperties": false,
+        "properties": {
+          "position": { "type": "string", "maxLength": 120 },
+          "preis": { "$ref": "#/$defs/preis" },
+          "hinweis": { "type": "string", "maxLength": 160 }
+        }
+      }
+    },
+    "team": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "maxLength": 80 },
+          "rolle": { "type": "string", "maxLength": 80 },
+          "text": { "type": "string", "maxLength": 400 },
+          "bild": { "$ref": "#/$defs/bild" }
+        }
+      }
+    },
+    "bewertungen": {
+      "type": "array",
+      "description": "Nur real vorhandene Bewertungen mit Quelle. Nichts erfinden.",
+      "items": {
+        "type": "object",
+        "required": ["text", "quelle"],
+        "additionalProperties": false,
+        "properties": {
+          "text": { "type": "string", "maxLength": 600 },
+          "autor": { "type": "string", "maxLength": 80 },
+          "quelle": { "type": "string", "maxLength": 80 },
+          "url": { "type": "string", "format": "uri" },
+          "datum": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "faq": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["frage", "antwort"],
+        "additionalProperties": false,
+        "properties": { "frage": { "type": "string", "maxLength": 200 }, "antwort": { "type": "string", "maxLength": 1200 } }
+      }
+    },
+    "anfahrt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "beschreibung": { "type": "string", "maxLength": 600 },
+        "oepnv": { "type": "string", "maxLength": 400 },
+        "parken": { "type": "string", "maxLength": 400 },
+        "karte_eingebettet": { "type": "boolean", "default": false, "description": "Einbettung nur nach Consent, siehe legal/consent/." }
+      }
+    },
+    "seiten": {
+      "type": "array",
+      "description": "Sitemap. Startseite plus echte verlinkte Unterseiten; One-Page mit Ankern ist kein Ersatz.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["slug", "titel", "bloecke"],
+        "additionalProperties": false,
+        "properties": {
+          "slug": { "type": "string", "pattern": "^[a-z0-9-]*$", "description": "Leerer Slug ist die Startseite." },
+          "titel": { "type": "string", "maxLength": 60, "description": "Kurz und ohne senkrechten Strich." },
+          "beschreibung": { "type": "string", "maxLength": 160 },
+          "indexieren": { "type": "boolean", "default": true },
+          "bloecke": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["typ"],
+              "properties": {
+                "typ": {
+                  "enum": ["auftakt", "leistungen", "oeffnungszeiten", "anfahrt", "team", "kontaktformular", "bewertungen", "preise", "faq", "text"]
+                },
+                "komposition": {
+                  "enum": ["gestapelt", "zweispaltig", "bildbuehne", "zeilenindex"],
+                  "description": "Nur fuer typ=auftakt. Repertoire in web-brain 20-design/landing-page-craft.md#Auftakt-Repertoire."
+                },
+                "titel": { "type": "string", "maxLength": 120 },
+                "text": { "type": "string", "maxLength": 2000 },
+                "bild": { "$ref": "#/$defs/bild" },
+                "aktion": { "$ref": "#/$defs/aktion" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "recht": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "umsatzsteuer_id": { "type": "string" },
+        "aufsichtsbehoerde": { "type": "string" },
+        "register": { "type": "string" },
+        "verantwortlich_inhalt": { "type": "string" },
+        "streitschlichtung": { "type": "boolean", "default": true }
+      }
+    }
+  },
+  "$defs": {
+    "bild": {
+      "type": "object",
+      "required": ["src", "alt"],
+      "additionalProperties": false,
+      "properties": {
+        "src": { "type": "string", "description": "Pfad relativ zu src/assets/ im Projekt." },
+        "alt": { "type": "string", "maxLength": 200 },
+        "ai_placeholder": { "type": "boolean", "default": false, "description": "Nur im Projekt gefuehrt, nie sichtbar auf der Website." }
+      }
+    },
+    "preis": {
+      "type": "object",
+      "required": ["betrag", "waehrung"],
+      "additionalProperties": false,
+      "properties": {
+        "betrag": { "type": "number", "minimum": 0 },
+        "waehrung": { "type": "string", "default": "EUR" },
+        "ab": { "type": "boolean", "default": false }
+      }
+    },
+    "aktion": {
+      "type": "object",
+      "required": ["label", "ziel"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "maxLength": 40 },
+        "ziel": { "type": "string" },
+        "art": { "enum": ["primaer", "sekundaer"], "default": "primaer" }
+      }
+    }
+  }
+}

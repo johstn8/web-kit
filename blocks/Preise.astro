@@ -1,0 +1,33 @@
+---
+import Sektion from './Sektion.astro';
+import { preis, type Preis } from './_lib.ts';
+interface Props { titel?: string; lead?: string; preise: { position: string; preis: Preis; hinweis?: string }[] }
+const { titel = 'Preise', lead, preise } = Astro.props;
+---
+<Sektion titel={titel} lead={lead} id="preise">
+  <table>
+    <thead>
+      <tr><th scope="col">Leistung</th><th scope="col" class="rechts">Preis</th></tr>
+    </thead>
+    <tbody>
+      {preise.map((p) => (
+        <tr>
+          <th scope="row">
+            {p.position}
+            {p.hinweis && <span class="hinweis">{p.hinweis}</span>}
+          </th>
+          <td class="rechts">{preis(p.preis)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Sektion>
+
+<style>
+  table { width: 100%; max-width: 48rem; border-collapse: collapse; }
+  th, td { text-align: start; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-body); }
+  thead th { font-size: var(--text-label); letter-spacing: var(--text-label--letter-spacing); text-transform: uppercase; color: var(--color-text-tertiary); font-weight: 500; }
+  tbody th { font-weight: 400; color: var(--color-text); }
+  .rechts { text-align: end; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .hinweis { display: block; font-size: var(--text-small); color: var(--color-text-tertiary); margin-top: var(--space-1); }
+</style>

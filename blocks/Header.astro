@@ -1,0 +1,53 @@
+---
+/** Kopfzeile. Inventar und Anordnung sind eine Art-Direction-Entscheidung
+ *  je Website, es gibt keine globale Sollzahl an Navigationspunkten.
+ *  Kanonisch in web-brain 30-frontend/components-and-ui-states.md#Kopfzeile und Hauptnavigation. */
+import type { Aktion, Bild } from './_lib.ts';
+interface Props {
+  name: string;
+  logo?: Bild;
+  navigation: { label: string; ziel: string }[];
+  aktion?: Aktion;
+  aktiv?: string;
+}
+const { name, logo, navigation, aktion, aktiv } = Astro.props;
+---
+<header class="site-header">
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+  <div class="bar">
+    <a class="marke" href="/" aria-label={`${name}, zur Startseite`}>
+      {logo ? <img src={logo.src} alt={logo.alt} width="140" height="36" /> : <span>{name}</span>}
+    </a>
+    <nav aria-label="Hauptnavigation">
+      <ul>
+        {navigation.map((punkt) => (
+          <li>
+            <a href={punkt.ziel} aria-current={aktiv === punkt.ziel ? 'page' : undefined}>{punkt.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    {aktion && <a class="aktion" href={aktion.ziel}>{aktion.label}</a>}
+  </div>
+</header>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 10; background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: var(--space-4); top: var(--space-2); z-index: 20; background: var(--color-surface); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
+  .bar { display: flex; align-items: center; gap: var(--space-5); max-width: var(--container); margin-inline: auto; padding: var(--space-3) var(--gutter); }
+  .marke { font-weight: 600; letter-spacing: -0.02em; text-decoration: none; color: var(--color-text); }
+  .marke img { display: block; height: 2.25rem; width: auto; }
+  nav { margin-inline-start: auto; }
+  nav ul { display: flex; flex-wrap: wrap; gap: var(--space-4); list-style: none; margin: 0; padding: 0; }
+  nav a { font-size: var(--text-small); color: var(--color-text-secondary); text-decoration: none; transition: color var(--duration-fast) var(--ease-out); }
+  nav a:hover { color: var(--color-text); }
+  nav a[aria-current='page'] { color: var(--color-text); font-weight: 500; }
+  .aktion { font-size: var(--text-small); font-weight: 500; padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; transition: opacity var(--duration-fast) var(--ease-out); }
+  .aktion:hover { opacity: 0.88; }
+  @media (max-width: 640px) {
+    .bar { flex-wrap: wrap; gap: var(--space-3); }
+    nav { margin-inline-start: 0; flex-basis: 100%; order: 3; }
+    nav ul { gap: var(--space-3); }
+  }
+</style>

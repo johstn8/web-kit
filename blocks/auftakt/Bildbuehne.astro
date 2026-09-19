@@ -1,0 +1,28 @@
+---
+/** Auftakt, Komposition "bildbuehne": reales Bild traegt den Auftakt,
+ *  der Text sitzt darunter und bleibt an jeder Pruefbreite vollstaendig lesbar. */
+import type { Aktion, Bild } from '../_lib.ts';
+interface Props { titel: string; lead: string; bild: Bild; aktion?: Aktion }
+const { titel, lead, bild, aktion } = Astro.props;
+---
+<section class="auftakt">
+  <div class="buehne">
+    <img src={bild.src} alt={bild.alt} width="1600" height="900" fetchpriority="high" decoding="async" />
+  </div>
+  <div class="inner">
+    <h1>{titel}</h1>
+    <p class="lead">{lead}</p>
+    {aktion && <p class="handlung"><a href={aktion.ziel}>{aktion.label}</a></p>}
+  </div>
+</section>
+
+<style>
+  .auftakt { padding-bottom: var(--space-8); }
+  .buehne { overflow: hidden; }
+  .buehne img { display: block; width: 100%; height: clamp(14rem, 45vh, 28rem); object-fit: cover; }
+  .inner { max-width: var(--container); margin-inline: auto; padding: var(--space-8) var(--gutter) 0; }
+  h1 { font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: var(--text-h1--font-weight); letter-spacing: var(--text-h1--letter-spacing); text-wrap: balance; max-width: 20ch; margin: 0; }
+  .lead { font-size: var(--text-lead); line-height: var(--text-lead--line-height); color: var(--color-text-secondary); text-wrap: pretty; max-width: var(--prose); margin: var(--space-5) 0 0; }
+  .handlung { margin: var(--space-6) 0 0; }
+  .handlung a { display: inline-block; font-weight: 500; padding: var(--space-3) var(--space-5); border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; }
+</style>

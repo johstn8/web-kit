@@ -1,0 +1,8 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Impressum from '../../../legal/impressum.astro';
+import { inhalt } from '../content/index.ts';
+---
+<Seite titel="Impressum" beschreibung="Anbieterkennzeichnung." indexieren={false}>
+  <Impressum betrieb={inhalt.betrieb} kontakt={inhalt.kontakt} recht={inhalt.recht} />
+</Seite>

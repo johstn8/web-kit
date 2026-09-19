@@ -1,0 +1,26 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Gestapelt from '../../../blocks/auftakt/Gestapelt.astro';
+import Leistungen from '../../../blocks/Leistungen.astro';
+import Oeffnungszeiten from '../../../blocks/Oeffnungszeiten.astro';
+import Faq from '../../../blocks/Faq.astro';
+import Bewertungen from '../../../blocks/Bewertungen.astro';
+import Kontaktformular from '../../../blocks/Kontaktformular.astro';
+import { inhalt } from '../content/index.ts';
+
+const seite = inhalt.seiten.find((s) => s.slug === '')!;
+---
+<Seite titel={seite.titel} beschreibung={seite.beschreibung}>
+  <Gestapelt
+    titel={inhalt.betrieb.kurzbeschreibung}
+    lead={`${inhalt.betrieb.name} in ${inhalt.kontakt.adresse.ort}. Rufen Sie an oder schreiben Sie uns; wir antworten innerhalb eines Werktags.`}
+    ort={inhalt.kontakt.adresse.ort}
+    aktion={{ label: 'Kontakt aufnehmen', ziel: '/kontakt' }}
+    beweis={inhalt.betrieb.gegruendet ? `Im Betrieb seit ${inhalt.betrieb.gegruendet}.` : undefined}
+  />
+  {inhalt.leistungen && <Leistungen leistungen={inhalt.leistungen} />}
+  {inhalt.oeffnungszeiten && <Oeffnungszeiten zeiten={inhalt.oeffnungszeiten} hinweis={inhalt.oeffnungszeiten_hinweis} />}
+  <Bewertungen bewertungen={inhalt.bewertungen ?? []} />
+  {inhalt.faq && <Faq faq={inhalt.faq} />}
+  <Kontaktformular lead="Schreiben Sie uns, worum es geht. Wir melden uns innerhalb eines Werktags." />
+</Seite>

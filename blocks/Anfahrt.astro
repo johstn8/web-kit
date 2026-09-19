@@ -1,0 +1,45 @@
+---
+import Sektion from './Sektion.astro';
+interface Props {
+  titel?: string;
+  adresse: { strasse: string; plz: string; ort: string };
+  beschreibung?: string; oepnv?: string; parken?: string;
+  maps_url?: string; karte_eingebettet?: boolean;
+}
+const { titel = 'Anfahrt', adresse, beschreibung, oepnv, parken, maps_url, karte_eingebettet = false } = Astro.props;
+---
+<Sektion titel={titel} id="anfahrt">
+  <div class="spalten">
+    <div>
+      <address>{adresse.strasse}<br />{adresse.plz} {adresse.ort}</address>
+      {maps_url && <p><a class="karte-link" href={maps_url} rel="noopener">In Google Maps öffnen</a></p>}
+      {beschreibung && <p>{beschreibung}</p>}
+    </div>
+    <dl>
+      {oepnv && <><dt>Öffentlich</dt><dd>{oepnv}</dd></>}
+      {parken && <><dt>Parken</dt><dd>{parken}</dd></>}
+    </dl>
+  </div>
+  {karte_eingebettet && (
+    <div class="karte" data-consent="karte">
+      <p class="consent-hinweis">
+        Die Karte lädt Daten von einem Drittanbieter. Sie wird erst nach Ihrer Zustimmung geladen.
+      </p>
+      <button type="button" data-consent-accept="karte">Karte laden</button>
+    </div>
+  )}
+</Sektion>
+
+<style>
+  .spalten { display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  address { font-style: normal; font-size: var(--text-h3); line-height: 1.5; margin-bottom: var(--space-4); }
+  p { font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); max-width: var(--prose); margin: 0 0 var(--space-3); }
+  .karte-link { color: var(--color-text); }
+  dl { margin: 0; }
+  dt { font-size: var(--text-label); letter-spacing: var(--text-label--letter-spacing); text-transform: uppercase; color: var(--color-text-tertiary); margin-top: var(--space-4); }
+  dd { margin: var(--space-1) 0 0; font-size: var(--text-body); color: var(--color-text-secondary); }
+  .karte { margin-top: var(--space-6); padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface-alt); }
+  .consent-hinweis { margin-bottom: var(--space-4); }
+  button { font: inherit; font-size: var(--text-small); font-weight: 500; padding: var(--space-2) var(--space-4); border: 1px solid var(--color-border-hover); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text); cursor: pointer; }
+  button:hover { border-color: var(--color-text-tertiary); }
+</style>

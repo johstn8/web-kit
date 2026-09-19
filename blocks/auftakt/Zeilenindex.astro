@@ -1,0 +1,36 @@
+---
+/** Auftakt, Komposition "zeilenindex": das Angebot wird als Index der
+ *  realen Leistungen gezeigt. Traegt sich ohne Bild. */
+import type { Aktion } from '../_lib.ts';
+interface Props { titel: string; lead?: string; zeilen: { label: string; ziel?: string }[]; aktion?: Aktion }
+const { titel, lead, zeilen, aktion } = Astro.props;
+---
+<section class="auftakt">
+  <div class="inner">
+    <h1>{titel}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <ol class="index">
+      {zeilen.map((z, i) => (
+        <li>
+          <span class="nr">{String(i + 1).padStart(2, '0')}</span>
+          {z.ziel ? <a href={z.ziel}>{z.label}</a> : <span>{z.label}</span>}
+        </li>
+      ))}
+    </ol>
+    {aktion && <p class="handlung"><a href={aktion.ziel}>{aktion.label}</a></p>}
+  </div>
+</section>
+
+<style>
+  .auftakt { padding: var(--space-12) 0 var(--space-8); }
+  .inner { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+  h1 { font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: var(--text-h1--font-weight); letter-spacing: var(--text-h1--letter-spacing); text-wrap: balance; max-width: 20ch; margin: 0; }
+  .lead { font-size: var(--text-lead); color: var(--color-text-secondary); max-width: var(--prose); margin: var(--space-4) 0 0; }
+  .index { list-style: none; margin: var(--space-8) 0 0; padding: 0; border-top: 1px solid var(--color-border); }
+  .index li { display: flex; align-items: baseline; gap: var(--space-4); padding: var(--space-4) 0; border-bottom: 1px solid var(--color-border); font-size: var(--text-h3); }
+  .nr { font-size: var(--text-label); font-variant-numeric: tabular-nums; color: var(--color-text-tertiary); }
+  .index a { color: var(--color-text); text-decoration: none; }
+  .index a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+  .handlung { margin: var(--space-6) 0 0; }
+  .handlung a { display: inline-block; font-weight: 500; padding: var(--space-3) var(--space-5); border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; }
+</style>

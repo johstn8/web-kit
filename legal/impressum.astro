@@ -1,0 +1,44 @@
+---
+/** Pruefpflichtiger Entwurf. Vor Veroeffentlichung vom Owner freigeben lassen. */
+import Text from '../blocks/Text.astro';
+interface Props {
+  betrieb: { name: string; rechtsform?: string; inhaber?: string };
+  kontakt: { telefon: string; email: string; adresse: { strasse: string; plz: string; ort: string } };
+  recht?: { umsatzsteuer_id?: string; aufsichtsbehoerde?: string; register?: string; verantwortlich_inhalt?: string; streitschlichtung?: boolean };
+}
+const { betrieb, kontakt, recht = {} } = Astro.props;
+const { streitschlichtung = true } = recht;
+---
+<Text titel="Impressum">
+  <h2>Angaben gemäß § 5 DDG</h2>
+  <p>
+    {betrieb.name}{betrieb.rechtsform ? ` (${betrieb.rechtsform})` : ''}<br />
+    {kontakt.adresse.strasse}<br />
+    {kontakt.adresse.plz} {kontakt.adresse.ort}
+  </p>
+
+  {betrieb.inhaber && (<><h2>Vertreten durch</h2><p>{betrieb.inhaber}</p></>)}
+
+  <h2>Kontakt</h2>
+  <p>
+    Telefon: <a href={`tel:${kontakt.telefon.replace(/[^\d+]/g, '')}`}>{kontakt.telefon}</a><br />
+    E-Mail: <a href={`mailto:${kontakt.email}`}>{kontakt.email}</a>
+  </p>
+
+  {recht.register && (<><h2>Registereintrag</h2><p>{recht.register}</p></>)}
+  {recht.umsatzsteuer_id && (<><h2>Umsatzsteuer-Identifikationsnummer</h2><p>{recht.umsatzsteuer_id}</p></>)}
+  {recht.aufsichtsbehoerde && (<><h2>Aufsichtsbehörde</h2><p>{recht.aufsichtsbehoerde}</p></>)}
+
+  <h2>Verantwortlich für den Inhalt</h2>
+  <p>{recht.verantwortlich_inhalt ?? betrieb.inhaber ?? betrieb.name}, Anschrift wie oben.</p>
+
+  {streitschlichtung && (
+    <>
+      <h2>Streitschlichtung</h2>
+      <p>
+        Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren
+        vor einer Verbraucherschlichtungsstelle teilzunehmen.
+      </p>
+    </>
+  )}
+</Text>
