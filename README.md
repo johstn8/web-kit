@@ -17,7 +17,8 @@ blocks/     Kopfzeile, auftakt/ (vier Kompositionen), Leistungen,
 legal/      Impressum, Datenschutz, consent/
 content/    schema.json - Datenmodell für Betriebsdaten
 scripts/    extract-old-site.ts, render-shots.ts, check-axe.ts,
-            check-contrast.ts, link-check.ts, tokens-*.ts, qa.sh
+            check-contrast.ts, link-check.ts, tokens-*.ts, qa.sh,
+            deploy.sh, kontakt-endpoint.mjs, nginx-site.conf.template
 starter/    lauffähiges Astro-Projekt, das alles einbindet
 ```
 
@@ -60,6 +61,25 @@ Screenshots bei 375 und 1280 Pixel, axe gegen WCAG 2.1 AA und Lighthouse.
 Fehlt ein Werkzeug, wird die Prüfung als **übersprungen** gemeldet, nie als
 bestanden; übersprungene Prüfungen gehören als offener Punkt in
 `release-readiness/<website-slug>.md`.
+
+## Ausliefern
+
+```bash
+scripts/deploy.sh --projekt ../projekte/<kunde> --ziel /srv/www/<slug>
+scripts/deploy.sh --projekt ../projekte/<kunde> --ziel /srv/www/<slug> --preview
+```
+
+Der Build entsteht neben dem aktiven Stand und wird erst nach bestandenem
+Smoke-Test per Symlink aktiviert; ein fehlgeschlagener Build verändert den
+ausgelieferten Stand nicht. Die letzten fünf Releases bleiben liegen, damit
+ein Rollback ein einziger `ln -sfn` ist.
+
+`nginx-site.conf.template` ist die Serverkonfiguration mit öffentlicher
+Route, Formular-Proxy und gesperrter Vorschau-Subdomain.
+`kontakt-endpoint.mjs` nimmt das Formular entgegen: Origin-Prüfung,
+Ratelimit, serverseitige Allowlist-Validierung, Honeypot, Versand über
+`sendmail`. Domain, DNS, TLS und Zugangsdaten bleiben außerhalb des
+Repositories.
 
 ## Wie das Kit wächst
 

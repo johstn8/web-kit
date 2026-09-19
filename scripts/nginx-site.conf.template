@@ -1,0 +1,91 @@
+# Vorlage fuer eine Website aus dem web-kit.
+#
+# Platzhalter ersetzen und als /etc/nginx/sites-available/<slug> ablegen.
+# Der Agent hat kein Schreibrecht in /etc; diese Datei installiert der
+# Nutzer selbst. Danach:
+#   sudo ln -s /etc/nginx/sites-available/<slug> /etc/nginx/sites-enabled/
+#   sudo nginx -t && sudo systemctl reload nginx
+#
+#   {{DOMAIN}}      oeffentliche Domain
+#   {{ZIEL}}        Zielverzeichnis des Deploys, z. B. /srv/www/<slug>
+#   {{PORT}}        Port des Kontakt-Endpoints, z. B. 8410
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{DOMAIN}};
+
+    # ACME muss vor der Weiterleitung erreichbar bleiben, sonst schlaegt
+    # die Zertifikatserneuerung fehl.
+    location /.well-known/acme-challenge/ { root /var/www/acme; }
+    location / { return 301 https://$host$request_uri; }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name {{DOMAIN}};
+
+    ssl_certificate     /etc/letsencrypt/live/{{DOMAIN}}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{DOMAIN}}/privkey.pem;
+
+    root {{ZIEL}}/current;
+    index index.html;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+    add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" always;
+
+    # Gebaute Dateien tragen einen Hash im Namen und duerfen lange liegen.
+    location /_astro/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Der Formular-Endpoint ist der einzige dynamische Pfad. Alles andere
+    # ist statisch; die oeffentliche Website braucht keine Laufzeit.
+    location /api/kontakt {
+        proxy_pass http://127.0.0.1:{{PORT}};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        limit_except POST { deny all; }
+    }
+
+    location / { try_files $uri $uri/ $uri.html =404; }
+    error_page 404 /404.html;
+}
+
+# ---------------------------------------------------------------------------
+# Vorschau. Getrennte Subdomain, nie ein Unterpfad der Produktionsdomain,
+# sonst erben Vorschauen Cookies, Service Worker und Analytics der Live-Seite.
+# Kanonisch in web-brain 40-backend-security/preview-access-gate.md.
+# ---------------------------------------------------------------------------
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name vorschau.{{DOMAIN}};
+
+    ssl_certificate     /etc/letsencrypt/live/vorschau.{{DOMAIN}}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/vorschau.{{DOMAIN}}/privkey.pem;
+
+    root {{ZIEL}}/vorschau/current;
+    index index.html;
+
+    # Durchsetzung am Proxy, nicht in der Anwendung. Erfasst damit auch
+    # statische Dateien und Fehlerseiten.
+    auth_basic           "Vorschau";
+    auth_basic_user_file /etc/nginx/htpasswd/{{DOMAIN}};
+
+    # Das Gate allein haelt Inhalte nicht aus dem Index, wenn eine URL
+    # geteilt wird. Deshalb zusaetzlich der Header und eine robots.txt
+    # mit Disallow, die deploy.sh --preview erzeugt.
+    add_header X-Robots-Tag "noindex, nofollow, noarchive" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    location /.well-known/acme-challenge/ { auth_basic off; root /var/www/acme; }
+    location / { try_files $uri $uri/ $uri.html =404; }
+}
