@@ -10,9 +10,11 @@
  *   extract/betriebsdaten.json    Vorbefuellung nach content/schema.json
  *   extract/quelleninventar.md    was gefunden wurde und was fehlt
  *
- * Das Ergebnis ist ein Rohbestand, keine fertige Wahrheit. Jede Angabe wird
- * gegen eine Primaerquelle geprueft, bevor sie in content/<website>.json
- * wandert. Kanonisch in web-brain 10-strategy/existing-website-rebuild.md.
+ * Die gefundenen Angaben werden uebernommen und eingebaut, nicht erst
+ * bestaetigt: Die Website eines Betriebs ist fuer seine eigenen Preise und
+ * Zeiten eine Primaerquelle. Was Zweifel weckt oder sich widerspricht, wird
+ * als Anmerkung notiert, nicht erfragt. Kanonisch in web-brain
+ * 10-strategy/existing-website-rebuild.md#Uebernahme ohne Rueckfrage.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, join } from 'node:path';
@@ -135,15 +137,22 @@ Gezogen am ${new Date().toISOString().slice(0, 10)} von ${startUrl.origin}, Tief
 | E-Mail | ${email || 'nicht gefunden'} |
 | Anschrift | ${[strasse, plzOrt?.[1], plzOrt?.[2]].filter(Boolean).join(', ') || 'nicht gefunden'} |
 
-## Vor der Uebernahme zu klaeren
+## Uebernahme
 
-- [ ] Jede gefundene Angabe gegen eine Primaerquelle pruefen. Ein Fund auf der
-      alten Seite ist kein Beleg; veraltete Preise und Zeiten stehen dort am
-      haeufigsten.
-- [ ] Oeffnungszeiten, Preise und Leistungen mit dem Betrieb bestaetigen.
+Die gefundenen Angaben werden uebernommen und eingebaut. Der Build haelt
+dafuer nicht an; die Website des Betriebs ist fuer seine eigenen Preise und
+Zeiten eine Primaerquelle.
+
+- [ ] Angaben in content/<website>.json uebernehmen, mit Quelle und Abrufdatum
+      in PROJECT.md unter "Uebernommene Angaben".
+- [ ] Was Zweifel weckt oder sich widerspricht: als **Anmerkung** notieren und
+      in release-readiness/<website-slug>.md eintragen. Nicht erfragen.
 - [ ] Bildrechte und tatsaechlichen Einsatz im Asset Register erfassen.
-- [ ] Verifizierte offizielle Profile und den Maps-Eintrag ergaenzen.
+- [ ] Offizielle Profile und den Maps-Eintrag ergaenzen, sofern auffindbar.
 - [ ] Alte Adressen, die erhalten bleiben muessen, als Weiterleitung planen.
+
+Vor dem Launch bestaetigt der Owner die uebernommenen Angaben ueber das
+Release-Readiness-Register - das ist ein Schritt am Ende, kein Halt am Anfang.
 
 ## Seiten
 
@@ -151,4 +160,4 @@ ${seiten.map((s) => `- \`${s.slug}\` - ${s.titel || '(ohne Titel)'} - ${s.url}`)
 `, 'utf8');
 
 console.log(`${seiten.length} Seiten und ${bilder.length} Bilder nach ${ziel} geschrieben.`);
-console.log('Das Ergebnis ist ein Rohbestand. Jede Angabe vor der Uebernahme gegen eine Primaerquelle pruefen.');
+console.log('Angaben uebernehmen und einbauen. Zweifel und Widersprueche als Anmerkung in PROJECT.md, nicht als Rueckfrage.');
