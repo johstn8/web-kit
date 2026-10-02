@@ -12,13 +12,13 @@ schreibt, den es hier gibt, hat den falschen Weg genommen.
 ```
 tokens/     tokens.json als Quelle, tokens.css generiert, Theme-Ableitung
 tokens/presets/  fünf Art-Direction-Presets als Datei statt als Prosa
-blocks/     Kopfzeile, auftakt/ (vier Kompositionen), Leistungen,
+blocks/     Kopfzeile, auftakt/ (fünf Kompositionen), Leistungen,
             Öffnungszeiten, Anfahrt, Team, Kontaktformular, Bewertungen,
             Preise, FAQ, Fußzeile
 legal/      Impressum, Datenschutz, consent/
 content/    schema.json - Datenmodell für Betriebsdaten
 scripts/    extract-old-site.ts, render-shots.ts, check-axe.ts,
-            check-contrast.ts, link-check.ts, tokens-*.ts, qa.sh,
+            check-slop.ts, check-contrast.ts, link-check.ts, tokens-*.ts, qa.sh,
             deploy.sh, kontakt-endpoint.mjs, nginx-site.conf.template,
             fetch-fonts.ts
 starter/    lauffähiges Astro-Projekt, das alles einbindet
@@ -36,6 +36,24 @@ npm run build      # statischer Build nach starter/dist
 
 Node 22 oder neuer. Die Skripte sind TypeScript und laufen ohne Buildschritt
 über `node --experimental-strip-types`.
+
+## Harte Sperren
+
+`scripts/check-slop.ts` misst am gerenderten Dokument, was
+`web-brain 20-design/anti-ai-slop.md#Harte Sperren` ausdrücklich sperrt:
+Dachzeile über einer Überschrift, Nummernmarke, farbig oder kursiv
+abgesetzte Teile einer Überschrift, ein Verlauf, der ein Foto in den
+Seitengrund ausblendet, und auf der Startseite drei Sektionen in Folge mit
+derselben Anordnung. `qa.sh` führt die Prüfung immer aus; sie lässt sich
+nicht über `--skip` abwählen.
+
+Geeicht an realen Seiten: minerestaurant.de, pageou.de, barraberlin.com,
+lilianewyork.com und carbonenewyork.com bestehen, impastorosso.de fällt
+mit zwei Dachzeilen durch.
+
+**Die unveränderte Startseite des Starters besteht die Prüfung nicht.**
+Sie stapelt vier gleich gebaute Sektionen und ist ein technisches Gerüst,
+keine Vorlage für die Sektionsfolge. Im Projekt wird sie umgebaut.
 
 ## Art Direction
 

@@ -1,15 +1,20 @@
 ---
-/** Auftakt, Komposition "gestapelt": Angebot, Erklaerzeile, Handlung,
- *  Beweisanker untereinander. Alle sechs Auftaktrollen sind besetzt.
- *  Repertoire kanonisch in web-brain 20-design/landing-page-craft.md#Auftakt-Repertoire. */
+/** Auftakt, Komposition "gestapelt": Angebot, Einordnung, Erklaerzeile,
+ *  Handlung, Beweisanker untereinander. Alle sechs Auftaktrollen sind besetzt.
+ *  Repertoire kanonisch in web-brain 20-design/landing-page-craft.md#Auftakt-Repertoire.
+ *
+ *  Die Ortsangabe steht UNTER der H1 in Satzschreibung, nie als gesperrte
+ *  Versalzeile darueber. Eine Dachzeile ueber der Ueberschrift ist eine harte
+ *  Sperre aus web-brain 20-design/anti-ai-slop.md#Harte Sperren; dieser Block
+ *  hat sie bis 2026-10-02 selbst ausgeliefert. */
 import type { Aktion } from '../_lib.ts';
 interface Props { titel: string; lead: string; aktion?: Aktion; beweis?: string; ort?: string }
 const { titel, lead, aktion, beweis, ort } = Astro.props;
 ---
 <section class="auftakt">
   <div class="inner">
-    {ort && <p class="ort">{ort}</p>}
     <h1>{titel}</h1>
+    {ort && <p class="ort">{ort}</p>}
     <p class="lead">{lead}</p>
     {aktion && <p class="handlung"><a href={aktion.ziel}>{aktion.label}</a></p>}
     {beweis && <p class="beweis">{beweis}</p>}
@@ -19,7 +24,7 @@ const { titel, lead, aktion, beweis, ort } = Astro.props;
 <style>
   .auftakt { padding: var(--space-12) 0 var(--space-8); }
   .inner { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
-  .ort { font-size: var(--text-label); text-transform: var(--beschriftung-versalien); letter-spacing: var(--beschriftung-sperrung); color: var(--color-text-tertiary); margin: 0 0 var(--space-3); }
+  .ort { font-size: var(--text-lead); line-height: var(--text-lead--line-height); color: var(--color-text-secondary); margin: var(--space-3) 0 0; }
   h1 { font-size: var(--text-display); line-height: var(--text-display--line-height); font-weight: var(--text-display--font-weight); letter-spacing: var(--text-display--letter-spacing); text-wrap: balance; max-width: 18ch; margin: 0; }
   .lead { font-size: var(--text-lead); line-height: var(--text-lead--line-height); color: var(--color-text-secondary); text-wrap: pretty; max-width: var(--prose); margin: var(--space-5) 0 0; }
   .handlung { margin: var(--space-6) 0 0; }

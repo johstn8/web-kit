@@ -3,7 +3,7 @@
   "meta": {
     "name": "Atelier",
     "description": "Studio, Architektur, Fotografie, Portfolio. Radikal reduziert: Weissraum ist das einzige Trennmittel, die Schrift ist gross, Farbe kommt nur aus dem Bild. Belegt an kononenkogroup.com, phillipohren.com und huts.com aus dem Website Reference Pool.",
-    "version": "1.0.0", "updated": "2026-09-19"
+    "version": "1.0.0", "updated": "2026-10-02"
   },
   "grammar": {
     "abgrenzung": "weissraum",
@@ -14,7 +14,7 @@
   },
   "font": [
     { "name": "display", "value": "Bricolage Grotesque, Helvetica Neue, sans-serif", "usage": "Grotesk mit eigenwilligen Formen und weitem Gewichtsraum; sie ist hier das Gestaltungsmittel, nicht der Traeger", "quelle": "Google Fonts, SIL OFL 1.1" },
-    { "name": "body", "value": "Instrument Sans, Helvetica Neue, sans-serif", "usage": "neutrale Begleitung, damit das Display wirken kann", "quelle": "Google Fonts, SIL OFL 1.1" },
+    { "name": "body", "value": "Hanken Grotesk, Helvetica Neue, sans-serif", "usage": "neutrale Begleitung, damit das Display wirken kann; deckt mit 200 bis 600 auch die sehr leichte Erklaerzeile. Ersetzt am 2026-10-02 Instrument Sans, die auf der Sperrliste uebernutzter Schriften steht", "quelle": "Google Fonts, SIL OFL 1.1" },
     { "name": "mono", "value": "JetBrains Mono, ui-monospace, monospace", "usage": "nur fuer benannte technische Rollen", "quelle": "Google Fonts, SIL OFL 1.1" }
   ],
   "color": [

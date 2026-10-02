@@ -1,8 +1,8 @@
 {
   "meta": {
     "name": "Tisch",
-    "description": "Gastronomie, Baeckerei, Hofladen, Hotellerie. Warm und redaktionell: das Bild fuehrt, die Schrift begleitet, dunkle Grundflaeche traegt Speisefotografie. Belegt an amritpalace.com, munrooftoprome.com und meracinque.com aus dem Website Reference Pool.",
-    "version": "1.0.0", "updated": "2026-09-19"
+    "description": "Gastronomie, Baeckerei, Hofladen, Hotellerie. Warm und redaktionell: das Bild fuehrt, die Schrift begleitet, dunkle Grundflaeche traegt Speisefotografie. Belegt an minerestaurant.de, amritpalace.com und munrooftoprome.com aus dem Website Reference Pool. Der Auftakt der Gattung ist das randlose Leitbild, siehe web-brain 20-design/landing-page-craft.md#Gattungsregeln fuer den Auftakt.",
+    "version": "1.1.0", "updated": "2026-10-02"
   },
   "grammar": {
     "abgrenzung": "flaeche",
@@ -12,7 +12,7 @@
     "ziffernmarken": "nur bei echter Abfolge"
   },
   "font": [
-    { "name": "display", "value": "Fraunces, Georgia, serif", "usage": "Serife mit eigenwilligen Formen; traegt Handwerk und Genuss ohne Hochglanz", "quelle": "Google Fonts, SIL OFL 1.1" },
+    { "name": "display", "value": "Alegreya, Palatino Linotype, Georgia, serif", "usage": "humanistische, kalligrafisch gepraegte Serife; traegt Handwerk und Genuss ohne Hochglanz. Ersetzt am 2026-10-02 Fraunces, die auf der Sperrliste uebernutzter Schriften steht; erprobt an trattoria-alberto/04-tavola", "quelle": "Google Fonts, SIL OFL 1.1" },
     { "name": "body", "value": "Work Sans, Helvetica Neue, sans-serif", "usage": "warme Grotesk, ruhig neben der Display-Serife", "quelle": "Google Fonts, SIL OFL 1.1" },
     { "name": "mono", "value": "JetBrains Mono, ui-monospace, monospace", "usage": "nur fuer benannte technische Rollen", "quelle": "Google Fonts, SIL OFL 1.1" }
   ],
@@ -43,8 +43,8 @@
     { "name": "radius-full", "value": "9999px",   "usage": "nur Statuspillen" }
   ],
   "typography": [
-    { "name": "display", "value": { "size": "clamp(3rem, 8vw, 6rem)", "line-height": "0.98", "weight": "300", "tracking": "-0.02em" }, "usage": "grosse, leichte Serife als Auftakt" },
-    { "name": "h1",      "value": { "size": "clamp(2rem, 5vw, 3.5rem)", "line-height": "1.08", "weight": "300", "tracking": "-0.015em" }, "usage": "Seitentitel" },
+    { "name": "display", "value": { "size": "clamp(3rem, 8vw, 6rem)", "line-height": "0.98", "weight": "400", "tracking": "-0.018em" }, "usage": "grosse Serife im Regelschnitt als Auftakt; Alegreya beginnt bei 400" },
+    { "name": "h1",      "value": { "size": "clamp(2rem, 5vw, 3.5rem)", "line-height": "1.08", "weight": "400", "tracking": "-0.012em" }, "usage": "Seitentitel" },
     { "name": "h2",      "value": { "size": "1.875rem", "line-height": "1.2", "weight": "400", "tracking": "-0.01em" }, "usage": "Sektionstitel" },
     { "name": "h3",      "value": { "size": "1.125rem", "line-height": "1.4", "weight": "600", "tracking": "0" }, "usage": "Untertitel in der Grotesk" },
     { "name": "lead",    "value": { "size": "1.1875rem", "line-height": "1.65", "weight": "400", "tracking": "0" }, "usage": "Erklaerzeile" },

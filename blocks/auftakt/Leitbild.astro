@@ -1,0 +1,139 @@
+---
+/** Auftakt, Komposition "leitbild": ein Foto oder Video ueber die volle erste
+ *  Bildschirmhoehe, die H1 liegt darauf, am unteren Rand ein ruhiges Band mit
+ *  den praktischen Angaben. Pflichtkomposition der Gattung Gastronomie, siehe
+ *  web-brain 20-design/landing-page-craft.md#Gattungsregeln fuer den Auftakt.
+ *
+ *  Abgeleitet aus den Prinzipien der Gastronomie-Benchmarks im Website
+ *  Reference Pool (minerestaurant.de, carbonenewyork.com, bigmammagroup.com),
+ *  nicht aus deren Code oder Gestaltungsdetails.
+ *
+ *  Was dieser Block absichtlich NICHT kann, weil es harte Sperren sind
+ *  (web-brain 20-design/anti-ai-slop.md#Harte Sperren):
+ *  - keine Dachzeile ueber der H1
+ *  - keine farbig oder kursiv abgesetzten Woerter in der H1: sie bekommt einen
+ *    String, kein Markup
+ *  - kein Verlauf, der das Bild in den Seitengrund ausblendet: der Schleier ist
+ *    eine gleichmaessige Flaeche, das Bild endet an einer harten Kante
+ *  - keine Unterzeile in Versalien, kein zweiter Button neben dem ersten
+ */
+import type { Aktion, Bild } from '../_lib.ts';
+
+interface Fakt { label: string; wert: string; ziel?: string }
+interface Props {
+  titel: string;
+  /** hoechstens ein kurzer Satz; was mehr ist, gehoert in die naechste Sektion */
+  satz?: string;
+  bild: Bild;
+  /** optionales Video; das Bild ist dann Poster und Rueckfall */
+  video?: { src: string; typ?: string };
+  /** die eine Handlung, meist Reservieren oder Anrufen */
+  aktion?: Aktion;
+  /** Oeffnungszeiten, Adresse, Telefon: zwei bis vier Felder */
+  fakten?: Fakt[];
+  /** Deckkraft des gleichmaessigen Schleiers, 0 bis 0.5. Am realen Bild messen, nicht schaetzen. */
+  schleier?: number;
+  /** wo die H1 auf dem Bild sitzt; nach der ruhigsten Bildzone waehlen */
+  lage?: 'mitte' | 'unten';
+}
+const { titel, satz, bild, video, aktion, fakten = [], schleier = 0.28, lage = 'mitte' } = Astro.props;
+const deckkraft = Math.max(0, Math.min(0.5, schleier));
+---
+<section class:list={['leitbild', `leitbild--${lage}`]} style={`--schleier:${deckkraft}`}>
+  <div class="medium">
+    <img src={bild.src} alt={bild.alt} width="2400" height="1600" fetchpriority="high" decoding="async" />
+    {video && (
+      <video autoplay muted loop playsinline poster={bild.src} aria-hidden="true">
+        <source src={video.src} type={video.typ ?? 'video/mp4'} />
+      </video>
+    )}
+  </div>
+  <div class="satzspiegel">
+    <h1>{titel}</h1>
+    {satz && <p class="satz">{satz}</p>}
+    {aktion && <p class="handlung"><a href={aktion.ziel}>{aktion.label}</a></p>}
+  </div>
+  {fakten.length > 0 && (
+    <div class="band">
+      <dl class="band__inner">
+        {fakten.map((f) => (
+          <div class="fakt">
+            <dt>{f.label}</dt>
+            <dd>{f.ziel ? <a href={f.ziel}>{f.wert}</a> : f.wert}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  )}
+</section>
+
+<style>
+  .leitbild {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: minmax(0, 1fr);
+    /* volle erste Bildschirmhoehe abzueglich der Kopfzeile; svh, damit die
+       mobile Adressleiste das Band nicht unter die Kante schiebt */
+    min-height: calc(100svh - var(--kopf-hoehe, 4.5rem));
+    color: #fff;
+    isolation: isolate;
+  }
+  .medium { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: var(--color-surface-alt); }
+  .medium img, .medium video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Ein gleichmaessiger Schleier, kein Verlauf: Das Bild bleibt ueberall
+     gleich sichtbar und endet unten an der harten Kante des Bandes. */
+  .medium::after { content: ''; position: absolute; inset: 0; z-index: 1; background: rgb(0 0 0 / var(--schleier)); }
+
+  .satzspiegel {
+    align-self: center;
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding: var(--space-12) var(--gutter);
+    text-align: center;
+  }
+  .leitbild--unten .satzspiegel { align-self: end; text-align: left; padding-bottom: var(--space-8); }
+
+  h1 {
+    font-size: var(--text-display);
+    line-height: var(--text-display--line-height);
+    font-weight: var(--text-display--font-weight);
+    letter-spacing: var(--text-display--letter-spacing);
+    text-wrap: balance;
+    max-width: 20ch;
+    margin: 0 auto;
+    color: inherit;
+  }
+  .leitbild--unten h1 { margin-inline: 0; }
+  .satz { font-size: var(--text-lead); line-height: var(--text-lead--line-height); margin: var(--space-4) auto 0; max-width: 34ch; text-wrap: pretty; }
+  .leitbild--unten .satz { margin-inline: 0; }
+  .handlung { margin: var(--space-6) 0 0; }
+  .handlung a {
+    display: inline-flex; align-items: center; min-height: 3rem;
+    padding: 0 var(--space-5); border-radius: var(--radius-sm);
+    background: var(--color-accent); color: var(--color-accent-contrast);
+    font-weight: 500; text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+  .handlung a:hover { background: color-mix(in srgb, var(--color-accent) 86%, #000); }
+  .handlung a:focus-visible, .band a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+
+  /* Das Band: deckende Flaeche, Beschriftung in Satzschreibung. */
+  .band { background: var(--color-surface); color: var(--color-text); }
+  /* fluchtet mit Kopfzeile und Satzspiegel; am Handy zwei Spalten, damit das
+     Band die erste Bildschirmhoehe nicht verlaesst */
+  .band__inner {
+    margin: 0 auto; max-width: var(--container);
+    padding: var(--space-4) var(--gutter);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+    gap: var(--space-3) var(--space-5);
+  }
+  dt { font-size: var(--text-small); color: var(--color-text-secondary); }
+  dd { margin: 0; font-size: var(--text-small); line-height: 1.45; }
+  @media (min-width: 48rem) { dd { font-size: var(--text-body); } .band__inner { column-gap: var(--space-8); } }
+  .band a { color: inherit; text-underline-offset: 0.2em; }
+
+  /* Bei reduzierter Bewegung bleibt das Bild darunter stehen. */
+  @media (prefers-reduced-motion: reduce) { .medium video { display: none; } }
+</style>

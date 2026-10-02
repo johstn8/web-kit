@@ -3,7 +3,7 @@
     "name": "Praxis",
     "description": "Gesundheit, Pflege, Therapie. Ruhig und vertrauensnah: Flaechenwechsel statt Rahmen, grosszuegiger Raum, weiche aber nicht blasige Rundung. Belegt an zahnarztpraxis-uhlenhorst.de, drquidenus.at und daylight-health.com aus dem Website Reference Pool.",
     "version": "1.0.0",
-    "updated": "2026-09-19"
+    "updated": "2026-10-02"
   },
   "grammar": {
     "abgrenzung": "flaeche",
@@ -15,8 +15,8 @@
   "font": [
     {
       "name": "display",
-      "value": "Newsreader, Georgia, serif",
-      "usage": "Serifen-Display traegt Ruhe und Zuwendung, ohne in Luxusanmutung zu kippen",
+      "value": "Source Serif 4, Georgia, serif",
+      "usage": "Serifen-Display traegt Ruhe und Zuwendung, ohne in Luxusanmutung zu kippen. Ersetzt am 2026-10-02 Newsreader, die auf der Sperrliste uebernutzter Schriften steht",
       "quelle": "Google Fonts, SIL OFL 1.1"
     },
     {

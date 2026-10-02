@@ -9,7 +9,9 @@
 #   2. interner Link-Check ueber das ausgelieferte HTML
 #   3. Screenshots bei 375 und 1280 Pixel, ganzseitig
 #   4. axe (Accessibility)
-#   5. Lighthouse (Performance, SEO, Best Practices)
+#   5. Harte Sperren gegen KI-Anmutung (Dachzeile, Nummernmarke,
+#      Teilauszeichnung, Verlauf ueber Foto, gleichfoermige Startseite)
+#   6. Lighthouse (Performance, SEO, Best Practices)
 #
 # Exit-Code 1, sobald eine Pflichtpruefung faellt. Fehlende optionale
 # Werkzeuge werden als UEBERSPRUNGEN gemeldet, nicht als bestanden.
@@ -65,7 +67,7 @@ kopf "Interner Link-Check"
 "$node_bin" --experimental-strip-types "$KIT/scripts/link-check.ts" "$DIR" | tee "$BERICHT/links.txt"
 [[ ${PIPESTATUS[0]} -ne 0 ]] && FEHLER=1
 
-# ------------------------------------------------- Server fuer 3 bis 5
+# ------------------------------------------------- Server fuer 3 bis 6
 kopf "Statischen Server starten"
 "$node_bin" "$KIT/scripts/serve.mjs" "$DIR" "$PORT" &
 SERVER=$!
@@ -106,7 +108,19 @@ else
   esac
 fi
 
-# ------------------------------------------------------- 5. Lighthouse
+# -------------------------------------------------- 5. Harte Sperren
+# Nicht abwaehlbar ueber --skip: Diese Muster sind gesperrt, nicht
+# begruendbar. Regeln: web-brain 20-design/anti-ai-slop.md#Harte Sperren
+kopf "Harte Sperren gegen KI-Anmutung"
+"$node_bin" --experimental-strip-types "$KIT/scripts/check-slop.ts" \
+  --base "http://localhost:$PORT" --out "$BERICHT/slop.json" 2>&1 | sed 's/^/   /'
+case "${PIPESTATUS[0]}" in
+  0) : ;;
+  1) FEHLER=1 ;;
+  *) echo "   FEHLER: Pruefung nicht ausfuehrbar. Ohne Browser ist sie nicht belegt."; FEHLER=1 ;;
+esac
+
+# ------------------------------------------------------- 6. Lighthouse
 kopf "Lighthouse"
 if ueberspringen lighthouse; then
   fehlt lighthouse "durch --skip abgewaehlt"

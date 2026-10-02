@@ -13,10 +13,17 @@ Lösung, und die ist überall dieselbe.
 | Preset | Für | Abgrenzung | Radius | Display / Text | Belegt an |
 |---|---|---|---|---|---|
 | `werkstatt` | Handwerk, Fahrzeugservice, Logistik, Bau | Rahmen | 0 | Archivo 800 / Public Sans | car-tex.de, spedition-stuckmann.de, fahrschule-gosink.de |
-| `praxis` | Gesundheit, Pflege, Therapie | Fläche | 0,875 rem | Newsreader / Public Sans | zahnarztpraxis-uhlenhorst.de, drquidenus.at, daylight-health.com |
-| `tisch` | Gastronomie, Bäckerei, Hofladen, Hotellerie | Fläche, dunkel | 0,25 rem | Fraunces 300 / Work Sans | amritpalace.com, munrooftoprome.com, meracinque.com |
+| `praxis` | Gesundheit, Pflege, Therapie | Fläche | 0,875 rem | Source Serif 4 / Public Sans | zahnarztpraxis-uhlenhorst.de, drquidenus.at, daylight-health.com |
+| `tisch` | Gastronomie, Bäckerei, Hofladen, Hotellerie | Fläche, dunkel | 0,25 rem | Alegreya 400 / Work Sans | minerestaurant.de, amritpalace.com, munrooftoprome.com |
 | `kanzlei` | Kanzlei, Steuerberatung, Verwaltung | Linie | 0 | Spectral / Spectral | sacherer-partner.de, ko-mon.de, dediq.com |
-| `atelier` | Studio, Architektur, Fotografie, Portfolio | Weißraum | 0 | Bricolage Grotesque / Instrument Sans | kononenkogroup.com, phillipohren.com, huts.com |
+| `atelier` | Studio, Architektur, Fotografie, Portfolio | Weißraum | 0 | Bricolage Grotesque / Hanken Grotesk | kononenkogroup.com, phillipohren.com, huts.com |
+
+**Schriften gegen die Sperrliste.** Bis 2026-10-02 schlugen drei der fünf
+Presets eine Familie vor, die auf der Sperrliste übernutzter Schriften steht
+(Fraunces, Newsreader, Instrument Sans). Wer dem Kit folgte, landete damit
+im Default, den die Presets verhindern sollen. Jede Schrift eines Presets
+wird deshalb vor dem Eintrag gegen beide Listen geprüft, siehe
+`web-brain 20-design/typography-layout-and-spacing.md#Sperrliste`.
 
 Die Belegseiten stehen im
 [Website Reference Pool](https://github.com/johstn8/web-brain) des Brains.
@@ -51,7 +58,7 @@ Jedes Preset trägt einen `grammar`-Block. Er wird von
 | `tiefe` | `keine` \| `schatten` \| `ueberlagerung` |
 | `versalbeschriftung` | schaltet Versalien für Beschriftungen; in allen fünf Presets `false` |
 | `sektionstrenner` | `linie` \| `flaeche` \| `weissraum` \| `bild` |
-| `ziffernmarken` | wann `01 / 02 / 03` zulässig ist |
+| `ziffernmarken` | wann `01 / 02 / 03` zulässig ist: nur im Inhalt einer echten Abfolge, nie als Marke über einer Überschrift |
 
 Ohne diesen Block wäre ein Preset nur ein Farb- und Schriftwechsel. Die
 Entscheidung „Rahmen oder Fläche oder Weißraum" ist aber der Teil, der zwei
