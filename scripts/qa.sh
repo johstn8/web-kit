@@ -39,6 +39,10 @@ node_bin="$(command -v node || echo /opt/node-v24.19.0/bin/node)"
 FEHLER=0
 UEBERSPRUNGEN=()
 
+# Relative Berichtspfade werden absolut, sonst loest require() sie im
+# Lighthouse-Schritt gegen das Modulverzeichnis auf und der Lauf bricht ab.
+mkdir -p "$BERICHT" && BERICHT="$(cd "$BERICHT" && pwd)"
+
 ueberspringen() { [[ ",$SKIP," == *",$1,"* ]]; }
 kopf()  { printf '\n\033[1m== %s ==\033[0m\n' "$1"; }
 fehlt() { UEBERSPRUNGEN+=("$1"); printf '   UEBERSPRUNGEN: %s\n' "$2"; }
