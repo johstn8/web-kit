@@ -18,8 +18,12 @@ Seitenaufbau, damit sich nichts wieder angleicht.
 | `verlauf` | metagram-solutions.com | Beratung, Technik | Weißraum, Diagramme, Schillerflächen, Karte |
 | `system` | comito.de | Systemhaus, Dienstleister mit vielen Leistungen | dunkles Vollbild, rotes Puzzle, Leistungskarten |
 | `gericht` | lagalante-restaurant.de | gehobene Gastronomie | Gerichte ohne Rahmen, Weiß, Karte mittig |
+| `salon` | minerestaurant.de | Restaurant, Hotel, Bar | kursive Cardo, festes Band mit Zeiten unten, runder Aufkleber |
+| `abend` | carbonenewyork.com | Restaurant mit Geschichte, Bar, Club | Marine und Creme, vollbreite Fotos, Halbseiten, keine Bewegung |
+| `kurs` | scaly.com | Weiterbildung, Coaching, Förderangebote | Pfirsichkarte im Auftakt, Reiter, Blob-Foto, viel Beweis |
+| `bogen` | tunymedia.at | Agentur, Dienstleister für eine Branche | Bogenkanten, gekippte Bildcollagen, Gerät im Abschluss |
 
-Alle zehn auf einen Blick: [`uebersicht.webp`](uebersicht.webp).
+Alle vierzehn auf einen Blick: [`uebersicht.webp`](uebersicht.webp).
 
 Die Spalte „Passt zu" ist ein Hinweis. Ein Bäcker kann `hafen` tragen.
 
@@ -41,6 +45,8 @@ einsetzen. **Der Aufbau bleibt.** Am Ende neben das Original legen.
 - `kongress` färbt wie ko:mon einzelne Wörter in Überschriften. In `qa.sh` dafür
   `--erlaubt teilauszeichnung` setzen. `hafen` trägt die Riesenziffern von the1.
 - Dachzeilen der Originale sind entfallen; der Nutzer hat sie als KI-typisch benannt.
+- `salon` trägt statt der Michelin-Plakette einen neutralen Gutschein-Aufkleber, und die
+  Auszeichnungen sind zu Partnern geworden: Eine Vorlage behauptet keinen Preis.
 - Illustrationen, Produktfotos und Gerichte der Originale gehören den Betrieben.
   Die Vorlagen zeigen dort Stockfotos oder einfache CSS-Formen; besonders `gericht`,
   `schmal` und `verlauf` leben erst mit echtem Material.

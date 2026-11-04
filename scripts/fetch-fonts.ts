@@ -42,12 +42,15 @@ const familie = (stack: string) => stack.split(',')[0].trim().replace(/^['"]|['"
 // an Bytes fuer Schnitte, die keine Regel je benutzt.
 const proRolle = gewichteJeRolle(tokens);
 const gebraucht = new Map<string, Set<number>>();
+// Familien, deren Rolle im Preset mit "kursiv": true auch den Kursivschnitt braucht.
+const kursiv = new Set<string>();
 for (const eintrag of tokens.font) {
   const name = familie(eintrag.value);
   if (/^(ui-monospace|monospace|sans-serif|serif|system-ui)$/.test(name)) continue;
   const menge = gebraucht.get(name) ?? new Set<number>();
   for (const g of proRolle[eintrag.name] ?? [400]) menge.add(g);
   gebraucht.set(name, menge);
+  if ((eintrag as { kursiv?: boolean }).kursiv) kursiv.add(name);
 }
 
 mkdirSync(zielVerzeichnis, { recursive: true });
@@ -59,7 +62,10 @@ let geladen = 0;
 
 for (const [name, menge] of gebraucht) {
   const achse = [...menge].sort((a, b) => a - b);
-  const url = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name)}:wght@${achse.join(';')}&display=swap`;
+  const achsen = kursiv.has(name)
+    ? `ital,wght@${[...achse.map((g) => `0,${g}`), ...achse.map((g) => `1,${g}`)].join(';')}`
+    : `wght@${achse.join(';')}`;
+  const url = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name)}:${achsen}&display=swap`;
   let css: string;
   try {
     const antwort = await fetch(url, { headers: { 'User-Agent': UA } });
@@ -79,7 +85,7 @@ for (const [name, menge] of gebraucht) {
   // einen eigenen @font-face-Block, aber dieselbe Datei. Je Datei wird
   // deshalb einmal geladen und ein Block mit Gewichtsbereich geschrieben;
   // vorher landete dieselbe Datei bis zu dreimal im Projekt und im Netz.
-  const jeDatei = new Map<string, { teilmenge: string; gewichte: number[]; unicode?: string }>();
+  const jeDatei = new Map<string, { teilmenge: string; gewichte: number[]; stil: string; unicode?: string }>();
   for (const gesicht of gesichter) {
     const block = gesicht[2];
     const quelle = /url\((https:[^)]+\.woff2)\)/.exec(block)?.[1];
@@ -88,16 +94,17 @@ for (const [name, menge] of gebraucht) {
     const eintrag = jeDatei.get(quelle) ?? {
       teilmenge: gesicht[1],
       gewichte: [],
+      stil: /font-style:\s*(\w+)/.exec(block)?.[1] ?? 'normal',
       unicode: /unicode-range:\s*([^;]+);/.exec(block)?.[1].trim(),
     };
     eintrag.gewichte.push(gewicht);
     jeDatei.set(quelle, eintrag);
   }
 
-  for (const [quelle, { teilmenge, gewichte, unicode }] of jeDatei) {
+  for (const [quelle, { teilmenge, gewichte, stil, unicode }] of jeDatei) {
     const von = Math.min(...gewichte), bis = Math.max(...gewichte);
     const gewicht = von === bis ? `${von}` : `${von} ${bis}`;
-    const dateiname = `${name.toLowerCase().replace(/\s+/g, '-')}-${gewicht.replace(' ', '-')}-${teilmenge}.woff2`;
+    const dateiname = `${name.toLowerCase().replace(/\s+/g, '-')}-${gewicht.replace(' ', '-')}${stil === 'italic' ? '-kursiv' : ''}-${teilmenge}.woff2`;
     const daten = Buffer.from(await (await fetch(quelle, { headers: { 'User-Agent': UA } })).arrayBuffer());
     writeFileSync(join(zielVerzeichnis, dateiname), daten);
     geladen++;
@@ -105,7 +112,7 @@ for (const [name, menge] of gebraucht) {
     bloecke.push(
       `@font-face {\n` +
       `  font-family: '${name}';\n` +
-      `  font-style: normal;\n` +
+      `  font-style: ${stil};\n` +
       `  font-weight: ${gewicht};\n` +
       `  font-display: swap;\n` +
       `  src: url('/fonts/${dateiname}') format('woff2');\n` +

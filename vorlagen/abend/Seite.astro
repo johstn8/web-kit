@@ -1,0 +1,56 @@
+---
+/**
+ * Vorlage "abend", Aufbau nach carbonenewyork.com.
+ * Tiefes Marineblau, Creme, keine Rundungen. Kopfzeile dreigeteilt: Links in Antiqua,
+ * Name mittig in kondensierten Versalien, rechts drei Rahmenknoepfe, der letzte gefuellt.
+ * Vollbreite Fotos im Wechsel mit Textbloecken in schmaler Spalte, die bei 18 % beginnt.
+ * Halbseiten wechseln die Seite und den Grund (Marine, Creme, Schwarz). Karte als Menue
+ * aus Woertern, Pressestimme auf dunklem Foto, Neuigkeiten, Stadtplan, Standorte.
+ * Die Wirkung kommt aus Fotos und Geschichte, nicht aus Effekten: keine Bewegung.
+ */
+import '../styles/tokens.css';
+import '../styles/fonts.css';
+const b = (n: string) => `./bilder/${n}.webp`;
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Marlene Berlin</title></head>
+<body>
+<header><nav><a href="#">Häuser</a><a href="#">Über uns</a><a href="#">Karte</a><a href="#">Zeiten</a><a href="#">Neues</a></nav><a class="wm" href="#">MARLENE</a><p class="ak"><a href="#">CONCIERGE</a><a href="#">FEIERN</a><a class="voll" href="#">TISCH RESERVIEREN</a></p></header>
+<a class="rund" href="#" aria-label="Kontakt">∞</a>
+<main>
+  <section class="start"><img src={b('192')} alt="Gäste am Abend im Gastraum" /><h1>BERLIN MITTE</h1></section>
+  <section class="text"><h2>DAS ORIGINAL</h2><p>Marlene ist eines der meistgefeierten italienischen Restaurants der Stadt und ein Stück Berliner Abendkultur. In der Musterstraße gelegen, verbindet das Haus aufmerksamen Service, Kunstwerke an den Wänden und eine Karte, die die Küchengeschichte Italiens erzählt.</p></section>
+  <figure class="breit"><img src={b('102')} alt="" loading="lazy" /></figure>
+  <section class="halb"><div><h2>KÜCHENCHEF MAX BEISPIEL</h2><p>Aufgewachsen zwischen zwei Küchen, der eleganten Art der Großeltern und der kräftigen des Vaters, war sein Weg früh klar.</p><p>Nach der Ausbildung verbrachte er ein Jahr in Italien und vertiefte sich in Aromen und Techniken.</p><p>Seine Küche wurzelt bis heute in den Klassikern seiner Kindheit.</p></div><img src={b('91')} alt="" loading="lazy" /></section>
+  <section class="karte"><h2>DIE KARTE</h2><nav aria-label="Karten">{['ABENDESSEN','MITTAG','WEIN','GETRÄNKE','DESSERT','FEIERTAGE'].map((t) => <a href="#">{t}</a>)}</nav></section>
+  <figure class="breit"><img src={b('225')} alt="" loading="lazy" /></figure>
+  <section class="text"><h2>DIE GESCHICHTE</h2><p>Im Jahr 2013 machten sich die Gründer daran, ein italienisches Restaurant für die heutige Zeit zu schaffen: glamourös, voller Freude und den höchsten Ansprüchen an Küche und Gastfreundschaft verpflichtet.</p><p>Heute leuchten die Worte in Neon über dem alten Schild, eine Verneigung vor der Geschichte des Hauses.</p></section>
+  <section class="halb creme"><div><h2>DIE EINRICHTUNG</h2><p>Das Design verbindet alten Glanz mit gegenwärtiger Eleganz. Satte Farben, Messing, Marmor und poliertes Holz schaffen einen Raum, der zeitlos wirkt und Gäste den Alltag vergessen lässt.</p></div><img src={b('42')} alt="" loading="lazy" /></section>
+  <section class="stimme"><img src={b('164')} alt="" loading="lazy" /><blockquote>„Ein Abend wie im Film, mit dem Tempo eines guten Thrillers und der Zuneigung eines alten Freundes. Die Küche hat eine Präzision, die einen schwindelig machen kann.“<cite>BEISPIELZEITUNG</cite></blockquote></section>
+  <section class="brief"><div><h2>ALS ERSTE ERFAHREN</h2><p>Melden Sie sich für Neuigkeiten aus dem Haus an.</p></div><form><input aria-label="E-Mail" placeholder="E-Mail" /><button type="button">EINTRAGEN</button></form></section>
+  <section class="halb"><div><h2>MARLENE, DAS BUCH</h2><p>In enger Zusammenarbeit mit einem Verlag entstanden, enthält der Band mehr als ein Dutzend Rezepte, die nie zuvor geteilt wurden, dazu Anekdoten aus der Geschichte des Hauses.</p><a class="rah" href="#">JETZT BESTELLEN</a></div><img src={b('63')} alt="" loading="lazy" /></section>
+  <section class="neu"><h2>NEUES</h2><ul>{[['164','Beispielmagazin','Das Haus bringt ein Buch heraus'],['225','Stadtblatt','So bekommen Sie einen Tisch'],['102','Feinschmecker','Wie aus einem Lokal ein Liebling wurde'],['63','Beispielzeitung','Der Küchenchef und seine Küchenhelfer']].map(([n, q, t]) => <li><img src={b(n)} alt="" loading="lazy" /><small>{q}</small><p>{t}</p></li>)}</ul></section>
+  <section class="info"><div><h2>ZEITEN UND ANFAHRT</h2><p><b>Musterstraße 181</b><br />10115 Berlin</p><hr /><p><b>Mittag</b><br /><i>Dienstag bis Sonntag</i><br /><i>11:30 – 14:00</i></p><p><b>Abend</b><br /><i>Montag bis Sonntag</i><br /><i>17:00 – 23:00</i></p><hr /><p><b>Kleidung</b><br />Gäste sind eingeladen, sich dem Anlass gemäß zu kleiden.</p></div><svg viewBox="0 0 700 760" aria-hidden="true"><rect width="700" height="760" fill="#14304a" /><path d="M-40 120 760 620M-40 420 500 800M160 -40 760 360M520 -40 80 800M700 60 240 800" stroke="#2c5270" stroke-width="42" fill="none" /><path d="M430 -20 760 180V-20Z" fill="#2f6b58" /><text x="310" y="400" fill="#fff9f0" font-family="Oswald, sans-serif" font-size="30" letter-spacing="3">MITTE</text></svg></section>
+  <section class="reserv"><h2>RESERVIERUNGEN</h2><p>Reservierungen sind nur direkt über unsere Website möglich. Für größere Gesellschaften schreiben Sie uns bitte eine E-Mail.</p></section>
+  <section class="halb schwarz"><img src={b('91')} alt="" loading="lazy" /><div><h2>DIE GRUPPE</h2><p>Vor einem Jahrzehnt gegründet, betreibt die Gruppe heute einige der meistbesuchten Restaurants im Land. Jede Marke hat ihren eigenen Charakter, alle teilen denselben Anspruch.</p></div></section>
+</main>
+<footer><p class="nr">№ 181</p><p class="st">MUSTERSTRASSE</p><p class="ci">BERLIN MITTE</p><ul>{['HAMBURG','MÜNCHEN','KÖLN','WIEN','ZÜRICH','LONDON','PARIS'].map((t) => <li>{t}</li>)}</ul><p class="kl">Newsletter · Karriere · Gutscheine · Datenschutz · Impressum · Beispielinhalt einer Vorlage</p></footer>
+<style is:global>
+  * { box-sizing: border-box; } html { overflow-x: clip; background: #0a1a29; } body { margin: 0; background: #0a1a29; color: #fff9f0; font-family: var(--font-body); font-size: 15px; line-height: 1.75; } img { display: block; width: 100%; height: 100%; object-fit: cover; } h1, h2, p, ul, figure, blockquote { margin: 0; padding: 0; font-weight: 400; } ul { list-style: none; } a { color: inherit; }
+  h1, h2, .wm, .ak, nav.k, .karte a, .st, footer li { font-family: var(--font-display); font-weight: 600; letter-spacing: .06em; }
+  h2 { font-size: 32px; line-height: 1.2; margin-bottom: 22px; }
+  header { position: sticky; top: 0; z-index: 30; height: 80px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 32px; background: #0a1a29; } nav { display: flex; gap: 26px; font-size: 15px; } nav a { text-decoration: none; } .wm { font-size: 34px; letter-spacing: .08em; text-decoration: none; } .ak { display: flex; justify-content: flex-end; gap: 10px; font-size: 13px; } .ak a { padding: 9px 16px; box-shadow: inset 0 0 0 1px #fff9f0; border-radius: 2px; text-decoration: none; } .ak .voll { background: #fff9f0; color: #0a1a29; }
+  .rund { position: fixed; left: 26px; bottom: 26px; z-index: 30; width: 44px; height: 44px; border-radius: 50%; background: #0a1a29; box-shadow: 0 0 0 1px #fff9f0; display: grid; place-items: center; text-decoration: none; }
+  .start { position: relative; height: 695px; } .start img { filter: sepia(.8) saturate(1.7) brightness(.42); } h1 { position: absolute; inset: 44% 0 auto; text-align: center; font-size: 38px; }
+  .text { padding: 90px 18% 80px; } .text p { max-width: 900px; margin-bottom: 20px; font-size: 16px; } .breit { height: 720px; }
+  .halb { display: grid; grid-template-columns: 1fr 1fr; height: 720px; } .halb > div { display: flex; flex-direction: column; justify-content: center; padding: 60px 9% 60px 18%; } .halb p { margin-bottom: 16px; } .creme { background: #fff9f0; color: #0a1a29; } .schwarz { background: #000; } .schwarz > div { padding-inline: 18% 9%; } .rah { align-self: flex-start; font: 600 13px var(--font-display); letter-spacing: .06em; background: #fff9f0; color: #0a1a29; padding: 8px 16px; text-decoration: none; }
+  .karte { text-align: center; padding: 100px 20px 90px; } .karte nav { justify-content: center; flex-wrap: wrap; gap: 26px 90px; max-width: 900px; margin: 30px auto 0; font-size: 18px; }
+  .stimme { position: relative; height: 876px; display: grid; place-items: center; } .stimme img { position: absolute; inset: 0; filter: brightness(.28) saturate(.7); } blockquote { position: relative; max-width: 960px; padding: 0 30px; font-size: 26px; line-height: 1.45; } cite { display: block; margin-top: 20px; font-style: normal; font-size: 12px; letter-spacing: .08em; }
+  .brief { background: #fff9f0; color: #0a1a29; display: flex; justify-content: space-between; align-items: center; gap: 30px; padding: 70px 18%; } .brief h2 { margin-bottom: 4px; } form { display: flex; gap: 10px; } input { border: 0; border-bottom: 1px solid #0a1a29; background: none; font: inherit; color: inherit; padding: 8px; width: 240px; } form button { background: #0a1a29; color: #fff9f0; border: 0; padding: 10px 18px; font: 600 13px var(--font-display); letter-spacing: .06em; }
+  .neu { padding: 90px 32px; } .neu ul { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; } .neu img { height: 290px; } .neu small { display: block; margin-top: 16px; font-size: 15px; } .neu li p { font-size: 15px; line-height: 1.5; }
+  .info { display: grid; grid-template-columns: 1fr 1fr; background: #fff9f0; color: #0a1a29; } .info > div { padding: 90px 16% 80px 18%; } .info p { margin-bottom: 18px; } .info b { font-weight: 700; } hr { border: 0; border-top: 1px solid #d5cfc4; margin: 22px 0; } .info svg { width: 100%; height: 100%; display: block; }
+  .reserv { padding: 90px 18%; max-width: 1400px; }
+  footer { text-align: center; padding: 120px 32px 90px; } .nr { font-family: var(--font-display); font-size: 30px; letter-spacing: .1em; } .st { font-size: 20px; letter-spacing: .2em; } .ci { font-size: 13px; letter-spacing: .2em; } footer ul { display: flex; justify-content: space-between; max-width: 1200px; margin: 90px auto 70px; font-size: 15px; flex-wrap: wrap; gap: 14px; } .kl { font-size: 14px; }
+  @media (max-width: 760px) { header { grid-template-columns: 1fr auto; padding: 0 16px; height: 64px; } header nav { display: none; } .wm { font-size: 26px; } .ak a:not(.voll) { display: none; } .ak a { padding: 7px 10px; font-size: 12px; } .start { height: 72svh; } .text, .reserv { padding: 56px 20px; } .breit { height: 300px; } .halb { grid-template-columns: 1fr; height: auto; } .halb > div, .schwarz > div { padding: 50px 20px; } .halb img { height: 320px; } .schwarz img { order: 2; } .stimme { height: 620px; } blockquote { font-size: 21px; } .brief { flex-direction: column; align-items: flex-start; padding: 50px 20px; } form { flex-wrap: wrap; } .neu { padding: 56px 16px; } .neu ul { grid-template-columns: 1fr 1fr; } .neu img { height: 170px; } .info { grid-template-columns: 1fr; } .info > div { padding: 50px 20px; } .info svg { height: 340px; } footer ul { justify-content: center; } }
+</style>
+</body></html>

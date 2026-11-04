@@ -106,6 +106,9 @@ Websites wirklich verschieden macht. Was nicht gültig ist, sind zwei
 Trennmittel gleichzeitig: Hairline **und** Schatten am selben Element ist
 ein Befund nach `20-design/anti-ai-slop.md`.
 
+Braucht eine Schriftrolle Kursive, steht im Preset an der Rolle `"kursiv": true`;
+`fetch-fonts.ts` lädt dann auch den Kursivschnitt.
+
 ## Warum diese Schriften
 
 Keine von ihnen ist eine der Familien, zu denen ein Modell ohne Vorgabe
