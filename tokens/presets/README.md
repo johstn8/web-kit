@@ -41,6 +41,12 @@ nehmen dafür einen Pfad statt eines Namens:
 node --experimental-strip-types scripts/tokens-to-css.ts --preset ../projekte/<kunde>/design/<name>.json --out ...
 ```
 
+Werte einer Referenzseite misst `scripts/stil-messen.ts --url <adresse> --out <ordner>`:
+Schriften, Type Ramp, Radius von Aktionen, Kacheln und Bildern, Grund- und
+Akzentfarben, dazu Aufnahmen bei 1440 und 390 Pixel. `produkt` ist so aus
+rico-gmbh.de abgeleitet: Aktionen 8 px, Kacheln 20 px, Kachelgrund
+`#f0f2f5`, keine Schatten.
+
 **Vor der Festlegung den Stilverlauf prüfen:**
 
 ```bash
