@@ -1,0 +1,31 @@
+---
+/** Musterseite aller Inspirationsbloecke. Wird nicht ausgeliefert: scripts/muster-bauen.sh
+ *  kopiert sie in einen Testbau und baut sie mit einem Preset. */
+import '../styles/global.css';
+import Kopfinsel from '../../../blocks/Kopfinsel.astro';
+import Vollbild from '../../../blocks/auftakt/Vollbild.astro';
+import Wortlicht from '../../../blocks/Wortlicht.astro';
+import Kennzahlen from '../../../blocks/Kennzahlen.astro';
+import Bogenkarte from '../../../blocks/Bogenkarte.astro';
+import Querband from '../../../blocks/Querband.astro';
+import Kacheln from '../../../blocks/Kacheln.astro';
+import Freisteller from '../../../blocks/Freisteller.astro';
+import Farbfelder from '../../../blocks/Farbfelder.astro';
+const nav = [{ label: 'Leistungen', ziel: '#' }, { label: 'Referenzen', ziel: '#' }, { label: 'Über uns', ziel: '#' }, { label: 'Kontakt', ziel: '#' }];
+const bild = (src: string, alt = 'Musterbild') => ({ src: `/muster/${src}`, alt });
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Musterseite</title></head>
+<body>
+  <Kopfinsel name="Musterbetrieb" navigation={nav} ueberBild aktion={{ label: 'Termin anfragen', ziel: '#' }} sprachen={[{ label: 'DE', ziel: '#', aktiv: true }, { label: 'EN', ziel: '#' }]} />
+  <main>
+    <Vollbild titel="Mustertitel für den Auftakt dieser Seite" lead="Ein Satz sagt, was der Betrieb für wen tut und wo." bild={bild('land-warm.svg')} aktionen={[{ label: 'Beratung anfragen', ziel: '#' }, { label: 'Mehr erfahren', ziel: '#', art: 'sekundaer' }]} chips={['Zertifikat A', 'Partner B', 'Verband C']} kennzahlen={[{ wert: '500', label: 'Musterprojekte' }, { wert: '15', label: 'Musterjahre' }]} />
+    <Wortlicht text="Dieser Absatz steht für die Haltung eines Betriebs und färbt sich beim Scrollen Wort für Wort ein, damit der Blick dem Satz folgt und der Text trotzdem immer lesbar bleibt." />
+    <Kennzahlen titel="Musterzahlen in versetzten Boxen" kennzahlen={[{ wert: '3.600', label: 'Beispielwert eins' }, { bild: bild('land-hell.svg') }, { wert: '45', label: 'Beispielwert zwei' }, { wert: '18', label: 'Beispielwert drei' }]} />
+    <Bogenkarte titel="Musterstandorte" flaeche="surface" orte={[{ name: 'Köln', lat: 50.94, lon: 6.96, zentrale: true }, { name: 'Hamburg', lat: 53.55, lon: 9.99 }, { name: 'Berlin', lat: 52.52, lon: 13.4 }, { name: 'München', lat: 48.14, lon: 11.58 }, { name: 'Wien', lat: 48.21, lon: 16.37 }]} />
+    <Querband titel="Musterkarten zum Wischen" karten={[{ titel: 'Erste Karte', text: 'Ein Satz zur ersten Karte, der sich aufklappen lässt.', bild: bild('land-hell.svg') }, { titel: 'Zweite Karte', text: 'Ein Satz zur zweiten Karte.', bild: bild('land-kuehl.svg') }, { titel: 'Dritte Karte', text: 'Ein Satz zur dritten Karte.', bild: bild('land-warm.svg') }, { titel: 'Vierte Karte', text: 'Ein Satz zur vierten Karte.', bild: bild('land-hell.svg') }]} />
+    <Kacheln titel="Musterkacheln" kacheln={[{ titel: 'Erste Kachel', text: 'Ein Satz erklärt die Funktion.', bild: bild('land-kuehl.svg'), kennwerte: ['60 kg', '300 m Reichweite'] }, { titel: 'Zweite Kachel', text: 'Ein Satz erklärt die Funktion.', dunkel: true, bild: bild('land-warm.svg') }, { titel: 'Breite Kachel', text: 'Ein Satz erklärt die Funktion.', breit: true, bild: bild('land-hell.svg') }]} />
+    <Freisteller titel="Ein Freisteller auf dem Grund" text={['Eine knappe Textpassage, nicht mehr als ein paar Sätze, damit das Bild den Raum behält.', 'Ein zweiter Absatz darf folgen.']} elemente={[{ bild: bild('teller.svg', 'Teller') }, { bild: bild('land-warm.svg'), art: 'rand', lage: 'links', versatz: 2 }]} />
+    <Farbfelder felder={[{ wort: 'Mutig', titel: 'Erstes Feld', text: 'Ein kurzer Text zum ersten Feld.' }, { wort: 'Bunt', titel: 'Zweites Feld', text: 'Ein kurzer Text zum zweiten Feld.' }, { wort: 'Nah', titel: 'Drittes Feld', text: 'Ein kurzer Text zum dritten Feld.' }]} />
+  </main>
+</body></html>

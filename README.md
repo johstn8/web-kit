@@ -11,10 +11,12 @@ schreibt, den es hier gibt, hat den falschen Weg genommen.
 
 ```
 tokens/     tokens.json als Quelle, tokens.css generiert, Theme-Ableitung
-tokens/presets/  acht Art-Direction-Presets als Datei, kacheln/ mit Übersicht
-blocks/     Kopfzeile, auftakt/ (fünf Kompositionen), Leistungen,
+tokens/presets/  dreizehn Art-Direction-Presets als Datei, kacheln/ mit Übersicht
+blocks/     Kopfzeile, Kopfinsel, auftakt/ (neun Kompositionen), Leistungen,
             Öffnungszeiten, Anfahrt, Team, Kontaktformular, Bewertungen,
-            Preise, Karte (Speise- und Preiskarten), FAQ, Fußzeile
+            Preise, Karte, FAQ, Fußzeile, dazu Wortlicht, Kennzahlen,
+            Bogenkarte, Querband, Kacheln, Freisteller, Farbfelder und das
+            Glasmaterial; Herkunft und Voraussetzungen in blocks/README.md
 legal/      Impressum, Datenschutz, consent/
 content/    schema.json - Datenmodell für Betriebsdaten, mit Karten
             (Speisen, Getränke, Preislisten) und freien Texten
@@ -64,9 +66,9 @@ node --experimental-strip-types scripts/tokens-to-css.ts  --preset werkstatt --o
 node --experimental-strip-types scripts/fetch-fonts.ts    --preset werkstatt
 ```
 
-Acht Richtungen, fünf davon gegenwärtig (`produkt`, `freundlich`, `klar`,
-`atelier`, `werkstatt`) und drei klassisch mit Serife (`praxis`, `tisch`,
-`kanzlei`). Jede hat eigene Schrift, Palette, Radius-, Trenn- und
+Dreizehn Richtungen, zehn davon gegenwärtig (`glas`, `nord`, `teller`,
+`dienst`, `genuss`, `produkt`, `freundlich`, `klar`, `atelier`, `werkstatt`)
+und drei klassisch mit Serife (`praxis`, `tisch`, `kanzlei`). Jede hat eigene Schrift, Palette, Radius-, Trenn- und
 Aktionsgrammatik. Einzelheiten und Übersichtsbild in
 [tokens/presets/README.md](tokens/presets/README.md).
 

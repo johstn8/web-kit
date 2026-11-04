@@ -10,7 +10,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { kontrastPruefen, applyPreset, type TokenFile, type Preset, presetPfad } from './tokens-lib.ts';
+import { kontrastPruefen, kontrast, applyPreset, type TokenFile, type Preset, presetPfad } from './tokens-lib.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const i = process.argv.indexOf('--preset');
@@ -37,8 +37,15 @@ for (const theme of ['light', 'dark'] as const) {
   }
 }
 
+// Farbfelder liegen ausserhalb der Rollen und tragen auch Fliesstext.
+const felder = (preset?.grammar?.farbfelder ?? []).map((f, n) => ({ n: n + 1, ...f, ist: kontrast(f.text, f.grund) }));
+const felderSchlecht = felder.filter((f) => f.ist === null || f.ist < 4.5);
+for (const f of felder) {
+  console.log(`  ${f.ist !== null && f.ist >= 4.5 ? ' ok' : 'FEHLER'}  Farbfeld ${f.n} ${f.text} auf ${f.grund}: ${f.ist?.toFixed(2)}:1 (Ziel 4.5:1)`);
+}
+
 console.log(`\n${befunde.length} Paare geprueft, ${gefallen.length} unter dem Ziel, ${ungeprueft.length} nicht berechenbar.`);
 if (ungeprueft.length) {
   console.log('Nicht berechenbare Paare verwenden rgb(), hsl() oder oklch() und werden am Render belegt.');
 }
-process.exit(gefallen.length ? 1 : 0);
+process.exit(gefallen.length || felderSchlecht.length ? 1 : 0);

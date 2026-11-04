@@ -1,0 +1,56 @@
+---
+/**
+ * Auftakt "glasbuehne": kuehles Bild ueber die volle Flaeche, mittig ein
+ * ruhiger Titel und darunter ein Glasfeld mit der Handlung, etwa E-Mail-Feld
+ * und Aktion oder zwei Aktionen. Abgeleitet aus mercury.com, Material aus
+ * glisse.kelvinzhang.ca.
+ *
+ * Braucht ein Bild mit ruhiger Mitte. Der Schleier ist gleichmaessig und
+ * kein Verlauf in den Seitengrund (S4). Das Formularziel ist Pflicht, wenn
+ * ein Feld gezeigt wird; ein Feld ohne Funktion ist eine Attrappe.
+ */
+import '../glas.css';
+import GlasFilter from '../GlasFilter.astro';
+import type { Aktion, Bild } from '../_lib.ts';
+interface Props {
+  titel: string; lead?: string; bild: Bild; aktionen?: Aktion[];
+  feld?: { label: string; name: string; typ?: string; ziel: string; aktion: string };
+  brechung?: boolean; schleier?: number;
+}
+const { titel, lead, bild, aktionen = [], feld, brechung = false, schleier = 0.3 } = Astro.props;
+---
+{brechung && <GlasFilter />}
+<section class="auftakt" id="inhalt" style={`--schleier:${schleier}`}>
+  <img src={bild.src} alt={bild.alt} width="1920" height="1080" fetchpriority="high" decoding="async" />
+  <div class="inner">
+    <h1>{titel}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    {feld && (
+      <form class:list={['feld glas-dunkel', { 'glas-bricht': brechung }]} action={feld.ziel} method="post">
+        <label><span class="sr">{feld.label}</span><input type={feld.typ ?? 'email'} name={feld.name} placeholder={feld.label} required /></label>
+        <button type="submit">{feld.aktion}</button>
+      </form>
+    )}
+    {aktionen.length > 0 && (
+      <p class="aktionen">{aktionen.map((a) => <a class:list={[a.art === 'sekundaer' ? 'glas-dunkel' : 'primaer', { 'glas-bricht': brechung && a.art === 'sekundaer' }]} href={a.ziel}>{a.label}</a>)}</p>
+    )}
+  </div>
+</section>
+
+<style>
+  .auftakt { position: relative; isolation: isolate; min-height: 100svh; display: grid; place-items: center; text-align: center; color: #fff; background: #171721; overflow: hidden; }
+  img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+  .auftakt::after { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(14 14 26 / var(--schleier)); }
+  .inner { padding: 7rem var(--gutter) var(--space-8); max-width: 48rem; }
+  h1 { margin: 0; font-size: var(--text-display); line-height: var(--text-display--line-height); font-weight: var(--text-display--font-weight); letter-spacing: var(--text-display--letter-spacing); text-wrap: balance; }
+  .lead { margin: var(--space-4) auto 0; max-width: 34rem; font-size: var(--text-lead); line-height: var(--text-lead--line-height); text-wrap: pretty; }
+  .feld { display: flex; gap: var(--space-2); max-width: 28rem; margin: var(--space-6) auto 0; padding: var(--space-2); border-radius: var(--radius-full); }
+  label { flex: 1; }
+  input { width: 100%; height: 100%; min-height: 2.75rem; padding-inline: var(--space-4); border: 0; background: transparent; color: inherit; font: inherit; outline-offset: 2px; }
+  input::placeholder { color: rgb(255 255 255 / 0.85); }
+  button, .primaer { padding: var(--space-3) var(--space-5); border: 0; border-radius: var(--aktion-radius, var(--radius-full)); background: var(--aktion-bild-grund, var(--color-accent)); color: var(--aktion-bild-text, var(--color-accent-contrast)); font: inherit; font-weight: 500; cursor: pointer; text-decoration: none; white-space: nowrap; }
+  .aktionen { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 0; }
+  .aktionen a { display: inline-block; padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-full)); font-weight: 500; text-decoration: none; }
+  .aktionen a.glas-dunkel { color: #fff; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>

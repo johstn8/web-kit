@@ -1,0 +1,332 @@
+{
+  "meta": {
+    "name": "Genuss",
+    "description": "Lebensmittelmarke, Hofladen, Manufaktur, Feinkost. Lebendige Produktmarke: schmale Antiqua sehr gross, Creme mit Farbfeldern in Lila, Rosa und Koralle, Produkt freigestellt, Video als Buehne. Abgeleitet aus meracinque.com.",
+    "version": "1.0.0",
+    "updated": "2026-11-04",
+    "anmutung": "gegenwaertig"
+  },
+  "grammar": {
+    "versalbeschriftung": false,
+    "ziffernmarken": "nur bei echter Abfolge",
+    "abgrenzung": "flaeche",
+    "tiefe": "keine",
+    "sektionstrenner": "flaeche",
+    "aktionsform": "weich",
+    "farbfelder": [
+      {
+        "grund": "#5f63a8",
+        "text": "#fff9e8"
+      },
+      {
+        "grund": "#ebafb4",
+        "text": "#232438"
+      },
+      {
+        "grund": "#e95f6d",
+        "text": "#232438"
+      },
+      {
+        "grund": "#faf6e6",
+        "text": "#232438"
+      }
+    ]
+  },
+  "font": [
+    {
+      "name": "display",
+      "value": "Gupter, Georgia, serif",
+      "usage": "schmale Antiqua, gross gesetzt; traegt die Marke, kein Zeitzitat",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    },
+    {
+      "name": "body",
+      "value": "Readex Pro, Helvetica Neue, Arial, sans-serif",
+      "usage": "ruhige Grotesk fuer alles andere",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    },
+    {
+      "name": "mono",
+      "value": "JetBrains Mono, ui-monospace, monospace",
+      "usage": "nur technische Kennwerte",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    }
+  ],
+  "color": [
+    {
+      "name": "bg",
+      "value": {
+        "light": "#faf6e6",
+        "dark": "#1c1d2e"
+      },
+      "usage": "Creme aus der Vorlage; bewusster Markenton, kein Papierzitat"
+    },
+    {
+      "name": "surface",
+      "value": {
+        "light": "#fffdf3",
+        "dark": "#25263a"
+      },
+      "usage": "Flaeche"
+    },
+    {
+      "name": "surface-alt",
+      "value": {
+        "light": "#f2ecd5",
+        "dark": "#2e2f47"
+      },
+      "usage": "zweite Stufe"
+    },
+    {
+      "name": "text",
+      "value": {
+        "light": "#232438",
+        "dark": "#faf6e6"
+      },
+      "usage": "Ueberschriften"
+    },
+    {
+      "name": "text-secondary",
+      "value": {
+        "light": "#434560",
+        "dark": "#cfcde0"
+      },
+      "usage": "Fliesstext"
+    },
+    {
+      "name": "text-tertiary",
+      "value": {
+        "light": "#5a5c75",
+        "dark": "#a6a6c0"
+      },
+      "usage": "Beschriftung"
+    },
+    {
+      "name": "border",
+      "value": {
+        "light": "#d9d3bb",
+        "dark": "#3c3d58"
+      },
+      "usage": "zarte Linie"
+    },
+    {
+      "name": "border-hover",
+      "value": {
+        "light": "#5f63a8",
+        "dark": "#b3b6ee"
+      },
+      "usage": "Linie bei Hover"
+    },
+    {
+      "name": "accent",
+      "value": {
+        "light": "#5f63a8",
+        "dark": "#b3b6ee"
+      },
+      "usage": "Lila als Platzhalter"
+    },
+    {
+      "name": "accent-subtle",
+      "value": {
+        "light": "#ebe9f5",
+        "dark": "#2d2e4a"
+      },
+      "usage": "getoente Flaeche"
+    },
+    {
+      "name": "accent-contrast",
+      "value": {
+        "light": "#ffffff",
+        "dark": "#1c1d2e"
+      },
+      "usage": "Schrift auf Akzent"
+    },
+    {
+      "name": "focus",
+      "value": {
+        "light": "#b4235a",
+        "dark": "#ff8fb8"
+      },
+      "usage": "Fokusring"
+    },
+    {
+      "name": "success",
+      "value": {
+        "light": "#17713a",
+        "dark": "#4ccf7e"
+      },
+      "usage": "Erfolgszustand"
+    },
+    {
+      "name": "success-subtle",
+      "value": {
+        "light": "#dcf3e4",
+        "dark": "#12301d"
+      },
+      "usage": "getoente Erfolgsflaeche"
+    },
+    {
+      "name": "warning",
+      "value": {
+        "light": "#8a5a00",
+        "dark": "#f0b429"
+      },
+      "usage": "Warnzustand"
+    },
+    {
+      "name": "warning-subtle",
+      "value": {
+        "light": "#faeecc",
+        "dark": "#332a0a"
+      },
+      "usage": "getoente Warnflaeche"
+    },
+    {
+      "name": "danger",
+      "value": {
+        "light": "#a81b1b",
+        "dark": "#ff6b6b"
+      },
+      "usage": "Fehlerzustand"
+    },
+    {
+      "name": "danger-subtle",
+      "value": {
+        "light": "#f7dcdc",
+        "dark": "#3b1414"
+      },
+      "usage": "getoente Fehlerflaeche"
+    }
+  ],
+  "radius": [
+    {
+      "name": "radius-sm",
+      "value": "0.5rem",
+      "usage": "Aktionen und Felder"
+    },
+    {
+      "name": "radius-md",
+      "value": "0.75rem",
+      "usage": "Karten"
+    },
+    {
+      "name": "radius-lg",
+      "value": "1.25rem",
+      "usage": "Bilder"
+    },
+    {
+      "name": "radius-full",
+      "value": "9999px",
+      "usage": "Kopfinsel und Tags"
+    }
+  ],
+  "typography": [
+    {
+      "name": "display",
+      "value": {
+        "size": "clamp(3.5rem, 10vw, 8.5rem)",
+        "line-height": "0.95",
+        "weight": "500",
+        "tracking": "-0.01em"
+      },
+      "usage": "Auftaktzeile, schmal und gross"
+    },
+    {
+      "name": "h1",
+      "value": {
+        "size": "clamp(2.75rem, 6vw, 5rem)",
+        "line-height": "1",
+        "weight": "500",
+        "tracking": "-0.01em"
+      },
+      "usage": "Seitentitel"
+    },
+    {
+      "name": "h2",
+      "value": {
+        "size": "clamp(2.25rem, 5vw, 4rem)",
+        "line-height": "1.02",
+        "weight": "500",
+        "tracking": "0"
+      },
+      "usage": "Sektionstitel"
+    },
+    {
+      "name": "h3",
+      "value": {
+        "size": "1.125rem",
+        "line-height": "1.3",
+        "weight": "500",
+        "tracking": "0"
+      },
+      "usage": "Untertitel"
+    },
+    {
+      "name": "lead",
+      "value": {
+        "size": "1.125rem",
+        "line-height": "1.5",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Erklaerzeile"
+    },
+    {
+      "name": "body",
+      "value": {
+        "size": "1rem",
+        "line-height": "1.6",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Fliesstext"
+    },
+    {
+      "name": "small",
+      "value": {
+        "size": "0.875rem",
+        "line-height": "1.45",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Nebentext"
+    },
+    {
+      "name": "label",
+      "value": {
+        "size": "0.8125rem",
+        "line-height": "1.3",
+        "weight": "500",
+        "tracking": "0"
+      },
+      "usage": "Beschriftung"
+    }
+  ],
+  "motion": [
+    {
+      "name": "duration-fast",
+      "value": "120ms",
+      "usage": "Zustandswechsel"
+    },
+    {
+      "name": "duration-base",
+      "value": "240ms",
+      "usage": "Ein- und Ausblenden"
+    },
+    {
+      "name": "duration-slow",
+      "value": "520ms",
+      "usage": "grosse Bewegungen"
+    },
+    {
+      "name": "ease-out",
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "usage": "Eintritt"
+    },
+    {
+      "name": "ease-in-out",
+      "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+      "usage": "Positionswechsel"
+    }
+  ]
+}

@@ -4,7 +4,9 @@
  * 1440 und 390 Pixel.
  *
  *   node --experimental-strip-types scripts/stil-messen.ts \
- *     --url https://www.rico-gmbh.de --out ../projekte/<kunde>/research/stil/rico
+ *     --url https://www.rico-gmbh.de --out ../projekte/<kunde>/research/stil/rico [--strecke 8]
+ *
+ * --strecke n nimmt zusaetzlich bis zu n Bilder entlang der Scrollstrecke auf.
  *
  * Wofuer: Stilrecherche je Auftrag und Inspirationseingang des Nutzers,
  * siehe web-brain 90-references/reference-research-workflow.md#Stilrecherche
@@ -13,8 +15,8 @@
  * laesst sich in ein Preset uebersetzen, ohne zu raten.
  *
  * Gemessen wird nach dem Laden und einem Scroll ueber die Seite, damit
- * nachgeladene Abschnitte mitzaehlen. Einwilligungsbanner werden nicht
- * weggeklickt; sie koennen die Aufnahmen verdecken, nicht die Messung.
+ * nachgeladene Abschnitte mitzaehlen. Einwilligungsbanner und Hinweisfenster
+ * werden abgelehnt oder ausgeblendet, sonst zeigen die Aufnahmen nur sie.
  */
 import { mkdirSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
@@ -30,6 +32,7 @@ const url = arg('--url');
 if (!url) { console.error('--url fehlt'); process.exit(2); }
 const ziel = resolve(arg('--out', 'stil-messung')!);
 mkdirSync(ziel, { recursive: true });
+const strecke = Number(arg('--strecke', '0'));
 
 function chromiumSuchen(): string | null {
   const kandidaten: string[] = [];
@@ -92,7 +95,39 @@ const MESSUNG = String.raw`(() => {
     schatten: haeufig(flaechen.map((el) => getComputedStyle(el).boxShadow).filter((x) => x !== 'none')),
     bildRadien: haeufig(bilder.map((el) => getComputedStyle(el).borderTopLeftRadius)),
     hoehe: document.documentElement.scrollHeight,
+    // Hinweise auf Technik und Bewegung, nicht auf Qualitaet.
+    technik: {
+      glas: [...document.querySelectorAll('*')].filter((el) => { const s = getComputedStyle(el); return (s.backdropFilter && s.backdropFilter !== 'none') || (s.webkitBackdropFilter && s.webkitBackdropFilter !== 'none'); }).length,
+      glasWerte: haeufig([...document.querySelectorAll('*')].map((el) => getComputedStyle(el).backdropFilter).filter((x) => x && x !== 'none')),
+      klebend: [...document.querySelectorAll('*')].filter((el) => getComputedStyle(el).position === 'sticky').length,
+      videos: document.querySelectorAll('video').length,
+      leinwand: document.querySelectorAll('canvas').length,
+      svg: document.querySelectorAll('svg').length,
+      bibliotheken: ['gsap', 'ScrollTrigger', 'Lenis', 'lenis', 'Webflow', 'THREE', 'Swiper', 'Splitting', 'SplitText', 'barba'].filter((n) => n in window)
+        .concat([...document.scripts].map((x) => x.src).filter((u) => /gsap|lenis|framer|webflow|swiper|three|lottie|locomotive/i.test(u)).map((u) => u.split('/').pop().slice(0, 40)).slice(0, 6)),
+      generator: document.querySelector('meta[name=generator]')?.content ?? '',
+    },
   });
+})()`;
+
+/** Lehnt Einwilligungen ab und blendet alles aus, was die Seite noch verdeckt. */
+const BANNER_WEG = String.raw`(() => {
+  const knoepfe = [...document.querySelectorAll('button, a, [role=button]')].filter((b) => b.getBoundingClientRect().width > 0);
+  const muster = [/nur essenziell|nur notwendig|nur erforderlich|alle ablehnen|ablehnen|reject all|reject|decline|deny|essential cookies only|rifiuta/i, /akzeptieren|alle zulassen|zustimmen|accept|allow all|accetto/i];
+  for (const m of muster) { const b = knoepfe.find((x) => m.test(x.textContent.trim()) && x.textContent.trim().length < 60); if (b) { b.click(); break; } }
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  setTimeout(() => {
+    for (const el of document.querySelectorAll('body *')) {
+      const s = getComputedStyle(el);
+      if (s.position !== 'fixed') continue;
+      const r = el.getBoundingClientRect();
+      const gross = r.width * r.height > innerWidth * innerHeight * 0.12;
+      const kopf = r.top <= 2 && r.height < 160;
+      if (gross && !kopf) el.style.setProperty('display', 'none', 'important');
+    }
+    for (const el of [document.documentElement, document.body]) { el.style.setProperty('overflow', 'visible', 'important'); el.style.removeProperty('position'); }
+  }, 700);
+  return 1;
 })()`;
 
 const binary = chromiumSuchen();
@@ -125,8 +160,13 @@ const { sessionId } = await senden('Target.attachToTarget', { targetId, flatten:
 await senden('Page.enable', {}, sessionId);
 await senden('Runtime.enable', {}, sessionId);
 
-const auswerten = async (ausdruck: string) =>
-  (await senden('Runtime.evaluate', { expression: ausdruck, returnByValue: true, awaitPromise: true }, sessionId))?.result?.value;
+// Mit Zeitlimit: Seiten mit eigenem Scrollverhalten koennen ein Promise
+// haengen lassen, und dann stuende die ganze Messung.
+const auswerten = async (ausdruck: string, limit = 25000) =>
+  (await Promise.race([
+    senden('Runtime.evaluate', { expression: ausdruck, returnByValue: true, awaitPromise: true }, sessionId),
+    warten(limit).then(() => null),
+  ]))?.result?.value;
 
 try {
   let messung: any = null;
@@ -135,10 +175,32 @@ try {
     await senden('Page.navigate', { url }, sessionId);
     await warten(2500);
     await auswerten('document.fonts.ready.then(() => 1)');
+    await auswerten(BANNER_WEG);
+    await warten(1300);
     // Einmal durchscrollen, damit nachgeladene Abschnitte und Bilder erscheinen.
-    await auswerten('(async () => { for (let y = 0; y < document.body.scrollHeight; y += 700) { scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); } scrollTo(0, 0); })()');
+    await auswerten('(async () => { for (let y = 0, i = 0; y < document.documentElement.scrollHeight && i < 40; y += 700, i++) { scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); } scrollTo(0, 0); })()');
     await warten(800);
     if (!mobil) messung = JSON.parse(await auswerten(MESSUNG));
+    if (!mobil && strecke) {
+      // Bilder entlang der Scrollstrecke zeigen, was ein Standbild verschweigt:
+      // klebende Abschnitte, Einblendungen, Kopfzeilen, die sich verwandeln.
+      const gesamt = Number(await auswerten('document.documentElement.scrollHeight'));
+      const schritte = Math.min(strecke, Math.ceil(gesamt / hoehe));
+      for (let n = 1; n <= schritte; n++) {
+        const y = Math.round(((gesamt - hoehe) * n) / schritte);
+        // In kleinen Stufen scrollen, sonst reagieren Scrollanimationen nicht.
+        await auswerten(`(async () => { const ziel = ${y}; for (let i = 0; i < 160 && Math.abs(scrollY - ziel) > 4; i++) { const vor = scrollY; scrollBy(0, Math.sign(ziel - scrollY) * Math.min(160, Math.abs(ziel - scrollY))); await new Promise(r => setTimeout(r, 40)); } })()`);
+        await warten(900);
+        await auswerten(BANNER_WEG);
+        await warten(800);
+        const bild = await senden('Page.captureScreenshot', { format: 'jpeg', quality: 70 }, sessionId);
+        writeFileSync(join(ziel, `strecke-${String(n).padStart(2, '0')}.jpg`), Buffer.from(bild.data, 'base64'));
+      }
+      await auswerten('scrollTo(0, 0)');
+      await warten(500);
+    }
+    await auswerten(BANNER_WEG);
+    await warten(800);
     const { data } = await senden('Page.captureScreenshot', { format: 'png' }, sessionId);
     writeFileSync(join(ziel, `auftakt-${breite}.png`), Buffer.from(data, 'base64'));
   }
@@ -159,6 +221,8 @@ try {
   console.log(`              Farben ${messung.flaechenFarben.map(([c]: [string]) => c).join(', ') || '-'}`);
   console.log(`   Bilder     Radius ${messung.bildRadien.map(([r, n]: [string, number]) => `${r} (${n}x)`).join(', ') || '-'}`);
   console.log(`   Schatten   ${messung.schatten.length ? messung.schatten.map(([x]: [string]) => x).join(' | ') : 'keine'}`);
+  const t = messung.technik;
+  console.log(`   Technik    Glas ${t.glas}x ${t.glasWerte.map(([x]: [string]) => x).join(', ')}, klebend ${t.klebend}, Video ${t.videos}, Canvas ${t.leinwand}, SVG ${t.svg}, ${t.bibliotheken.join(', ') || 'keine erkannte Bibliothek'} ${t.generator}`);
   console.log(`\n   Messung und Aufnahmen in ${ziel}`);
 } finally {
   socket.close();

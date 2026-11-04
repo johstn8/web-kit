@@ -1,0 +1,54 @@
+---
+/**
+ * Freigestellte Objekte und rechteckige Bilder direkt auf hellem Grund,
+ * dazwischen knappe Textpassagen. Abgeleitet aus lagalante-restaurant.de
+ * und standard-berlin.de.
+ *
+ * Klappt nur mit sehr guten Bildern. Fehlen echte Freisteller, traegt die
+ * Variante mit rechteckigen Bildern am Rand denselben Eindruck: art="rand".
+ * Die Hoehenversaetze kommen aus den Daten, nicht aus einem Zufall, damit
+ * jede Website ihren eigenen Rhythmus bekommt.
+ */
+import type { Bild } from './_lib.ts';
+interface Element { bild: Bild; art?: 'frei' | 'rand'; lage?: 'links' | 'rechts' | 'mitte'; breite?: number; versatz?: number }
+interface Props { titel?: string; text?: string | string[]; elemente: Element[]; id?: string }
+const { titel, text, elemente, id } = Astro.props;
+const absaetze = text === undefined ? [] : Array.isArray(text) ? text : [text];
+---
+<section class="freisteller" id={id}>
+  {titel && <h2>{titel}</h2>}
+  <div class="text">{absaetze.map((a) => <p>{a}</p>)}</div>
+  {elemente.map((e) => (
+    <figure class:list={[e.art ?? 'frei', e.lage ?? 'rechts']} style={`--breite:${e.breite ?? 34}%; --versatz:${e.versatz ?? 0}rem`}>
+      <img src={e.bild.src} alt={e.bild.alt} loading="lazy" />
+    </figure>
+  ))}
+</section>
+
+<style>
+  .freisteller { position: relative; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-5); max-width: calc(var(--container) + 8rem); margin-inline: auto; padding: var(--space-12) var(--gutter); background: var(--color-bg); }
+  h2 { grid-column: 2 / span 6; margin: 0; font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: var(--text-h1--font-weight); letter-spacing: var(--text-h1--letter-spacing); text-wrap: balance; }
+  .text { grid-column: 2 / span 5; }
+  p { margin: 0 0 var(--space-4); color: var(--color-text-secondary); text-wrap: pretty; }
+  figure { margin: 0; grid-row: span 2; transform: translateY(var(--versatz)); }
+  figure.rechts { grid-column: 8 / -1; }
+  figure.links { grid-column: 1 / span 5; }
+  figure.mitte { grid-column: 4 / span 6; }
+  img { display: block; width: 100%; height: auto; }
+  figure.frei { filter: drop-shadow(0 18px 24px rgb(0 0 0 / 0.1)); }
+  figure.rand { width: min(100%, calc(var(--breite) * 2.4)); }
+  figure.rand.rechts { justify-self: end; margin-inline-end: calc(-1 * var(--gutter)); }
+  figure.rand.links { margin-inline-start: calc(-1 * var(--gutter)); }
+  @media (max-width: 760px) {
+    .freisteller { display: flex; flex-direction: column; }
+    figure { transform: none; }
+    figure.rand { width: 80%; }
+    figure.rand.rechts { align-self: flex-end; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      figure.frei img { animation: schweben linear both; animation-timeline: view(); }
+    }
+  }
+  @keyframes schweben { from { transform: translateY(2rem) rotate(-1.5deg); } to { transform: translateY(-2rem) rotate(1.5deg); } }
+</style>

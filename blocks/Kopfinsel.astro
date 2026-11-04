@@ -1,0 +1,122 @@
+---
+/**
+ * Schwebende Kopfzeile als abgerundete Insel, die sich beim Scrollen
+ * verwandelt. Ueber dem Auftakt ist sie weit und durchscheinend, danach
+ * zieht sie sich zur kompakten Glasinsel zusammen; das Logo schrumpft mit.
+ *
+ * Abgeleitet aus lightshiprv.com (Morph), jovoco.io (Logo, Sprachwahl),
+ * meracinque.com (kleine Insel) und ko-mon.de (Glas ueber Bild).
+ * Der Morph haengt an einem Merkpunkt und einem IntersectionObserver;
+ * ohne JavaScript bleibt die Insel kompakt und vollstaendig bedienbar.
+ *
+ * logoLage: links (Standard) oder mitte. ueberBild: ueber einem dunklen
+ * Auftakt helle Schrift, solange die Insel weit ist.
+ */
+import './glas.css';
+import type { Aktion, Bild } from './_lib.ts';
+interface Props {
+  name: string;
+  logo?: Bild;
+  navigation: { label: string; ziel: string }[];
+  aktion?: Aktion;
+  aktiv?: string;
+  sprachen?: { label: string; ziel: string; aktiv?: boolean }[];
+  logoLage?: 'links' | 'mitte';
+  ueberBild?: boolean;
+}
+const { name, logo, navigation, aktion, aktiv, sprachen, logoLage = 'links', ueberBild = false } = Astro.props;
+const mitte = Math.ceil(navigation.length / 2);
+const links = logoLage === 'mitte' ? navigation.slice(0, mitte) : navigation;
+const rechts = logoLage === 'mitte' ? navigation.slice(mitte) : [];
+---
+<div class="merkpunkt" data-kopfinsel-merkpunkt aria-hidden="true"></div>
+<header class:list={['kopfinsel', `logo-${logoLage}`, { 'ueber-bild': ueberBild }]} data-klein>
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+  <div class="insel glas">
+    <a class="marke" href="/" aria-label={`${name}, zur Startseite`}>
+      {logo ? <img src={logo.src} alt={logo.alt} width="160" height="40" /> : <span>{name}</span>}
+    </a>
+    <nav aria-label="Hauptnavigation">
+      {[['links', links], ['rechts', rechts]].filter(([, l]) => l.length > 0).map(([klasse, liste]) => (
+        <ul class={klasse as string}>
+          {(liste as typeof links).map((p) => <li><a href={p.ziel} aria-current={aktiv === p.ziel ? 'page' : undefined}>{p.label}</a></li>)}
+        </ul>
+      ))}
+    </nav>
+    <div class="ende">
+      {sprachen && (
+        <ul class="sprachen" aria-label="Sprache">
+          {sprachen.map((s) => <li><a href={s.ziel} aria-current={s.aktiv ? 'true' : undefined}>{s.label}</a></li>)}
+        </ul>
+      )}
+      {aktion && <a class="aktion" href={aktion.ziel}>{aktion.label}</a>}
+      <details class="menue">
+        <summary aria-label="Menü"><i aria-hidden="true"></i></summary>
+        <ul class="glas">
+          {navigation.map((p) => <li><a href={p.ziel} aria-current={aktiv === p.ziel ? 'page' : undefined}>{p.label}</a></li>)}
+        </ul>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const kopf = document.querySelector('.kopfinsel');
+    const merk = document.querySelector('[data-kopfinsel-merkpunkt]');
+    if (!kopf || !merk || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(([e]) => { kopf.toggleAttribute('data-klein', !e.isIntersecting); }).observe(merk);
+  })();
+</script>
+
+<style>
+  .merkpunkt { position: absolute; top: 0; left: 0; width: 1px; height: 96px; pointer-events: none; }
+  .kopfinsel { position: fixed; inset: var(--space-3) 0 auto; z-index: 20; display: flex; justify-content: center; padding-inline: var(--space-3); pointer-events: none; }
+  .skip { position: absolute; left: -9999px; pointer-events: auto; }
+  .skip:focus { left: var(--space-4); top: 0; z-index: 30; background: var(--color-surface); color: var(--color-text); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
+  .insel {
+    pointer-events: auto; display: flex; align-items: center; gap: var(--space-5);
+    width: 100%; max-width: calc(var(--container) + 4rem); padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-full);
+    transition: max-width var(--duration-slow) var(--ease-out), padding var(--duration-slow) var(--ease-out), background-color var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+  }
+  .kopfinsel[data-klein] .insel { max-width: 56rem; padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5); }
+  .kopfinsel:not([data-klein]) .insel { background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .marke { font-weight: 600; letter-spacing: -0.02em; font-size: 1.25rem; text-decoration: none; color: inherit; transition: transform var(--duration-slow) var(--ease-out); transform-origin: left center; }
+  .marke img { display: block; height: 2.25rem; width: auto; transition: height var(--duration-slow) var(--ease-out); }
+  .kopfinsel[data-klein] .marke img { height: 1.5rem; }
+  nav { display: contents; }
+  ul { display: flex; gap: var(--space-4); list-style: none; margin: 0; padding: 0; }
+  .links { margin-inline-start: auto; }
+  .logo-mitte .marke { order: 2; transform-origin: center; }
+  .logo-mitte .links { order: 1; margin-inline-start: 0; }
+  .logo-mitte .rechts { order: 3; }
+  .logo-mitte .ende { order: 4; }
+  .logo-mitte .links, .logo-mitte .rechts { flex: 1; }
+  .logo-mitte .rechts { justify-content: flex-end; }
+  a { color: inherit; }
+  nav a, .sprachen a { font-size: var(--text-small); text-decoration: none; opacity: 0.86; }
+  nav a:hover, .sprachen a:hover { opacity: 1; }
+  nav a[aria-current='page'], .sprachen a[aria-current] { opacity: 1; font-weight: 600; }
+  .ende { display: flex; align-items: center; gap: var(--space-4); }
+  .sprachen { gap: var(--space-2); }
+  .aktion { font-size: var(--text-small); font-weight: 500; padding: var(--space-2) var(--space-4); border-radius: var(--aktion-radius, var(--radius-full)); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; white-space: nowrap; }
+  .aktion:hover { opacity: 0.88; }
+  .ueber-bild:not([data-klein]) .aktion { background: var(--aktion-bild-grund, var(--color-accent)); color: var(--aktion-bild-text, var(--color-accent-contrast)); }
+  .ueber-bild:not([data-klein]) .insel { color: #fff; }
+  .kopfinsel:not(.ueber-bild):not([data-klein]) .insel { color: var(--color-text); }
+  .menue { display: none; position: relative; }
+  .menue summary { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; cursor: pointer; list-style: none; }
+  .menue summary::-webkit-details-marker { display: none; }
+  .menue i, .menue i::before { display: block; width: 1.25rem; height: 2px; background: currentColor; }
+  .menue i { position: relative; top: -3px; }
+  .menue i::before { content: ''; position: relative; top: 6px; }
+  .menue ul { position: absolute; right: 0; top: calc(100% + var(--space-2)); min-width: 13rem; flex-direction: column; gap: 0; padding: var(--space-2); border-radius: var(--radius-lg); background: var(--color-surface); color: var(--color-text); }
+  .menue ul a { display: block; padding: var(--space-3) var(--space-4); font-size: var(--text-body); opacity: 1; }
+  @media (max-width: 760px) {
+    .links, .rechts, .sprachen { display: none; }
+    .menue { display: block; }
+    .ende { gap: var(--space-1); margin-inline-start: auto; }
+    .kopfinsel .insel { padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); justify-content: space-between; }
+  }
+</style>

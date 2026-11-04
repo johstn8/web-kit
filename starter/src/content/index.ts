@@ -30,6 +30,8 @@ export interface Inhalt {
   texte?: Record<string, string | string[]>;
   team?: { name: string; rolle?: string; text?: string }[];
   bewertungen?: { text: string; autor?: string; quelle: string; url?: string; datum?: string }[];
+  bewertung_gesamt?: { note: number; anzahl: number; quelle: string; url?: string };
+  kennzahlen?: { wert: string; label: string; quelle?: string }[];
   faq?: { frage: string; antwort: string }[];
   anfahrt?: { beschreibung?: string; oepnv?: string; parken?: string; karte_eingebettet?: boolean };
   seiten: { slug: string; titel: string; beschreibung?: string; indexieren?: boolean; bloecke: { typ: string; komposition?: string; karte?: string }[] }[];

@@ -1,0 +1,55 @@
+/*
+ * Glasmaterial. Eine Datei, damit alle Bloecke dasselbe Glas tragen.
+ *
+ *   <div class="glas">...</div>          helles Glas
+ *   <div class="glas glas-dunkel">...    dunkles Glas ueber hellen Bildern
+ *
+ * Werte gemessen an glisse.kelvinzhang.ca (Liquid Glass fuer das Web):
+ * wenig Unschaerfe, viel Saettigung, heller Innenrand statt Aussenschatten.
+ * Das unterscheidet es vom ueblichen Milchglas mit blur(20px): der Grund
+ * bleibt erkennbar und bekommt Farbe, statt zu Nebel zu werden.
+ *
+ * Glas gehoert nur auf echte Schichtung, also ueber Bild oder Video, nicht
+ * auf einfarbigen Grund. web-brain 20-design/anti-ai-slop.md verlangt dazu
+ * gemessenen Kontrast und einen deckenden Rueckfall, beides steht unten.
+ * Wer Lichtbrechung am Rand will, setzt zusaetzlich GlasFilter.astro ein.
+ */
+.glas, .glas-dunkel {
+  --glas-unschaerfe: 6px;
+  --glas-saettigung: 1.6;
+  position: relative;
+  color: #12131a;
+  background: rgb(255 255 255 / 0.86);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.5),
+    inset 0 1.5px 1px rgb(255 255 255 / 0.55),
+    inset 2px 7px 24px rgb(0 0 0 / 0.05),
+    inset -2px -7px 24px rgb(255 255 255 / 0.14),
+    0 6px 24px rgb(0 0 0 / 0.14);
+}
+.glas-dunkel {
+  color: #f6f6fa;
+  background: rgb(20 20 30 / 0.78);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.16),
+    inset 0 1.5px 1px rgb(255 255 255 / 0.22),
+    0 6px 24px rgb(0 0 0 / 0.28);
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .glas, .glas-dunkel {
+    -webkit-backdrop-filter: blur(var(--glas-unschaerfe)) saturate(var(--glas-saettigung));
+    backdrop-filter: blur(var(--glas-unschaerfe)) saturate(var(--glas-saettigung));
+  }
+  .glas { background: rgb(255 255 255 / 0.62); }
+  .glas-dunkel { background: rgb(20 20 30 / 0.5); }
+}
+/* Wer Transparenz abgeschaltet hat, bekommt eine deckende Flaeche. */
+@media (prefers-reduced-transparency: reduce) {
+  .glas, .glas-dunkel { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glas { background: #fff; }
+  .glas-dunkel { background: #17171f; }
+}
+@media (forced-colors: active) {
+  .glas, .glas-dunkel { background: Canvas; color: CanvasText; border: 1px solid CanvasText; }
+}

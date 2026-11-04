@@ -1,6 +1,6 @@
 # Art-Direction-Presets
 
-Acht Stilrichtungen als **Datei**, nicht als Prosa. Jede ist ein
+Dreizehn Stilrichtungen als **Datei**, nicht als Prosa. Jede ist ein
 vollständiger Tokensatz: Schriftrollen, Palette für Licht und Dunkel,
 Radius-, Abstands- und Bewegungsgrammatik, dazu die Entscheidung, was die
 Abgrenzung trägt.
@@ -12,14 +12,19 @@ Lösung, und die ist überall dieselbe.
 
 | Preset | Anmutung | Für | Abgrenzung | Aktion | Display / Text | Belegt an |
 |---|---|---|---|---|---|---|
+| `glas` | gegenwärtig | Finanzen, Software, hochwertige Dienstleistung | Fläche, Glas über Bild | Pille | Albert Sans | mercury.com, glisse.kelvinzhang.ca |
+| `nord` | gegenwärtig | Kreative Betriebe, Kultur, Coworking, Marken mit Haltung | Farbfelder auf Hellgrau | Pille | Familjen Grotesk | the1.amsterdam |
+| `teller` | gegenwärtig | Gastronomie, Manufaktur, Produkt mit starken Fotos | Weißraum, Reinweiß | Pille | Jost | lagalante-restaurant.de, standard-berlin.de |
+| `dienst` | gegenwärtig | IT, Agentur, Weiterbildung, Veranstaltung | Fläche, weiche Kacheln | Pille | Manrope | jovoco.io, comito.de, ko-mon.de |
+| `genuss` | gegenwärtig | Lebensmittelmarke, Hofladen, Feinkost | Farbfelder, Creme | weich | Gupter / Readex Pro | meracinque.com |
 | `produkt` | gegenwärtig | Hersteller, Industrie, Technik, B2B mit Produkten | Fläche, Kacheln mit großem Radius | weich | Onest / Onest | rico-gmbh.de |
 | `freundlich` | gegenwärtig | Kita, Friseur, Café, Sport, Fahrschule, Nachhilfe | Farbfläche | Pille | Gabarito / Figtree | – |
 | `klar` | gegenwärtig | Beratung, Immobilien, IT-Dienstleister, moderne Praxis | Haarlinie | rund | Golos Text / Golos Text | – |
 | `atelier` | gegenwärtig | Studio, Architektur, Fotografie, Portfolio | Weißraum | Pille | Bricolage Grotesque / Hanken Grotesk | kononenkogroup.com, phillipohren.com, huts.com |
-| `werkstatt` | gegenwärtig | Handwerk, Fahrzeugservice, Logistik, Bau | Rahmen | Kante | Archivo 800 / Public Sans | car-tex.de, spedition-stuckmann.de, fahrschule-gosink.de |
+| `werkstatt` | gegenwärtig | Handwerk, Fahrzeugservice, Logistik, Bau | Rahmen | Kante | Archivo 800 / Public Sans | car-tex.de, spedition-stuckmann.de |
 | `praxis` | klassisch | Gesundheit, Pflege, Therapie | Fläche | rund | Source Serif 4 / Public Sans | zahnarztpraxis-uhlenhorst.de, drquidenus.at, daylight-health.com |
 | `tisch` | klassisch | Gastronomie, Bäckerei, Hofladen, Hotellerie | Fläche, dunkel | weich | Alegreya 400 / Work Sans | minerestaurant.de, amritpalace.com, munrooftoprome.com |
-| `kanzlei` | klassisch | Kanzlei, Steuerberatung, Verwaltung | Linie | Kante | Spectral / Spectral | sacherer-partner.de, ko-mon.de, dediq.com |
+| `kanzlei` | klassisch | Kanzlei, Steuerberatung, Verwaltung | Linie | Kante | Spectral / Spectral | sacherer-partner.de |
 
 Alle acht nebeneinander, mit derselben Auftaktzeile gerendert:
 [`kacheln/uebersicht.webp`](kacheln/uebersicht.webp).
@@ -97,6 +102,7 @@ Jedes Preset trägt einen `grammar`-Block. Er wird von
 | `tiefe` | `keine` \| `schatten` \| `ueberlagerung` |
 | `versalbeschriftung` | schaltet Versalien für Beschriftungen; in allen fünf Presets `false` |
 | `sektionstrenner` | `linie` \| `flaeche` \| `weissraum` \| `bild` |
+| `farbfelder` | kräftige Flächen außerhalb der Rollen, je mit Schriftfarbe; werden zu `--feld-1-grund` usw., `check-contrast.ts` prüft jedes Paar |
 | `ziffernmarken` | wann `01 / 02 / 03` zulässig ist: nur im Inhalt einer echten Abfolge, nie als Marke über einer Überschrift |
 | `aktionsform` | `kante` \| `weich` \| `rund` \| `pille` — Form der Buttons, unabhängig vom Radius der Container; wird zu `--aktion-radius` |
 

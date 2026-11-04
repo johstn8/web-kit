@@ -1,0 +1,23 @@
+---
+import '../styles/global.css';
+import Kopfinsel from '../../../blocks/Kopfinsel.astro';
+import Schlicht from '../../../blocks/auftakt/Schlicht.astro';
+import Riesenwort from '../../../blocks/auftakt/Riesenwort.astro';
+import Glasbuehne from '../../../blocks/auftakt/Glasbuehne.astro';
+import Vollbild from '../../../blocks/auftakt/Vollbild.astro';
+const nav = [{ label: 'Leistungen', ziel: '#' }, { label: 'Über uns', ziel: '#' }, { label: 'Kontakt', ziel: '#' }, { label: 'Karriere', ziel: '#' }];
+const bild = (src: string) => ({ src: `/muster/${src}`, alt: 'Musterbild' });
+export function getStaticPaths() { return ['schlicht', 'riesenwort', 'glas', 'seite'].map((art) => ({ params: { art } })); }
+const { art } = Astro.params;
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Muster {art}</title></head>
+<body>
+  <Kopfinsel name="Musterbetrieb" navigation={nav} logoLage={art === 'riesenwort' ? 'mitte' : 'links'} ueberBild={art === 'glas' || art === 'seite'} aktion={{ label: 'Kontakt', ziel: '#' }} />
+  <main>
+    {art === 'schlicht' && <Schlicht titel="Wir lösen das Musterproblem" lead="Ein Satz sagt, was der Betrieb für wen tut, und zwar ohne Füllwörter." bild={bild('land-hell.svg')} aktionen={[{ label: 'Gespräch vereinbaren', ziel: '#' }, { label: 'Leistungen ansehen', ziel: '#', art: 'sekundaer' }]} bewertung={{ note: 4.8, anzahl: 57, quelle: 'Google' }} />}
+    {art === 'riesenwort' && <Riesenwort wort="MUSTERWORT" satz="Ein kurzer Satz neben dem Bild, der sagt, worum es hier geht." bild={bild('land-warm.svg')} freisteller={bild('teller.svg')} aktion={{ label: 'Tisch reservieren', ziel: '#' }} />}
+    {art === 'glas' && <Glasbuehne titel="Radikal einfacher Mustertitel" lead="Ein Satz in zwei Zeilen unter dem Titel." bild={bild('land-kuehl.svg')} brechung feld={{ label: 'Ihre E-Mail', name: 'email', ziel: '#', aktion: 'Konto eröffnen' }} aktionen={[{ label: 'Demo ansehen', ziel: '#', art: 'sekundaer' }]} />}
+    {art === 'seite' && <Vollbild hoehe="seite" titel="Kopf einer Unterseite" lead="Dieselbe Grammatik wie die Startseite, aber halb so hoch." bild={bild('land-warm.svg')} />}
+  </main>
+</body></html>

@@ -163,6 +163,32 @@
         }
       }
     },
+    "bewertung_gesamt": {
+      "type": "object",
+      "description": "Gesamtnote eines oeffentlichen Profils fuer Bewertungszeile.astro. Nur echte Werte mit Quelle.",
+      "required": ["note", "anzahl", "quelle"],
+      "additionalProperties": false,
+      "properties": {
+        "note": { "type": "number", "minimum": 0, "maximum": 5 },
+        "anzahl": { "type": "integer", "minimum": 1 },
+        "quelle": { "type": "string", "maxLength": 40 },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "kennzahlen": {
+      "type": "array",
+      "description": "Belegte Zahlen des Betriebs fuer Kennzahlen.astro und den Auftakt Vollbild. Keine Schaetzungen.",
+      "items": {
+        "type": "object",
+        "required": ["wert", "label"],
+        "additionalProperties": false,
+        "properties": {
+          "wert": { "type": "string", "maxLength": 16 },
+          "label": { "type": "string", "maxLength": 60 },
+          "quelle": { "type": "string", "maxLength": 160, "description": "Woher die Zahl stammt. Wird nicht angezeigt." }
+        }
+      }
+    },
     "faq": {
       "type": "array",
       "items": {
@@ -203,10 +229,10 @@
               "required": ["typ"],
               "properties": {
                 "typ": {
-                  "enum": ["auftakt", "leistungen", "oeffnungszeiten", "anfahrt", "team", "kontaktformular", "bewertungen", "preise", "karte", "faq", "text"]
+                  "enum": ["auftakt", "leistungen", "oeffnungszeiten", "anfahrt", "team", "kontaktformular", "bewertungen", "preise", "karte", "faq", "text", "wortlicht", "kennzahlen", "bogenkarte", "querband", "kacheln", "freisteller", "farbfelder"]
                 },
                 "komposition": {
-                  "enum": ["gestapelt", "zweispaltig", "bildbuehne", "zeilenindex"],
+                  "enum": ["gestapelt", "zweispaltig", "bildbuehne", "zeilenindex", "leitbild", "vollbild", "schlicht", "riesenwort", "glasbuehne"],
                   "description": "Nur fuer typ=auftakt. Repertoire in web-brain 20-design/landing-page-craft.md#Auftakt-Repertoire."
                 },
                 "karte": { "type": "string", "description": "Nur fuer typ=karte: id der Karte aus /karten." },

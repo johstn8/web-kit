@@ -1,0 +1,35 @@
+---
+/**
+ * Eine Zeile mit Gesamtbewertung, gedacht direkt unter die Aktion im
+ * Auftakt. Abgeleitet aus jovoco.io und comito.de.
+ *
+ * Nur echte Werte: note, anzahl und quelle stammen aus dem verlinkten
+ * Profil und werden beim Relaunch nachgeprueft. Ohne Daten entfaellt der
+ * Block. Keine Bewertung erfinden, auch nicht als Platzhalter.
+ */
+interface Props { note: number; anzahl: number; quelle: string; url?: string; hell?: boolean }
+const { note, anzahl, quelle, url, hell = false } = Astro.props;
+const Tag = url ? 'a' : 'p';
+const noteText = note.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const breite = `${Math.max(0, Math.min(5, note)) * 20}%`;
+---
+<Tag class:list={['bewertung', { hell }]} href={url}>
+  <span class="sterne" aria-hidden="true" style={`--wert:${breite}`}></span>
+  <span class="text"><b>{noteText}</b><span class="sr"> von 5 Sternen</span> · {anzahl} Bewertungen auf {quelle}</span>
+</Tag>
+
+<style>
+  .bewertung { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--text-small); color: var(--color-text-secondary); text-decoration: none; }
+  a.bewertung:hover .text { text-decoration: underline; }
+  .hell { color: rgb(255 255 255 / 0.92); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  b { font-weight: 600; color: var(--color-text); }
+  .hell b { color: #fff; }
+  /* Fuenf Sterne als Maske: die Fuellbreite zeigt auch halbe Sterne genau. */
+  .sterne {
+    --stern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3 6.6 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21.2l1.4-7L2 9.4l7-.8z'/%3E%3C/svg%3E");
+    display: inline-block; width: 5.5rem; height: 1.1rem;
+    background: linear-gradient(90deg, #f5a800 var(--wert), rgb(128 128 128 / 0.35) var(--wert));
+    -webkit-mask: var(--stern) left / 1.1rem 1.1rem repeat-x; mask: var(--stern) left / 1.1rem 1.1rem repeat-x;
+  }
+</style>

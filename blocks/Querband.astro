@@ -1,0 +1,44 @@
+---
+/**
+ * Waagerecht wischbares Band aus grossen Karten mit Plus-Schalter, der
+ * einen Text aufklappt. Abgeleitet aus lightshiprv.com (Motor, Anhaenger,
+ * Aerodynamik) und den Leistungsreihen von metagram-solutions.com.
+ *
+ * scroll-snap statt Karussell: kein Autoplay, Tastatur und Touch gehen
+ * von selbst. Der Plus-Schalter ist ein <details>, also auch ohne
+ * JavaScript bedienbar.
+ */
+import './glas.css';
+import Sektion from './Sektion.astro';
+import type { Bild } from './_lib.ts';
+interface Karte { titel: string; text: string; bild: Bild; ziel?: string }
+interface Props { titel?: string; lead?: string; karten: Karte[]; flaeche?: 'bg' | 'surface' | 'surface-alt' }
+const { titel, lead, karten, flaeche } = Astro.props;
+---
+<Sektion titel={titel} lead={lead} flaeche={flaeche}>
+  <ul class="band" tabindex="0" aria-label={titel ?? 'Karten, waagerecht scrollbar'}>
+    {karten.map((k) => (
+      <li>
+        <img src={k.bild.src} alt={k.bild.alt} loading="lazy" />
+        <details class="glas">
+          <summary><span>{k.titel}</span><i aria-hidden="true"></i></summary>
+          <p>{k.text}{k.ziel && <> <a href={k.ziel}>Mehr dazu</a></>}</p>
+        </details>
+      </li>
+    ))}
+  </ul>
+</Sektion>
+
+<style>
+  .band { display: flex; gap: var(--space-4); list-style: none; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter) var(--space-3); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: thin; }
+  li { position: relative; flex: 0 0 min(78vw, 26rem); aspect-ratio: 4 / 5; scroll-snap-align: start; border-radius: var(--radius-lg); overflow: hidden; background: var(--color-surface-alt); }
+  img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  details { position: absolute; inset: auto var(--space-3) var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); font-size: var(--text-h3); font-weight: var(--text-h3--font-weight); cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  i { flex: none; position: relative; width: 2rem; height: 2rem; border-radius: var(--radius-full); background: rgb(0 0 0 / 0.08); transition: transform var(--duration-base) var(--ease-out); }
+  i::before, i::after { content: ''; position: absolute; inset: 50% 28% auto; height: 2px; margin-top: -1px; background: currentColor; }
+  i::after { transform: rotate(90deg); }
+  details[open] i { transform: rotate(45deg); }
+  p { margin: var(--space-2) 0 var(--space-1); font-size: var(--text-small); line-height: 1.5; }
+</style>

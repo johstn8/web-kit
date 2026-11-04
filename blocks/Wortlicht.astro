@@ -1,0 +1,52 @@
+---
+/**
+ * Grosser Absatz, dessen Woerter sich beim Scrollen nacheinander einfaerben.
+ * Abgeleitet aus der Scrollstrecke von ko-mon.de. Ohne Bibliothek.
+ *
+ * Fuer einen Satz, der die Haltung des Betriebs traegt, einmal je Seite.
+ * Die gedimmte Farbe ist text-tertiary und besteht den Kontrast: der Text
+ * bleibt in jedem Zustand lesbar. Ohne JavaScript und mit reduzierter
+ * Bewegung steht er vollstaendig eingefaerbt da.
+ *
+ * Bewusst kein Ueberschriftenelement: S3 sperrt Teilauszeichnung in
+ * Ueberschriften, und waehrend der Bewegung haette diese zwei Farben.
+ */
+interface Props { text: string; flaeche?: 'bg' | 'surface' | 'surface-alt'; id?: string }
+const { text, flaeche = 'bg', id } = Astro.props;
+const woerter = text.trim().split(/\s+/);
+---
+<section class="wortlicht" id={id} style={`background: var(--color-${flaeche})`} data-wortlicht>
+  <p>{woerter.map((w, i) => <><span>{w}</span>{i < woerter.length - 1 ? ' ' : ''}</>)}</p>
+</section>
+
+<script is:inline>
+  (() => {
+    if (window.__wortlicht || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    window.__wortlicht = true;
+    const felder = [...document.querySelectorAll('[data-wortlicht]')].map((el) => ({ el, woerter: [...el.querySelectorAll('span')], stand: -1 }));
+    const zeichnen = () => {
+      const h = innerHeight;
+      for (const f of felder) {
+        const r = f.el.getBoundingClientRect();
+        if (r.bottom < -h || r.top > h * 2) continue;
+        const fortschritt = Math.min(1, Math.max(0, (h * 0.8 - r.top) / (r.height * 0.9 + h * 0.3)));
+        const bis = Math.round(fortschritt * f.woerter.length);
+        if (bis === f.stand) continue;
+        f.stand = bis;
+        f.woerter.forEach((w, i) => w.toggleAttribute('data-an', i < bis));
+      }
+    };
+    let wartet = false;
+    addEventListener('scroll', () => { if (!wartet) { wartet = true; requestAnimationFrame(() => { wartet = false; zeichnen(); }); } }, { passive: true });
+    addEventListener('resize', zeichnen);
+    document.documentElement.classList.add('wortlicht-an');
+    zeichnen();
+  })();
+</script>
+
+<style>
+  .wortlicht { padding: var(--space-12) var(--gutter); }
+  p { max-width: 58rem; margin-inline: auto; font-family: var(--font-display); font-size: var(--text-h2); line-height: 1.25; font-weight: var(--text-h2--font-weight); letter-spacing: var(--text-h2--letter-spacing); color: var(--color-text); text-wrap: pretty; }
+  :global(.wortlicht-an) span { color: var(--color-text-tertiary); transition: color var(--duration-base) var(--ease-out); }
+  :global(.wortlicht-an) span[data-an] { color: var(--color-text); }
+</style>

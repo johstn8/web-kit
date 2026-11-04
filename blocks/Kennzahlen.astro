@@ -1,0 +1,52 @@
+---
+/**
+ * Kennzahlen als Boxen, wahlweise versetzt und beim Scrollen gegeneinander
+ * verschoben, wahlweise als ruhige Zeile. Eine Box darf statt einer Zahl
+ * ein Bild tragen, das ergibt das Mosaik aus Zahlen und Fotos.
+ * Abgeleitet aus metagram-solutions.com (versetzte Boxen), jovoco.io
+ * (Mosaik) und ko-mon.de (Zeile).
+ *
+ * Nur belegte Zahlen. Eine Kennzahl ohne Quelle entfaellt, sie wird nicht
+ * geschaetzt. Die Verschiebung ist reines CSS (animation-timeline) und
+ * faellt in Browsern ohne Unterstuetzung auf die ruhende Versetzung zurueck.
+ */
+import Sektion from './Sektion.astro';
+import type { Bild } from './_lib.ts';
+interface Kennzahl { wert?: string; label?: string; bild?: Bild }
+interface Props { titel?: string; lead?: string; kennzahlen: Kennzahl[]; anordnung?: 'versetzt' | 'zeile'; flaeche?: 'bg' | 'surface' | 'surface-alt' }
+const { titel, lead, kennzahlen, anordnung = 'versetzt', flaeche } = Astro.props;
+---
+<Sektion titel={titel} lead={lead} flaeche={flaeche} id="kennzahlen">
+  <ul class:list={['kennzahlen', anordnung]}>
+    {kennzahlen.map((k) => (
+      <li class:list={{ mitbild: !!k.bild }}>
+        {k.bild ? <img src={k.bild.src} alt={k.bild.alt} loading="lazy" /> : <p class="zahl"><b>{k.wert}</b><span>{k.label}</span></p>}
+      </li>
+    ))}
+  </ul>
+</Sektion>
+
+<style>
+  .kennzahlen { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+  .zahl { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  b { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; font-weight: var(--text-h2--font-weight); letter-spacing: var(--text-h1--letter-spacing); font-variant-numeric: tabular-nums; }
+  span { font-size: var(--text-small); color: var(--color-text-secondary); }
+  .zeile { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
+  .versetzt { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); align-items: start; }
+  .versetzt li { padding: var(--space-6); background: var(--color-surface); border: var(--container-rahmen); border-radius: var(--radius-lg); min-height: 11rem; display: flex; align-items: flex-end; }
+  .versetzt li.mitbild { padding: 0; overflow: hidden; }
+  .versetzt img { display: block; width: 100%; height: 100%; min-height: 11rem; object-fit: cover; }
+  @media (min-width: 760px) {
+    .versetzt li:nth-child(even) { margin-top: var(--space-8); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      @media (min-width: 760px) {
+        .versetzt li:nth-child(even) { animation: heben linear both; animation-timeline: view(); animation-range: entry 0% cover 60%; }
+        .versetzt li:nth-child(odd) { animation: senken linear both; animation-timeline: view(); animation-range: entry 0% cover 60%; }
+      }
+    }
+  }
+  @keyframes heben { from { transform: translateY(3.5rem); } to { transform: none; } }
+  @keyframes senken { from { transform: translateY(-1.5rem); } to { transform: none; } }
+</style>

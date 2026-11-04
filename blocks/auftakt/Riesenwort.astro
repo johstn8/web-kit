@@ -1,0 +1,57 @@
+---
+/**
+ * Auftakt "riesenwort": ein Wort oder kurzer Satz fuellt die ganze Breite,
+ * darunter und darueber geschoben ein Bild, daneben ein knapper Text.
+ * Abgeleitet aus standard-berlin.de und lightshiprv.com ("This is the AE.1").
+ *
+ * Die Schriftgroesse passt ein kleines Skript genau an die Breite an; ohne
+ * JavaScript greift eine Schaetzung aus der Zeichenzahl. Die H1 bleibt
+ * vollstaendig sichtbar, das Bild ueberlappt nur ihre Unterkante, wenn
+ * ueberlappung gesetzt ist und das Wort darueber lesbar bleibt.
+ */
+import type { Aktion, Bild } from '../_lib.ts';
+interface Props { wort: string; satz?: string; bild?: Bild; freisteller?: Bild; aktion?: Aktion; ueberlappung?: boolean }
+const { wort, satz, bild, freisteller, aktion, ueberlappung = false } = Astro.props;
+---
+<section class:list={['auftakt', { ueberlappung }]} id="inhalt" style={`--zeichen:${wort.length}`}>
+  <h1 data-riesenwort><span>{wort}</span></h1>
+  <div class="unten">
+    {bild && <img class="foto" src={bild.src} alt={bild.alt} width="1100" height="800" fetchpriority="high" decoding="async" />}
+    <div class="text">
+      {satz && <p>{satz}</p>}
+      {aktion && <p><a href={aktion.ziel}>{aktion.label}</a></p>}
+    </div>
+    {freisteller && <img class="frei" src={freisteller.src} alt={freisteller.alt} width="520" height="520" decoding="async" />}
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const h = document.querySelector('[data-riesenwort]');
+    if (!h) return;
+    const s = h.firstElementChild;
+    const passen = () => {
+      s.style.fontSize = '100px';
+      const breite = s.getBoundingClientRect().width;
+      const c = getComputedStyle(h);
+      const platz = h.clientWidth - parseFloat(c.paddingLeft) - parseFloat(c.paddingRight);
+      if (breite) s.style.fontSize = `${(100 * platz * 0.995) / breite}px`;
+    };
+    (document.fonts?.ready ?? Promise.resolve()).then(passen);
+    addEventListener('resize', passen);
+  })();
+</script>
+
+<style>
+  .auftakt { padding-block-start: 5.5rem; background: var(--color-bg); overflow: hidden; }
+  h1 { margin: 0; padding-inline: var(--gutter); }
+  h1 span { display: inline-block; white-space: nowrap; font-family: var(--font-display); font-size: calc((100vw - 2 * var(--gutter)) / (var(--zeichen) * 0.62)); line-height: 0.95; font-weight: var(--text-display--font-weight); letter-spacing: var(--text-display--letter-spacing); }
+  .unten { display: grid; grid-template-columns: 1.2fr 1fr auto; align-items: end; gap: var(--space-6); padding: var(--space-5) var(--gutter) var(--space-8); }
+  .ueberlappung .foto { margin-top: -6%; position: relative; }
+  .foto { display: block; width: 100%; height: auto; max-height: 62svh; object-fit: cover; }
+  .text p { margin: 0 0 var(--space-4); max-width: 26rem; font-size: var(--text-lead); line-height: var(--text-lead--line-height); }
+  .text a { display: inline-block; padding: var(--space-2) var(--space-5); border-radius: var(--aktion-radius, var(--radius-sm)); box-shadow: inset 0 0 0 1px var(--color-text); color: var(--color-text); text-decoration: none; }
+  .text a:hover { background: var(--color-text); color: var(--color-bg); }
+  .frei { display: block; width: min(30vw, 26rem); height: auto; align-self: center; }
+  @media (max-width: 760px) { .unten { grid-template-columns: 1fr; } .frei { width: 60vw; justify-self: end; } }
+</style>

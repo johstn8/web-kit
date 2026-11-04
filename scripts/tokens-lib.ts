@@ -240,6 +240,17 @@ export interface Grammar {
    * vier von fuenf Presets null oder fast null war.
    */
   aktionsform?: 'kante' | 'weich' | 'rund' | 'pille';
+  /**
+   * Kraeftige Flaechen ausserhalb der festen Farbrollen, je mit eigener
+   * Schriftfarbe. Werden zu --feld-1-grund, --feld-1-text und so fort;
+   * check-contrast.ts prueft jedes Paar. Genutzt von Farbfelder.astro.
+   */
+  farbfelder?: { grund: string; text: string }[];
+  /**
+   * Aktion ueber Bildern, wenn der Akzent selbst Tinte ist und auf dunklen
+   * Fotos verschwinden wuerde. Wird zu --aktion-bild-grund und -text.
+   */
+  aktionAufBild?: { grund: string; text: string };
 }
 
 export type Preset = Partial<TokenFile> & { grammar?: Grammar };

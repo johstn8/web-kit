@@ -1,0 +1,52 @@
+---
+/**
+ * Auftakt "schlicht": Titel, ein Satz, zwei Aktionen, Bewertung, daneben
+ * ein Bild mit grossem Radius, darunter die Logos der Kunden. Viel Luft,
+ * keine Stimmung. Abgeleitet aus jovoco.io.
+ *
+ * Fuer Dienstleister mit gutem Ruf und wenig Fotos. Die Kundenlogos nur
+ * mit Erlaubnis und nur von echten Kunden.
+ */
+import Bewertungszeile from '../Bewertungszeile.astro';
+import type { Aktion, Bild } from '../_lib.ts';
+interface Props {
+  titel: string; lead: string; bild?: Bild; aktionen?: Aktion[];
+  bewertung?: { note: number; anzahl: number; quelle: string; url?: string };
+  logos?: Bild[]; logosTitel?: string;
+}
+const { titel, lead, bild, aktionen = [], bewertung, logos = [], logosTitel } = Astro.props;
+---
+<section class="auftakt" id="inhalt">
+  <div class="inner">
+    <div class="text">
+      <h1>{titel}</h1>
+      <p class="lead">{lead}</p>
+      {aktionen.length > 0 && <p class="handlung">{aktionen.map((a) => <a class={a.art ?? 'primaer'} href={a.ziel}>{a.label}</a>)}</p>}
+      {bewertung && <Bewertungszeile {...bewertung} />}
+    </div>
+    {bild && <img src={bild.src} alt={bild.alt} width="900" height="760" fetchpriority="high" decoding="async" />}
+  </div>
+  {logos.length > 0 && (
+    <div class="logos">
+      {logosTitel && <p>{logosTitel}</p>}
+      <ul>{logos.map((l) => <li><img src={l.src} alt={l.alt} loading="lazy" /></li>)}</ul>
+    </div>
+  )}
+</section>
+
+<style>
+  .auftakt { background: linear-gradient(180deg, var(--color-surface-alt), var(--color-bg) 70%); padding-block: 8rem var(--space-8); }
+  .inner { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-8); align-items: center; }
+  h1 { margin: 0; font-size: min(var(--text-display), 4.25rem); line-height: var(--text-display--line-height); font-weight: var(--text-display--font-weight); letter-spacing: var(--text-display--letter-spacing); text-wrap: balance; }
+  .lead { margin: var(--space-4) 0 0; max-width: 34rem; font-size: var(--text-lead); line-height: var(--text-lead--line-height); color: var(--color-text-secondary); text-wrap: pretty; }
+  .handlung { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 var(--space-4); }
+  .handlung a { display: inline-block; padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-sm)); font-weight: 500; text-decoration: none; }
+  .primaer { background: var(--color-accent); color: var(--color-accent-contrast); }
+  .sekundaer { background: var(--color-surface); color: var(--color-text); box-shadow: inset 0 0 0 1px var(--color-border); }
+  .inner > img { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); }
+  .logos { max-width: var(--container); margin: var(--space-12) auto 0; padding-inline: var(--gutter); text-align: center; }
+  .logos p { margin: 0 0 var(--space-5); font-size: var(--text-small); color: var(--color-text-secondary); }
+  .logos ul { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
+  .logos img { display: block; height: 1.75rem; width: auto; opacity: 0.8; }
+  @media (max-width: 760px) { .inner { grid-template-columns: 1fr; } .auftakt { padding-block-start: 6rem; } }
+</style>

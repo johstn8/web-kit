@@ -69,6 +69,8 @@ const grammatik = [
     : g?.aktionsform === 'rund' ? 'var(--radius-md)'
     : g?.aktionsform === 'pille' ? 'var(--radius-full)'
     : 'var(--radius-sm)'};`,
+  ...(g?.aktionAufBild ? [`  --aktion-bild-grund: ${g.aktionAufBild.grund};`, `  --aktion-bild-text: ${g.aktionAufBild.text};`] : []),
+  ...(g?.farbfelder ?? []).flatMap((f, i) => [`  --feld-${i + 1}-grund: ${f.grund};`, `  --feld-${i + 1}-text: ${f.text};`]),
   `  --beschriftung-versalien: ${g?.versalbeschriftung ? 'uppercase' : 'none'};`,
   `  --beschriftung-sperrung: ${g?.versalbeschriftung ? '0.06em' : '0'};`,
 ].join('\n');

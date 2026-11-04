@@ -1,0 +1,39 @@
+---
+/**
+ * Bildschirmhohe Farbfelder, die beim Scrollen uebereinander fahren. Jedes
+ * traegt ein sehr grosses Wort und einen kurzen Text. Abgeleitet aus
+ * the1.amsterdam, Farben aus grammar.farbfelder des Presets.
+ *
+ * the1 setzt riesige Ziffern 1, 2, 3 auf die Felder. Das ist hier gesperrt
+ * (S2 Nummernmarke), deshalb traegt das Feld ein Wort. Auf der Startseite
+ * hoechstens drei Felder, sonst greift die Gleichfoermigkeit nach S5.
+ * Klebend nur ab Tablet; darunter stehen die Felder einfach untereinander.
+ */
+interface Feld { wort: string; titel: string; text: string; ziel?: { label: string; href: string } }
+interface Props { felder: Feld[] }
+const { felder } = Astro.props;
+---
+<div class="farbfelder">
+  {felder.map((f, i) => (
+    <section style={`--g:var(--feld-${(i % 4) + 1}-grund, var(--color-surface-alt)); --t:var(--feld-${(i % 4) + 1}-text, var(--color-text)); z-index:${i + 1}`}>
+      <p class="wort" aria-hidden="true">{f.wort}</p>
+      <div class="inhalt">
+        <h2>{f.titel}</h2>
+        <p>{f.text}</p>
+        {f.ziel && <a href={f.ziel.href}>{f.ziel.label}</a>}
+      </div>
+    </section>
+  ))}
+</div>
+
+<style>
+  section { position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; gap: var(--space-5); padding: var(--space-12) var(--gutter) var(--space-8); background: var(--g); color: var(--t); overflow: hidden; }
+  .wort { margin: 0; align-self: center; font-family: var(--font-display); font-size: clamp(4.5rem, 21vw, 22rem); line-height: 0.85; letter-spacing: -0.06em; font-weight: var(--text-display--font-weight); white-space: nowrap; }
+  .inhalt { max-width: 26rem; margin-inline-start: auto; padding-block-start: var(--space-3); border-block-start: 1px solid currentColor; }
+  h2 { margin: 0 0 var(--space-2); font-size: var(--text-h3); font-weight: 600; letter-spacing: var(--text-h3--letter-spacing); }
+  .inhalt p { margin: 0; font-size: var(--text-body); line-height: 1.45; }
+  a { display: inline-block; margin-top: var(--space-3); color: inherit; font-weight: 600; }
+  @media (min-width: 760px) {
+    section { position: sticky; top: 0; }
+  }
+</style>
