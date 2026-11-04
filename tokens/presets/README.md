@@ -1,6 +1,6 @@
 # Art-Direction-Presets
 
-Dreizehn Stilrichtungen als **Datei**, nicht als Prosa. Jede ist ein
+Acht Stilrichtungen als **Datei**, nicht als Prosa. Jede ist ein
 vollständiger Tokensatz: Schriftrollen, Palette für Licht und Dunkel,
 Radius-, Abstands- und Bewegungsgrammatik, dazu die Entscheidung, was die
 Abgrenzung trägt.
@@ -12,11 +12,6 @@ Lösung, und die ist überall dieselbe.
 
 | Preset | Anmutung | Für | Abgrenzung | Aktion | Display / Text | Belegt an |
 |---|---|---|---|---|---|---|
-| `glas` | gegenwärtig | Finanzen, Software, hochwertige Dienstleistung | Fläche, Glas über Bild | Pille | Albert Sans | mercury.com, glisse.kelvinzhang.ca |
-| `nord` | gegenwärtig | Kreative Betriebe, Kultur, Coworking, Marken mit Haltung | Farbfelder auf Hellgrau | Pille | Familjen Grotesk | the1.amsterdam |
-| `teller` | gegenwärtig | Gastronomie, Manufaktur, Produkt mit starken Fotos | Weißraum, Reinweiß | Pille | Jost | lagalante-restaurant.de, standard-berlin.de |
-| `dienst` | gegenwärtig | IT, Agentur, Weiterbildung, Veranstaltung | Fläche, weiche Kacheln | Pille | Manrope | jovoco.io, comito.de, ko-mon.de |
-| `genuss` | gegenwärtig | Lebensmittelmarke, Hofladen, Feinkost | Farbfelder, Creme | weich | Gupter / Readex Pro | meracinque.com |
 | `produkt` | gegenwärtig | Hersteller, Industrie, Technik, B2B mit Produkten | Fläche, Kacheln mit großem Radius | weich | Onest / Onest | rico-gmbh.de |
 | `freundlich` | gegenwärtig | Kita, Friseur, Café, Sport, Fahrschule, Nachhilfe | Farbfläche | Pille | Gabarito / Figtree | – |
 | `klar` | gegenwärtig | Beratung, Immobilien, IT-Dienstleister, moderne Praxis | Haarlinie | rund | Golos Text / Golos Text | – |
@@ -26,9 +21,6 @@ Lösung, und die ist überall dieselbe.
 | `tisch` | klassisch | Gastronomie, Bäckerei, Hofladen, Hotellerie | Fläche, dunkel | weich | Alegreya 400 / Work Sans | minerestaurant.de, amritpalace.com, munrooftoprome.com |
 | `kanzlei` | klassisch | Kanzlei, Steuerberatung, Verwaltung | Linie | Kante | Spectral / Spectral | sacherer-partner.de |
 
-Alle acht nebeneinander, mit derselben Auftaktzeile gerendert:
-[`kacheln/uebersicht.webp`](kacheln/uebersicht.webp).
-
 **Gegenwärtig ist der Normalfall.** Die drei klassischen Presets tragen eine
 Serife und zitieren damit eine ältere Anmutung. Sie werden nur gewählt, wenn
 Marke, Ort oder Auftrag diesen Zeitbezug tragen, nicht weil die Gattung es
@@ -36,6 +28,8 @@ nahelegt. Bis 2026-11-04 gab es nur fünf Presets, drei davon mit Radius null
 und drei mit Serife; fünf der letzten acht gebauten Websites trugen danach
 eine Serife als Displayschrift. Regel in
 `web-brain 20-design/design-direction.md#Stilwahl je Auftrag`.
+
+**Ein Preset wechselt Farben und Schriften, nicht den Aufbau.** Für einen eigenen Aufbau gibt es die Website-Vorlagen unter `vorlagen/`; sie sind der Ausgangspunkt einer neuen Website, Presets die Ergänzung.
 
 **Ein Preset ist ein technischer Startpunkt, kein Stil.** Der Stil eines
 Auftrags entsteht aus der eigenen Stilrecherche dieses Laufs und liegt danach

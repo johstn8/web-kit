@@ -3,3 +3,4 @@ dist/
 .astro/
 qa-bericht/
 .blocktest/
+.vorlagenbau/

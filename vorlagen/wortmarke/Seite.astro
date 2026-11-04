@@ -1,0 +1,64 @@
+---
+/**
+ * Vorlage "wortmarke", Aufbau nach standard-berlin.de.
+ * Weiss. Wortmarke ueber die volle Breite, danach kein Raster im ueblichen Sinn:
+ * Hochformatfoto links am Rand, rechts daneben Navigation, Satz in Garamond und ein
+ * freigestelltes Gericht, Stern als Gutschein-Sticker. Schwarzes Band, Standorte als
+ * gerahmte Kaesten mit Schwarzweissfoto, Zeiten in Gruen, Telefon in Pink, kleine
+ * schwarze Knoepfe. Schachbrettband, Bilderwand, Fuss mittig in Garamond.
+ */
+import '../styles/tokens.css';
+import '../styles/fonts.css';
+const b = (n: string) => `./bilder/${n}.webp`;
+const orte = [['Mitte', 'Beispielstraße 7', '10119 Berlin', '192'], ['Prenzlauer Berg', 'Musterallee 102', '10435 Berlin', '42'], ['Charlottenburg', 'Platzhalterweg 63', '10625 Berlin', '60'], ['Kreuzberg', 'Vorlagenstraße 89', '10969 Berlin', '164']];
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>PINSA Berlin</title></head>
+<body>
+<h1 class="marke" aria-label="Pinsa Berlin"><span>PINSA</span></h1>
+<main>
+  <section class="auftakt">
+    <img class="hoch" src={b('63')} alt="Kaffee auf rotem Grund" />
+    <div class="rechts">
+      <nav aria-label="Hauptnavigation"><a class="an" href="#">Start</a><a href="#">Geschichte</a><a href="#">Feiern</a><a href="#">Catering</a><a href="#">Laden</a><a href="#">Jobs</a></nav>
+      <div class="text"><p class="eins">Pinsa aus Berlin</p><p>Teig. Menschen. Kultur.<br />Treffen am Tisch.</p><small><i>seit 2014</i></small></div>
+      <img class="gericht" src={b('102')} alt="Früchte auf weißem Grund" />
+    </div>
+    <a class="stern" href="#"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M100 8 124 72 192 76 138 118 158 186 100 146 42 186 62 118 8 76 76 72Z" fill="#fff" stroke="#000" stroke-width="2" /></svg><span>GUTSCHEINE</span></a>
+  </section>
+  <section class="zweit"><img src={b('225')} alt="" /><div class="siegel"><span>PINSA</span></div></section>
+  <h2 class="balken">UNSERE VIER LÄDEN</h2>
+  <section class="orte">
+    {orte.map(([n, a, p, bild]) => (
+      <article>
+        <div class="bw"><img src={b(bild)} alt="" /><span>{n}</span></div>
+        <div class="zeilen"><p class="adr">{a}<br />{p}<br /><b>030 / 0000000</b></p><p class="auf"><em>JEDEN TAG OFFEN</em><br />MO – FR 12:00 – 23:00<br />SA – SO 13:00 – 23:00</p></div>
+        <p class="knoepfe"><a href="#">KARTE</a><a class="leer" href="#">RESERVIEREN</a><a href="#">BESTELLEN</a></p>
+      </article>
+    ))}
+  </section>
+  <div class="schach" aria-hidden="true"></div>
+  <section class="wand">{['102','225','63','192','42','164','211','0'].map((n) => <img src={b(n)} alt="" loading="lazy" />)}</section>
+</main>
+<footer><p class="k">▲</p><p><a href="#">Impressum &amp; Datenschutz</a></p><p>© Beispielinhalt einer Vorlage<br />Alle Rechte vorbehalten</p></footer>
+<style is:global>
+  * { box-sizing: border-box; } html { overflow-x: clip; } body { margin: 0; background: #fff; color: #000; font-family: var(--font-body); overflow-x: clip; } img { display: block; width: 100%; object-fit: cover; } p, h1, h2 { margin: 0; } a { color: inherit; }
+  .marke { padding: 14px 8px 0; line-height: .78; font-family: var(--font-display); font-weight: 700; font-size: 29.5vw; letter-spacing: .015em; text-align: center; white-space: nowrap; height: 250px; overflow: visible; }
+  .marke span { display: block; font-size: 22vw; letter-spacing: .3em; margin-right: -.3em; }
+  .auftakt { position: relative; display: grid; grid-template-columns: 37.5% 1fr; height: 660px; }
+  .hoch { height: 100%; } .rechts { position: relative; } nav { position: absolute; left: 22%; top: 12px; display: flex; gap: 24px; align-items: center; font-size: 19px; } nav a { text-decoration: none; } nav .an { border: 1px solid #000; padding: 4px 28px; border-radius: 30px; }
+  .text { position: absolute; left: 7%; top: 300px; font-size: 34px; line-height: 1.12; } .text .eins { margin-bottom: 14px; } .text small { display: block; margin-top: 14px; font-size: 19px; }
+  .gericht { position: absolute; right: 8%; top: 80px; width: 320px; height: 320px; border-radius: 50%; }
+  .stern { position: absolute; right: 2%; bottom: -130px; width: 300px; height: 300px; text-decoration: none; transform: rotate(14deg); z-index: 2; } .stern span { position: absolute; inset: 0; display: grid; place-items: center; font: 700 20px var(--font-display); letter-spacing: .06em; }
+  .zweit { display: grid; grid-template-columns: 37.5% 1fr; height: 300px; position: relative; } .zweit img { height: 100%; } .siegel { position: absolute; left: 1%; bottom: 14px; width: 150px; height: 150px; border-radius: 50%; border: 2px solid #fff; display: grid; place-items: center; color: #fff; font: 700 18px var(--font-display); letter-spacing: .1em; }
+  .balken { background: #000; color: #fff; text-align: center; padding: 18px 0 14px; font: 700 34px var(--font-display); letter-spacing: .06em; }
+  .orte { display: grid; grid-template-columns: repeat(2, minmax(0, 720px)); gap: 26px 28px; justify-content: center; padding: 60px 24px 90px; } article { border: 1px solid #000; padding: 24px; }
+  .bw { position: relative; height: 340px; } .bw img { height: 100%; filter: grayscale(1) contrast(1.15); } .bw span { position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; color: #fff; font: 700 21px var(--font-display); letter-spacing: .08em; text-transform: uppercase; }
+  .zeilen { display: flex; justify-content: space-between; margin: 34px 0 40px; font: 700 15px/1.4 var(--font-display); letter-spacing: .05em; text-transform: uppercase; } .adr b { color: #e0115f; font-weight: 700; display: block; margin-top: 10px; } .auf { text-align: right; } .auf em { font-style: normal; color: #15803d; }
+  .knoepfe { display: flex; gap: 22px; align-items: center; } .knoepfe a { background: #000; color: #fff; padding: 5px 12px 3px; font: 700 14px var(--font-display); letter-spacing: .08em; text-decoration: none; } .knoepfe a.leer { background: #fff; color: #000; box-shadow: inset 0 0 0 1px #000; }
+  .schach { height: 130px; margin-top: 60px; background: conic-gradient(#c8102e 25%, #fff 0 50%, #006b3c 0 75%, #fff 0) 0 0 / 40px 40px; }
+  .wand { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 1110px; margin: 90px auto; } .wand img { aspect-ratio: .86; }
+  footer { text-align: center; font-size: 22px; line-height: 1.2; padding-bottom: 60px; } .k { font-size: 56px; } footer a { color: #e0115f; text-transform: uppercase; }
+  @media (max-width: 760px) { .marke { height: auto; padding-bottom: 12px; } .marke span { font-size: 21vw; letter-spacing: .2em; margin-right: -.2em; } .auftakt, .zweit { grid-template-columns: 1fr; height: auto; } .hoch { height: 300px; } .rechts { min-height: 520px; } nav { position: static; flex-wrap: wrap; padding: 12px; gap: 12px; font-size: 17px; } .text { left: 16px; top: 120px; font-size: 28px; } .gericht { width: 180px; height: 180px; top: auto; bottom: 20px; right: 16px; } .stern { display: none; } .zweit img { height: 220px; } .orte { grid-template-columns: 1fr; padding-inline: 16px; } .zeilen { flex-direction: column; gap: 16px; } .auf { text-align: left; } .knoepfe { flex-wrap: wrap; gap: 10px; } .balken { font-size: 24px; } .wand { grid-template-columns: repeat(2, 1fr); padding-inline: 16px; } }
+</style>
+</body></html>

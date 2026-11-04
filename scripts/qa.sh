@@ -25,6 +25,7 @@ KIT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DIR="$KIT/starter/dist"
 PORT=4321
 SKIP=""
+ERLAUBT=""
 BERICHT="$KIT/starter/qa-bericht"
 
 while [[ $# -gt 0 ]]; do
@@ -33,6 +34,7 @@ while [[ $# -gt 0 ]]; do
     --port)  PORT="$2"; shift 2 ;;
     --skip)  SKIP="$2"; shift 2 ;;
     --out)   BERICHT="$2"; shift 2 ;;
+    --erlaubt) ERLAUBT="$2"; shift 2 ;;
     -h|--help) sed -n '2,20p' "$0"; exit 0 ;;
     *) echo "Unbekannte Option: $1" >&2; exit 2 ;;
   esac
@@ -116,11 +118,11 @@ else
 fi
 
 # -------------------------------------------------- 5. Harte Sperren
-# Nicht abwaehlbar ueber --skip: Diese Muster sind gesperrt, nicht
-# begruendbar. Regeln: web-brain 20-design/anti-ai-slop.md#Harte Sperren
+# Nicht abwaehlbar ueber --skip. Nur mit --erlaubt, wenn das Vorbild der Website
+# es selbst so macht. Regeln: web-brain 20-design/anti-ai-slop.md#Harte Sperren
 kopf "Harte Sperren gegen KI-Anmutung"
 "$node_bin" --experimental-strip-types "$KIT/scripts/check-slop.ts" \
-  --base "http://localhost:$PORT" --dir "$DIR" --out "$BERICHT/slop.json" 2>&1 | sed 's/^/   /'
+  --base "http://localhost:$PORT" --dir "$DIR" --out "$BERICHT/slop.json" --erlaubt "$ERLAUBT" 2>&1 | sed 's/^/   /'
 case "${PIPESTATUS[0]}" in
   0) : ;;
   1) FEHLER=1 ;;

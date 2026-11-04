@@ -4,14 +4,15 @@ Material für Websites lokaler Betriebe: **womit** gebaut wird. Die
 Entscheidungen, **wie** gebaut wird, stehen im Schwesterrepository
 [web-brain](https://github.com/johstn8/web-brain).
 
-Das Kit ist der Pflichtausgangspunkt der Fast Lane. Wer einen Block neu
-schreibt, den es hier gibt, hat den falschen Weg genommen.
+Ausgangspunkt einer neuen Website ist eine ganze Vorlage aus `vorlagen/` oder
+eine vom Nutzer genannte Seite. Blöcke und Presets sind Hilfen dazu.
 
 ## Struktur
 
 ```
 tokens/     tokens.json als Quelle, tokens.css generiert, Theme-Ableitung
-tokens/presets/  dreizehn Art-Direction-Presets als Datei, kacheln/ mit Übersicht
+tokens/presets/  acht Art-Direction-Presets als Datei
+vorlagen/   zehn vollständige Startseiten, je nach dem Aufbau einer Website
 blocks/     Kopfzeile, Kopfinsel, auftakt/ (neun Kompositionen), Leistungen,
             Öffnungszeiten, Anfahrt, Team, Kontaktformular, Bewertungen,
             Preise, Karte, FAQ, Fußzeile, dazu Wortlicht, Kennzahlen,
@@ -48,8 +49,9 @@ Node 22 oder neuer. Die Skripte sind TypeScript und laufen ohne Buildschritt
 Dachzeile über einer Überschrift, Nummernmarke, farbig oder kursiv
 abgesetzte Teile einer Überschrift, ein Verlauf, der ein Foto in den
 Seitengrund ausblendet, und auf der Startseite drei Sektionen in Folge mit
-derselben Anordnung. `qa.sh` führt die Prüfung immer aus; sie lässt sich
-nicht über `--skip` abwählen.
+derselben Anordnung. `qa.sh` führt die Prüfung immer aus. Macht das Vorbild der
+Website es selbst so, stuft `--erlaubt nummernmarke,teilauszeichnung` diese
+Sperren zum Befund herab.
 
 Geeicht an realen Seiten: minerestaurant.de, pageou.de, barraberlin.com,
 lilianewyork.com und carbonenewyork.com bestehen, impastorosso.de fällt
@@ -66,9 +68,10 @@ node --experimental-strip-types scripts/tokens-to-css.ts  --preset werkstatt --o
 node --experimental-strip-types scripts/fetch-fonts.ts    --preset werkstatt
 ```
 
-Dreizehn Richtungen, zehn davon gegenwärtig (`glas`, `nord`, `teller`,
-`dienst`, `genuss`, `produkt`, `freundlich`, `klar`, `atelier`, `werkstatt`)
-und drei klassisch mit Serife (`praxis`, `tisch`, `kanzlei`). Jede hat eigene Schrift, Palette, Radius-, Trenn- und
+Acht Richtungen, fünf davon gegenwärtig (`produkt`, `freundlich`, `klar`,
+`atelier`, `werkstatt`) und drei klassisch mit Serife (`praxis`, `tisch`,
+`kanzlei`). Ein Preset wechselt nur Farben und Schriften; den Aufbau bringt
+eine Vorlage aus `vorlagen/`. Jede hat eigene Schrift, Palette, Radius-, Trenn- und
 Aktionsgrammatik. Einzelheiten und Übersichtsbild in
 [tokens/presets/README.md](tokens/presets/README.md).
 

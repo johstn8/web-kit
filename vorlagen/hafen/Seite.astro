@@ -1,0 +1,155 @@
+---
+/**
+ * Vorlage "hafen", Aufbau nach the1.amsterdam.
+ * Hellgrau, Schrift bis 215 px mit -0.06em, Text rechtsbuendig gegen linksbuendig.
+ * Folge: Titel rechts / Woerter links / vier Farbkacheln, Farbbaender mit Riesenziffern,
+ * Bildband, Titel rechts, Foto mit Flanken, Text auf Bild, Foto aus dem Kreis,
+ * Liste steuert Bild, Bildband, gelbe Karte, Fuss mit Riesen-Wortmarke und Bildern.
+ */
+import '../styles/tokens.css';
+import '../styles/fonts.css';
+const b = (n: string) => `./bilder/${n}.webp`;
+const felder = [
+  { n: '1', f: '#fa4d43', t: 'Wir ziehen an', x: 'Ein Haus mit Atmosphäre und Weitblick, das Lust macht, morgens ins Büro zu gehen.' },
+  { n: '2', f: '#fbb833', t: 'Wir sind bunt', x: 'Jeder Eingang hat seine Farbe. Ihre Gäste finden Sie sofort, und Ihr Unternehmen bleibt im Kopf.' },
+  { n: '3', f: '#027b49', t: 'Wir sind nah', x: 'Fähre, Bus und Rad halten direkt vor der Tür. Die Innenstadt liegt vier Minuten entfernt.' },
+  { n: '4', f: '#f19ec8', t: 'Wir haben Platz', x: 'Hohe Etagen auf 2.400 Quadratmetern für kreative Firmen, dazu Stellplätze unter dem Haus.' },
+];
+const raeume = [['Kaffeebar', '192', '#fa4d43'], ['Empfang', '42', '#fbb833'], ['Sitzungsraum', '164', '#027b49'], ['Tiefgarage', '133', '#f19ec8'], ['Aussicht', '211', '#fa4d43']];
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>HAUS7 am Hafen</title></head>
+<body>
+<a class="marke" href="#">HAUS7</a><button class="punkt" aria-label="Menü"></button>
+<main>
+  <section class="start">
+    <h1>Für alle, die mehr wollen</h1>
+    <ul class="worte" aria-hidden="true"><li>Bunt</li><li>Nah</li></ul>
+    <div class="klein"><b>Büros am alten Hafen</b><p>Wo Hafengeschichte auf neue Architektur trifft.</p><p class="frage">Sind Sie dabei? <a href="#">Mehr erfahren</a></p></div>
+    <div class="kacheln">
+      {['#027b49','#f19ec8','#fbb833','#fa4d43'].map((f, i) => <div style={`background:${f}`}><img src={b(['164','211','192','42'][i])} alt="" /></div>)}
+    </div>
+  </section>
+
+  <section class="baender" data-baender>
+    <div class="buehne">
+      {felder.map((f, i) => (
+        <article style={`background:${f.f};--i:${i}`} class:list={{ gruen: f.n === '3' }}>
+          <span class="ziffer" aria-hidden="true">{f.n}</span>
+          <div class="txt"><h2>{f.t}</h2><p>{f.x}</p></div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="band">
+    {[['164','Hafenbecken',260],['211','Alte Werft',300],['192','Kantine',220],['42','Atelier',280],['229','Am Wasser',240]].map(([n, t, h]) => <figure style={`height:${h}px`}><img src={b(String(n))} alt="" /><figcaption>{t}</figcaption></figure>)}
+  </div>
+
+  <section class="herz">
+    <h2>Mitten im Leben<br />am Wasser</h2>
+    <div class="flanke" data-wachsen><img src={b('164')} alt="" /><img src={b('211')} alt="Fähre im Hafen" /><img src={b('42')} alt="" /></div>
+  </section>
+  <section class="aufbild"><img src={b('211')} alt="" /><p>Hamburg<br />Nord</p></section>
+  <section class="kultur">
+    <p class="gross">wir pflegen</p><p class="gross">Ideen,</p>
+    <img class="a" src={b('192')} alt="" /><div class="q" style="background:#fa4d43"><img src={b('164')} alt="" /></div>
+    <p class="gross r">Austausch</p>
+  </section>
+
+  <section class="kreis" data-kreis><div class="klebt"><img src={b('235')} alt="" /><p>für unsere Mieter.</p></div></section>
+
+  <section class="liste" data-liste>
+    <div class="klebt">
+      <div class="links">
+        <p class="satz">Das Haus lädt Sie ein, ins Büro zu kommen.</p>
+        <p class="neben">Wir bauen eine Gemeinschaft auf, die zum Hafen passt: Räume für Zusammenarbeit, Netzwerk und Zufälle.</p>
+        <ul>{raeume.map(([t, , f], i) => <li data-i={i}><span>{t}</span><i style={`background:${f}`}></i></li>)}</ul>
+      </div>
+      <div class="rechts">{raeume.map(([t, n], i) => <img data-i={i} src={b(n)} alt={t} loading="lazy" />)}</div>
+    </div>
+  </section>
+
+  <section class="karte">
+    <div class="kl"><h2>Mitten in Hamburg</h2><a href="#">Kontakt</a></div>
+    <div class="plan" aria-hidden="true"><b>7</b></div>
+    <div class="kr"><p>Das Haus liegt vier Minuten von der Fähre, mit eigener Haltestelle und Fahrradstellplätzen.</p><p>Folgen Sie den Farben zu Ihrem Eingang.</p><a href="#">Route öffnen</a></div>
+  </section>
+</main>
+<footer>
+  <div class="riesig"><span>HAUS7</span><div class="f1" style="background:#027b49"><img src={b('164')} alt="" /></div><div class="f2" style="background:#f19ec8"><img src={b('42')} alt="" /></div><div class="f3" style="background:#fa4d43"><img src={b('192')} alt="" /></div></div>
+  <div class="spalten"><p><b>Adresse</b><br />Am Kai 7<br />20457 Hamburg</p><p><b>Vermietung</b><br />mieten@beispiel.de<br />040 000000</p><p><b>Rechtliches</b><br />Impressum<br />Datenschutz</p><p><b>Hinweis</b><br />Alle Angaben ohne Gewähr. Beispielinhalt einer Vorlage.</p></div>
+</footer>
+
+<script is:inline>
+(() => {
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const band = document.querySelector('[data-baender]'), teile = [...band.querySelectorAll('article')];
+  const kreis = document.querySelector('[data-kreis]'), kreisBild = kreis.querySelector('img');
+  const liste = document.querySelector('[data-liste]'), punkte = [...liste.querySelectorAll('li')], bilder = [...liste.querySelectorAll('.rechts img')];
+  const fortschritt = (el) => { const r = el.getBoundingClientRect(); return Math.min(1, Math.max(0, -r.top / (r.height - innerHeight))); };
+  const zeichnen = () => {
+    const p = fortschritt(band) * (teile.length - 1);
+    teile.forEach((t, i) => { const k = Math.min(1, Math.max(0, p - i + 1)); t.style.transform = i === 0 ? 'none' : `translateX(${(1 - k) * (100 - i * 5)}%)`; });
+    const q = fortschritt(kreis);
+    kreisBild.style.clipPath = `circle(${28 + q * 90}% at 50% 50%)`;
+    kreis.querySelector('p').style.opacity = q > 0.55 ? 1 : 0;
+    const a = Math.min(punkte.length - 1, Math.floor(fortschritt(liste) * punkte.length));
+    punkte.forEach((l, i) => l.classList.toggle('an', i === a));
+    bilder.forEach((l, i) => l.classList.toggle('an', i === a));
+  };
+  if (ruhig) { document.documentElement.classList.add('ruhig'); return; }
+  let w = false; addEventListener('scroll', () => { if (!w) { w = true; requestAnimationFrame(() => { w = false; zeichnen(); }); } }, { passive: true });
+  addEventListener('resize', zeichnen); zeichnen();
+})();
+</script>
+<style is:global>
+  * { box-sizing: border-box; } html { background: #d9d9d9; overflow-x: clip; }
+  body { margin: 0; font-family: var(--font-body); color: #1f1f1f; background: #d9d9d9; letter-spacing: -0.03em; font-size: 18px; line-height: 1.25; overflow-x: clip; }
+  img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  p, h1, h2, ul, figure { margin: 0; padding: 0; } ul { list-style: none; } a { color: inherit; }
+  .marke { position: fixed; top: 22px; left: 28px; z-index: 50; font-weight: 500; font-size: 24px; text-decoration: none; letter-spacing: 0; mix-blend-mode: normal; }
+  .punkt { position: fixed; top: 20px; right: 26px; z-index: 50; width: 34px; height: 34px; border-radius: 50%; border: 0; background: #1f1f1f; cursor: pointer; }
+  .punkt::after { content: ''; position: absolute; inset: 16px 9px; background: #f0f0f0; }
+  .gross, h1, .herz h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(52px, 14.9vw, 215px); line-height: .93; letter-spacing: -.06em; }
+  .start { position: relative; padding: 70px 24px 0; min-height: 1190px; }
+  h1 { text-align: right; max-width: 100%; margin-left: auto; width: 74%; }
+  .worte { margin-top: 100px; font-family: var(--font-display); font-size: clamp(52px, 14.9vw, 215px); line-height: .93; letter-spacing: -.06em; color: #1f1f1f; }
+  .klein { position: absolute; right: 28px; top: 700px; width: 330px; font-size: 16px; }
+  .klein p { margin-top: 8px; } .frage a { background: #1f1f1f; color: #f0f0f0; padding: 4px 14px; border-radius: 30px; text-decoration: none; margin-left: 8px; font-size: 14px; }
+  .kacheln { position: absolute; left: 24px; right: 24px; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; height: 200px; }
+  .kacheln div { position: relative; overflow: hidden; } .kacheln img { position: absolute; bottom: 0; height: 58%; clip-path: polygon(0 100%, 0 42%, 38% 0, 100% 34%, 100% 100%); }
+  .baender { height: 420vh; margin-top: 100px; } .buehne { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+  .baender article { position: absolute; inset: 0; will-change: transform; }
+  .ziffer { position: absolute; left: 2%; top: 4vh; font-family: var(--font-display); font-size: 108vh; line-height: .85; letter-spacing: -.06em; }
+  .txt { position: absolute; left: 44%; bottom: 40px; width: 300px; padding-top: 10px; border-top: 1px solid currentColor; font-size: 18px; }
+  .txt h2 { font-size: 18px; font-weight: 500; letter-spacing: -.03em; margin-bottom: 6px; } .gruen { color: #fff; }
+  .band { display: flex; align-items: flex-start; gap: 16px; padding: 90px 24px; overflow: hidden; } .band figure { flex: 1; } .band figure img { height: calc(100% - 26px); } figcaption { font-size: 14px; margin-top: 6px; }
+  .herz { padding: 60px 24px 140px; } .herz h2 { text-align: right; }
+  .flanke { display: grid; grid-template-columns: 14% 1fr 14%; gap: 70px; align-items: center; margin: 120px -24px 0; }
+  .flanke img { height: 420px; } .flanke img:nth-child(2) { height: 760px; }
+  .aufbild { position: relative; height: 640px; } .aufbild p { position: absolute; right: 24px; top: 40px; text-align: right; color: #fff; font-family: var(--font-display); font-size: clamp(52px, 14.9vw, 215px); line-height: .93; letter-spacing: -.06em; }
+  .kultur { position: relative; padding: 60px 24px 140px; }
+  .kultur .a { position: absolute; left: 0; top: 330px; width: 390px; height: 400px; } .q { position: absolute; left: 62%; top: 300px; width: 210px; height: 240px; overflow: hidden; } .q img { position: absolute; bottom: 0; height: 60%; }
+  .gross.r { text-align: right; margin-top: 260px; }
+  .kreis { height: 260vh; } .kreis .klebt { position: sticky; top: 0; height: 100vh; overflow: hidden; } .kreis img { clip-path: circle(28% at 50% 50%); } .kreis p { position: absolute; left: 24px; top: 40%; color: #fff; transition: opacity .3s; font-family: var(--font-display); font-size: clamp(56px, 12vw, 175px); letter-spacing: -.06em; }
+  .liste { height: 420vh; } .liste .klebt { position: sticky; top: 0; height: 100vh; display: grid; grid-template-columns: 330px 1fr; gap: 24px; padding: 76px 24px 24px; }
+  .links { display: flex; flex-direction: column; } .satz { font-size: 24px; line-height: 1.1; } .neben { font-size: 14px; margin-top: 16px; } .links ul { margin-top: auto; font-size: 14px; }
+  .links li { display: flex; justify-content: space-between; align-items: center; padding: 3px 8px; } .links li i { width: 12px; height: 12px; border-radius: 50%; } .links li.an { background: #1f1f1f; color: #f0f0f0; }
+  .rechts { position: relative; } .rechts img { position: absolute; inset: 0; opacity: 0; transition: opacity .35s; } .rechts img.an, .ruhig .rechts img:first-child { opacity: 1; }
+  .karte { background: #fbb833; display: grid; grid-template-columns: 22% 1fr 22%; gap: 24px; padding: 40px 24px; min-height: 760px; margin-top: 90px; }
+  .karte h2 { font-weight: 400; font-size: 32px; letter-spacing: -.04em; line-height: 1; } .kl a { display: inline-block; margin-top: 12px; background: #1f1f1f; color: #f0f0f0; padding: 5px 14px; border-radius: 30px; text-decoration: none; font-size: 14px; }
+  .plan { background: rgb(0 0 0 / .08) repeating-linear-gradient(35deg, transparent 0 60px, rgb(0 0 0 / .1) 60px 62px), repeating-linear-gradient(-55deg, transparent 0 90px, rgb(0 0 0 / .1) 90px 92px); display: grid; place-items: center; }
+  .plan b { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; background: #1f1f1f; color: #fff; font-weight: 500; }
+  .kr { align-self: end; font-size: 16px; } .kr p { margin-bottom: 14px; } .kr a { border: 1px solid; border-radius: 30px; padding: 3px 12px; text-decoration: none; font-size: 14px; }
+  footer { padding: 90px 24px 24px; } .riesig { position: relative; } .riesig span { display: block; font-family: var(--font-display); font-weight: 700; font-size: 25.5vw; letter-spacing: -.03em; line-height: .8; }
+  .riesig div { position: absolute; overflow: hidden; } .riesig img { position: absolute; bottom: 0; height: 62%; }
+  .f1 { left: 62%; top: -14%; width: 14%; height: 58%; } .f2 { left: 0; top: 18%; width: 19%; height: 66%; } .f3 { left: 74%; top: 38%; width: 12%; height: 56%; }
+  .spalten { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 50px; font-size: 14px; }
+  @media (max-width: 760px) {
+    .start { min-height: auto; padding-bottom: 24px; } h1 { width: 100%; } .klein { position: static; margin-top: 30px; width: auto; } .kacheln { position: static; margin-top: 30px; grid-template-columns: repeat(2, 1fr); height: 280px; }
+    .txt { left: 24px; right: 24px; width: auto; bottom: 24px; } .ziffer { font-size: 70vh; bottom: 30vh; } .flanke { grid-template-columns: 1fr; margin-inline: 0; gap: 16px; } .flanke img:not(:nth-child(2)) { display: none; } .flanke img:nth-child(2) { height: 380px; }
+    .kultur .a, .q { position: static; width: 100%; height: 240px; margin-top: 16px; } .gross.r { margin-top: 30px; } .liste .klebt { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } .links ul { margin-top: 12px; } .karte { grid-template-columns: 1fr; } .plan { min-height: 300px; } .spalten { grid-template-columns: repeat(2, 1fr); } .band figure:nth-child(n+4) { display: none; }
+  }
+</style>
+</body></html>

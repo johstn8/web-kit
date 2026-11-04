@@ -95,7 +95,39 @@ const MESSUNG = String.raw`(() => {
     schatten: haeufig(flaechen.map((el) => getComputedStyle(el).boxShadow).filter((x) => x !== 'none')),
     bildRadien: haeufig(bilder.map((el) => getComputedStyle(el).borderTopLeftRadius)),
     hoehe: document.documentElement.scrollHeight,
-    // Hinweise auf Technik und Bewegung, nicht auf Qualitaet.
+    // Aufbau der Seite Abschnitt fuer Abschnitt: was steht wo, wie gross, auf
+    // welchem Grund. Ohne das bleibt von einer Referenz nur die Palette.
+    aufbau: (() => {
+      const hoch = (el) => el.getBoundingClientRect().height;
+      let wurzel = document.querySelector('main') || document.body;
+      for (let i = 0; i < 6; i++) {
+        const kinder = [...wurzel.children].filter((k) => sicht(k) && hoch(k) > 60);
+        if (kinder.length >= 3) break;
+        const groesstes = kinder.sort((a, b) => hoch(b) - hoch(a))[0];
+        if (!groesstes) break;
+        wurzel = groesstes;
+      }
+      return [...wurzel.children].filter((k) => sicht(k) && hoch(k) > 60).slice(0, 40).map((el) => {
+        const r = el.getBoundingClientRect(); const s = getComputedStyle(el);
+        const top = r.top + scrollY;
+        const bilder = [...el.querySelectorAll('img, video, picture')].filter(sicht).filter((b) => b.getBoundingClientRect().width > 80);
+        const k = el.querySelector('h1, h2, h3'); const ks = k ? getComputedStyle(k) : null; const kr = k ? k.getBoundingClientRect() : null;
+        const spalten = new Set([...el.querySelectorAll('h1,h2,h3,p,img,video,a')].filter(sicht).map((x) => Math.round(x.getBoundingClientRect().left / 60))).size;
+        return {
+          y: Math.round(top), h: Math.round(r.height), breite: Math.round(r.width), grund: s.backgroundColor,
+          titel: k ? k.textContent.trim().slice(0, 50) : '', titelGroesse: ks?.fontSize, titelAusrichtung: ks?.textAlign,
+          titelX: kr ? Math.round((kr.left / innerWidth) * 100) : null,
+          bilder: bilder.length, bildFlaeche: Math.round(bilder.reduce((n, b) => { const q = b.getBoundingClientRect(); return n + q.width * q.height; }, 0) / (r.width * r.height + 1) * 100),
+          links: el.querySelectorAll('a, button').length, klebend: el.querySelectorAll('*').length < 4000 && [...el.querySelectorAll('*')].some((x) => getComputedStyle(x).position === 'sticky'), spalten,
+        };
+      });
+    })(),
+    kopf: (() => {
+      const h = document.querySelector('header') || [...document.querySelectorAll('nav')][0];
+      if (!h) return null;
+      const s = getComputedStyle(h); const r = h.getBoundingClientRect();
+      return { position: s.position, hoehe: Math.round(r.height), breite: Math.round(r.width), oben: Math.round(r.top), links: Math.round(r.left), grund: s.backgroundColor, radius: s.borderTopLeftRadius, glas: s.backdropFilter };
+    })(),
     technik: {
       glas: [...document.querySelectorAll('*')].filter((el) => { const s = getComputedStyle(el); return (s.backdropFilter && s.backdropFilter !== 'none') || (s.webkitBackdropFilter && s.webkitBackdropFilter !== 'none'); }).length,
       glasWerte: haeufig([...document.querySelectorAll('*')].map((el) => getComputedStyle(el).backdropFilter).filter((x) => x && x !== 'none')),
@@ -221,6 +253,7 @@ try {
   console.log(`              Farben ${messung.flaechenFarben.map(([c]: [string]) => c).join(', ') || '-'}`);
   console.log(`   Bilder     Radius ${messung.bildRadien.map(([r, n]: [string, number]) => `${r} (${n}x)`).join(', ') || '-'}`);
   console.log(`   Schatten   ${messung.schatten.length ? messung.schatten.map(([x]: [string]) => x).join(' | ') : 'keine'}`);
+  for (const b of messung.aufbau ?? []) console.log(`   ${String(b.y).padStart(6)} h${String(b.h).padEnd(5)} ${String(b.grund).padEnd(22)} ${String(b.titelGroesse ?? '').padEnd(9)} ${String(b.titelAusrichtung ?? '').padEnd(7)} x${String(b.titelX ?? '').padEnd(3)} Bilder ${b.bilder}/${b.bildFlaeche}% Spalten ${b.spalten} ${b.klebend ? 'klebend ' : ''}${b.titel}`);
   const t = messung.technik;
   console.log(`   Technik    Glas ${t.glas}x ${t.glasWerte.map(([x]: [string]) => x).join(', ')}, klebend ${t.klebend}, Video ${t.videos}, Canvas ${t.leinwand}, SVG ${t.svg}, ${t.bibliotheken.join(', ') || 'keine erkannte Bibliothek'} ${t.generator}`);
   console.log(`\n   Messung und Aufnahmen in ${ziel}`);

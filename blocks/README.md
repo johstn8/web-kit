@@ -1,5 +1,8 @@
 # Blöcke
 
+Blöcke sind Einzelteile. Eine neue Website startet mit einer ganzen Vorlage aus
+`vorlagen/`; Blöcke helfen, wo sie passen, und werden nicht vorgeschrieben.
+
 Alle Blöcke nutzen nur die Rollen des Tokenvertrags und laufen deshalb in
 jedem Preset. Text und Bilder kommen als Props, nie aus dem Block selbst.
 
@@ -34,7 +37,7 @@ Aufbau und gemessene Werte, nicht Quelltext, Texte oder Bilder.
 | `Querband` | große Karten zum Wischen, Plus klappt Text auf | lightshiprv.com | starke Bilder |
 | `Kacheln` | Kachelraster mit großer Bildfläche, hell und dunkel im Wechsel, Kennwerte als Glasetiketten | mercury.com, rico-gmbh.de | Motive; belegte Kennwerte |
 | `Freisteller` | freigestellte Objekte oder Rechteckbilder am Rand direkt auf hellem Grund | lagalante-restaurant.de, standard-berlin.de | sehr gute Bilder |
-| `Farbfelder` | bildschirmhohe Farbfelder fahren übereinander, riesiges Wort, kurzer Text | the1.amsterdam, meracinque.com | Preset mit `grammar.farbfelder`; höchstens drei Felder |
+| `Farbfelder` | bildschirmhohe Farbfelder fahren übereinander, riesiges Wort, kurzer Text | the1.amsterdam, meracinque.com | Preset mit `grammar.farbfelder` |
 
 ## Material
 

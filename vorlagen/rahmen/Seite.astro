@@ -1,0 +1,101 @@
+---
+/**
+ * Vorlage "rahmen", Aufbau nach lightshiprv.com.
+ * Oben ein Hinweisband, das Foto steht mit 8 px Rand und kleinem Radius im Fenster,
+ * zwei Halbsaetze links und rechts auf der Mittellinie. Danach grauer Mitteltext,
+ * Riesensatz bleibt kleben, Bilder fahren darueber und stapeln sich, kleine Texte
+ * erscheinen seitlich. Zentrierter Titel, Karten mit Plus, Vollbild im Rahmen mit
+ * Pille, grosser Absatz links, Team, Karten, Newsletter auf Sandflaeche, Fuss.
+ * Die Navigation wandert vom Foto in eine schwebende Leiste.
+ */
+import '../styles/tokens.css';
+import '../styles/fonts.css';
+const b = (n: string) => `./bilder/${n}.webp`;
+const nav = ['Modell', 'Technik', 'Daten'];
+const karten = [['183', 'Antrieb', 'Doppelte Reichweite, gleicher Akku.'], ['133', 'Ruhe', 'Leise ist hier serienmäßig.'], ['229', 'Aerodynamik', 'Gebaut, um zu verschwinden.'], ['128', 'Strom', 'Tagelang ohne Steckdose.']];
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Nordlicht Camper</title></head>
+<body>
+<div class="hinweis"><span>Aktuell</span><p>Gebaut in Bremen. Jetzt deutschlandweit <a href="#">Modell live ansehen</a></p><button aria-label="Hinweis schließen">×</button></div>
+<nav class="leiste" data-leiste aria-label="Hauptnavigation">
+  <button class="menue" aria-label="Menü"><i></i></button>
+  {nav.map((n) => <a href="#">{n}</a>)}<a class="logo" href="#" aria-label="Startseite">✦✦</a><a href="#">Erleben</a><a href="#">Konfigurieren</a>
+</nav>
+<main>
+  <section class="foto" data-oben>
+    <img src={b('128')} alt="Camper am See" />
+    <div class="mitte"><span>NORDLICHT</span></div>
+    <h1><span>Gebaut für draußen.</span><span>Gebaut in Bremen.</span></h1>
+    <div class="fusslinie"><i></i><span>Scrollen</span></div>
+  </section>
+  <p class="grau">Nordlicht ist ein neuer Maßstab fürs Reisen, in dem Fahrzeugtechnik auf ehrliches Handwerk trifft. Alles entsteht unter einem Dach.</p>
+
+  <section class="kleben">
+    <h2>Das ist der N.1</h2>
+    <div class="stapel">
+      <figure class="s1"><img src={b('235')} alt="" /></figure>
+      <p class="n l"><b>Frei, neu gedacht.</b><br />Weiter, länger, stiller unterwegs mit denen, die zählen.</p>
+      <figure class="s2"><img src={b('177')} alt="" /></figure>
+      <p class="n r"><b>Mehr vom Wesentlichen.</b><br />Mit 77 kWh Akku und Solar auf dem Dach wird das Ziel noch besser.</p>
+      <figure class="s3"><img src={b('192')} alt="" /></figure>
+      <figure class="s4"><img src={b('15')} alt="" /><figcaption>Dein Zuhause, überall.<a href="#">N.1 entdecken</a></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="sys">
+    <h2>Klare Systeme.<br />Ruhige Fahrt.</h2><a class="pille" href="#">Technik</a>
+    <ul class="karten">{karten.map(([n, k, t]) => <li><img src={b(n)} alt="" loading="lazy" /><small>{k}</small><p>{t}</p><button aria-label={`Mehr zu ${k}`}>+</button></li>)}</ul>
+  </section>
+
+  <section class="voll"><img src={b('183')} alt="" /><div><h2>Die Reise beginnt<br />mit einem genauen Blick.</h2><a href="#">N.1 entdecken</a></div></section>
+
+  <p class="absatz">Entdecke einen besseren Weg zu reisen, auf dem sich Natur leicht anfühlt, Tage ohne Netz länger werden und die Stille bleibt. Mit klugem Aufbau wird die Fahrt unvergesslich.</p>
+  <section class="team"><div><p>Wir haben mit einer Überzeugung begonnen: Unterwegs sein soll mühelos sein. Darum bauen wir vom ersten Blech bis zur letzten Schraube alles selbst, damit Sie sich aufs Ankommen freuen können.</p><a class="pille" href="#">Über uns</a></div><img src={b('42')} alt="" /></section>
+
+  <h2 class="mehr">Mehr entdecken</h2>
+  <ul class="reihe">{[['60','Neue Halle in Bremen','14.04.'],['158','Was den Standard ausmacht','02.03.'],['229','Warum ich den N.1 fahre','11.02.'],['235','Beirat wächst','01.02.']].map(([n, t, d]) => <li><img src={b(n)} alt="" loading="lazy" /><p>{t}</p><small>{d}</small></li>)}</ul>
+
+  <section class="brief"><div><h2>Neuigkeiten zur Produktion, Termine der Tour und Geschichten von unterwegs.</h2><form><input aria-label="Postleitzahl" placeholder="Postleitzahl" /><span><input aria-label="E-Mail" placeholder="name@mail.de" /><button type="button">Eintragen →</button></span></form></div><img src={b('128')} alt="" /></section>
+</main>
+<footer><div class="sterne">✦✦</div><div class="fz"><p><b>Weiter.</b> Nordlicht baut elektrische Reisefahrzeuge für Menschen, die gern draußen sind.</p><ul><li>N.1</li><li>Technik</li><li>Erleben</li><li>Konfigurieren</li></ul></div><p class="recht">© Beispielinhalt einer Vorlage · Datenschutz · Impressum</p></footer>
+<script is:inline>
+(() => {
+  const leiste = document.querySelector('[data-leiste]'), oben = document.querySelector('[data-oben]');
+  new IntersectionObserver(([e]) => leiste.classList.toggle('klein', !e.isIntersecting), { rootMargin: '-200px 0px 0px 0px' }).observe(oben);
+})();
+</script>
+<style is:global>
+  * { box-sizing: border-box; } body { margin: 0; font-family: var(--font-body); color: #000; background: #fff; letter-spacing: -.02em; overflow-x: clip; }
+  img { display: block; width: 100%; object-fit: cover; } p, h1, h2, ul, figure { margin: 0; padding: 0; } ul { list-style: none; } a { color: inherit; } h1, h2 { font-weight: 400; font-family: var(--font-display); }
+  .hinweis { position: fixed; inset: 0 0 auto; z-index: 40; height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; background: #2c5f6f; color: #fff; font-size: 13px; }
+  .hinweis a { background: #fff; color: #000; padding: 4px 12px; border-radius: 20px; text-decoration: none; margin-left: 8px; } .hinweis button { background: none; border: 0; color: #fff; font-size: 18px; }
+  .leiste { position: fixed; top: 58px; left: 50%; translate: -50% 0; z-index: 39; width: min(1060px, 92vw); display: flex; align-items: center; gap: 26px; padding: 8px 22px; border-radius: 12px; color: #fff; font-size: 15px; transition: background .3s, color .3s, box-shadow .3s; }
+  .leiste a { text-decoration: none; } .leiste .logo { margin: 0 auto; font-size: 18px; letter-spacing: -.2em; opacity: 0; transition: opacity .3s; }
+  .leiste.klein { background: rgb(232 232 232 / .86); color: #000; -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); } .leiste.klein .logo { opacity: 1; }
+  .menue { background: none; border: 0; color: inherit; width: 24px; } .menue i { display: block; height: 7px; border-block: 1.5px solid currentColor; }
+  .foto { position: relative; height: 100vh; min-height: 620px; padding: 52px 8px 8px; } .foto img { height: 100%; border-radius: 10px; }
+  .mitte { position: absolute; top: 68px; left: 0; right: 0; text-align: center; color: #fff; letter-spacing: .32em; font-size: 15px; }
+  .foto h1 { position: absolute; inset: 50% 28px auto; display: flex; justify-content: space-between; gap: 40px; color: #fff; font-size: clamp(28px, 5vw, 72px); letter-spacing: -.05em; line-height: 1; }
+  .fusslinie { position: absolute; left: 28px; right: 28px; bottom: 24px; display: flex; justify-content: flex-end; color: #fff; font-size: 13px; padding-top: 8px; border-top: 1px solid rgb(255 255 255 / .5); }
+  .grau { max-width: 640px; margin: 200px auto; text-align: center; color: #6f6f6f; font-size: 24px; line-height: 1.3; }
+  .kleben { position: relative; } .kleben h2 { position: sticky; top: 60px; font-size: 17.6vw; letter-spacing: -.055em; line-height: 1; white-space: nowrap; text-align: center; padding-bottom: 20px; }
+  .stapel { position: relative; display: grid; grid-template-columns: 1fr 38% 1fr; gap: 0 40px; padding-bottom: 80px; margin-top: 8vw; }
+  .stapel figure { grid-column: 2; position: sticky; top: 160px; border-radius: 10px; overflow: hidden; height: 76vh; margin-bottom: 26vh; } .stapel img { height: 100%; }
+  .stapel .n { color: #6f6f6f; font-size: 15px; line-height: 1.35; align-self: start; position: sticky; top: 42vh; margin-top: 10vh; } .stapel b { color: #000; font-weight: 500; }
+  .n.l { grid-column: 1; grid-row: 1; padding-left: 22%; } .n.r { grid-column: 3; grid-row: 2; padding-right: 22%; } .s1 { grid-row: 1; } .s2 { grid-row: 2; } .s3 { grid-row: 3; } .s4 { grid-row: 4; }
+  figcaption { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; color: #fff; font-size: 34px; letter-spacing: -.04em; gap: 10px; } figcaption a { font-size: 13px; background: rgb(120 120 120 / .4); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); padding: 7px 14px; border-radius: 20px; text-decoration: none; justify-self: center; letter-spacing: 0; }
+  .sys { text-align: center; padding: 120px 0; } .sys h2 { font-size: clamp(32px, 4.3vw, 62px); letter-spacing: -.05em; line-height: 1.02; } .pille { display: inline-block; margin-top: 22px; background: #f0f0f0; padding: 8px 16px; border-radius: 22px; font-size: 14px; text-decoration: none; }
+  .karten { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 90px 0 0 9%; text-align: left; scrollbar-width: none; }
+  .karten li { position: relative; flex: 0 0 41%; height: 370px; border-radius: 10px; overflow: hidden; scroll-snap-align: start; color: #fff; } .karten img { position: absolute; inset: 0; height: 100%; }
+  .karten small, .karten p { position: absolute; left: 22px; } .karten small { top: 20px; } .karten p { bottom: 22px; font-size: 22px; max-width: 70%; letter-spacing: -.03em; line-height: 1.15; } .karten button { position: absolute; right: 18px; bottom: 18px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgb(0 0 0 / .45); color: #fff; font-size: 18px; }
+  .voll { position: relative; padding: 8px; height: 100vh; } .voll img { height: 100%; border-radius: 10px; } .voll div { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; color: #fff; text-align: center; gap: 12px; } .voll i { font-style: normal; letter-spacing: -.2em; } .voll h2 { font-size: clamp(30px, 4.3vw, 62px); letter-spacing: -.05em; line-height: 1.02; } .voll a { background: rgb(90 80 70 / .55); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); padding: 9px 18px; border-radius: 22px; font-size: 14px; text-decoration: none; }
+  .absatz { width: 70%; padding: 40px 8px 140px; font-family: var(--font-display); font-size: clamp(30px, 5vw, 72px); line-height: 1.04; letter-spacing: -.05em; }
+  .team { display: grid; grid-template-columns: 1fr 1.25fr; gap: 90px; padding: 0 8px 160px 15%; align-items: start; } .team p { font-size: 15px; line-height: 1.35; } .team img { aspect-ratio: 1.7; border-radius: 10px; }
+  .mehr { text-align: center; font-size: clamp(30px, 4vw, 58px); letter-spacing: -.05em; padding-bottom: 80px; } .reihe { display: flex; gap: 10px; padding-left: 9%; overflow: hidden; } .reihe li { flex: 0 0 27%; } .reihe img { aspect-ratio: 1.6; border-radius: 6px; } .reihe p { margin-top: 12px; font-size: 18px; } .reihe small { color: #6f6f6f; }
+  .brief { display: grid; grid-template-columns: 1fr 1.3fr; gap: 60px; margin: 140px 8px 0; padding: 110px 8% 90px; background: #f2efea radial-gradient(#d8d4cc 1px, transparent 1.4px) 0 0 / 90px 90px; border-radius: 10px; } .brief h2 { font-size: 34px; line-height: 1.06; letter-spacing: -.04em; margin: 12px 0 34px; } .brief img { aspect-ratio: 1.3; border-radius: 10px; }
+  .brief input { width: 100%; border: 0; background: #fff; border-radius: 20px; padding: 10px 16px; margin-bottom: 10px; font: inherit; } .brief span { position: relative; display: block; } .brief button { position: absolute; right: 4px; top: 4px; background: #000; color: #fff; border: 0; border-radius: 18px; padding: 7px 14px; font: inherit; font-size: 13px; }
+  footer { padding: 170px 8% 40px; } .sterne { text-align: center; font-size: 90px; letter-spacing: -.2em; padding-bottom: 170px; } .fz { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; } .fz p { color: #6f6f6f; font-size: 22px; max-width: 320px; } .fz b { color: #000; font-weight: 400; display: block; } .fz li { padding: 12px 0; border-bottom: 1px solid #e5e5e5; font-size: 22px; } .recht { margin-top: 100px; color: #6f6f6f; font-size: 13px; }
+  @media (max-width: 760px) { .foto h1 { flex-direction: column; top: 40%; } .stapel { grid-template-columns: 1fr; } .stapel figure, .n.l, .n.r { grid-column: 1; grid-row: auto; position: static; margin: 0 16px 16px; height: 60vh; } .n.l, .n.r { height: auto; padding: 0; } .karten li { flex-basis: 82%; } .absatz { width: 100%; } .team, .brief, .fz { grid-template-columns: 1fr; padding-left: 16px; gap: 24px; } .reihe li { flex-basis: 70%; } .leiste a:not(.logo) { display: none; } }
+</style>
+</body></html>

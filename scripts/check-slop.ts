@@ -3,6 +3,7 @@
  *
  *   node --experimental-strip-types scripts/check-slop.ts \
  *     --base http://localhost:4321 [--pfade /,/kontakt] [--out bericht/slop.json]
+ *     [--erlaubt nummernmarke,teilauszeichnung]
  *
  * Ohne --pfade werden die Routen aus /sitemap.xml oder --dir gelesen, siehe routen.ts.
  *
@@ -44,6 +45,9 @@ function arg(flag: string, standard?: string): string | undefined {
 }
 
 const basis = arg('--base', 'http://localhost:4321')!.replace(/\/$/, '');
+// Sperren, die das Vorbild der Website selbst nutzt, zaehlen nur als Befund.
+// Grund gehoert in PROJECT.md, siehe web-brain 20-design/anti-ai-slop.md.
+const erlaubt = new Set((arg('--erlaubt', '') ?? '').split(',').map((x) => x.trim()).filter(Boolean));
 const ausgabe = resolve(arg('--out', join(here, '../starter/qa-bericht/slop.json'))!);
 
 
@@ -291,7 +295,7 @@ try {
     if (!roh) { console.error(`   FEHLER: keine Messung fuer ${pfad}`); process.exitCode = 1; continue; }
     const daten = JSON.parse(roh) as { befunde: Befund[]; sektionen: string[] };
     bericht[pfad] = daten;
-    for (const b of daten.befunde) alle.push({ ...b, seite: pfad });
+    for (const b of daten.befunde) { if (erlaubt.has(b.art)) b.hart = false; alle.push({ ...b, seite: pfad }); }
     const hart = daten.befunde.filter((b) => b.hart).length;
     console.log(`   ${pfad}: ${hart} Sperren, ${daten.befunde.length - hart} Befunde`);
   }

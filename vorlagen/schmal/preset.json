@@ -1,0 +1,256 @@
+{
+ "meta": {
+  "name": "schmal",
+  "description": "Werte gemessen an meracinque.com",
+  "version": "1.0.0",
+  "updated": "2026-11-05"
+ },
+ "font": [
+  {
+   "name": "display",
+   "value": "Instrument Serif, Georgia, serif",
+   "usage": "wie die Referenz",
+   "quelle": "Google Fonts, SIL OFL 1.1"
+  },
+  {
+   "name": "body",
+   "value": "Readex Pro, Arial, sans-serif",
+   "usage": "wie die Referenz",
+   "quelle": "Google Fonts, SIL OFL 1.1"
+  },
+  {
+   "name": "mono",
+   "value": "ui-monospace, monospace",
+   "usage": "nicht genutzt",
+   "quelle": "System"
+  }
+ ],
+ "color": [
+  {
+   "name": "bg",
+   "value": {
+    "light": "#faf6e6",
+    "dark": "#faf6e6"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "surface",
+   "value": {
+    "light": "#faf6e6",
+    "dark": "#faf6e6"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "surface-alt",
+   "value": {
+    "light": "#ebafb4",
+    "dark": "#ebafb4"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "text",
+   "value": {
+    "light": "#7074b6",
+    "dark": "#7074b6"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "text-secondary",
+   "value": {
+    "light": "#232438",
+    "dark": "#232438"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "text-tertiary",
+   "value": {
+    "light": "#232438",
+    "dark": "#232438"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "border",
+   "value": {
+    "light": "#232438",
+    "dark": "#232438"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "border-hover",
+   "value": {
+    "light": "#7074b6",
+    "dark": "#7074b6"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "accent",
+   "value": {
+    "light": "#e95f6d",
+    "dark": "#e95f6d"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "accent-subtle",
+   "value": {
+    "light": "#ebafb4",
+    "dark": "#ebafb4"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "accent-contrast",
+   "value": {
+    "light": "#ffffff",
+    "dark": "#ffffff"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "focus",
+   "value": {
+    "light": "#1d4ed8",
+    "dark": "#1d4ed8"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "success",
+   "value": {
+    "light": "#17713a",
+    "dark": "#17713a"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "success-subtle",
+   "value": {
+    "light": "#dcf3e4",
+    "dark": "#dcf3e4"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "warning",
+   "value": {
+    "light": "#8a5a00",
+    "dark": "#8a5a00"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "warning-subtle",
+   "value": {
+    "light": "#faeecc",
+    "dark": "#faeecc"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "danger",
+   "value": {
+    "light": "#a81b1b",
+    "dark": "#a81b1b"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "danger-subtle",
+   "value": {
+    "light": "#f7dcdc",
+    "dark": "#f7dcdc"
+   },
+   "usage": "aus der Referenz"
+  }
+ ],
+ "typography": [
+  {
+   "name": "display",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "h1",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "h2",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "h3",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "lead",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "500",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "body",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "small",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "label",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  }
+ ]
+}
