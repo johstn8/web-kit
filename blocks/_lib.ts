@@ -48,3 +48,22 @@ export function zeitenGruppieren(zeiten: Zeit[]): { tage: string; zeit: string; 
   schliessen();
   return zeilen;
 }
+
+export type Merkmal = 'vegan' | 'vegetarisch' | 'scharf' | 'glutenfrei' | 'laktosefrei' | 'alkoholfrei' | 'neu' | 'saison';
+export interface Position {
+  name: string; beschreibung?: string; preis?: Preis;
+  varianten?: { menge: string; preis: Preis }[];
+  merkmale?: Merkmal[]; bild?: Bild;
+}
+export interface KartenGruppe { titel: string; hinweis?: string; positionen: Position[] }
+export interface Karte { id: string; titel: string; hinweise?: string[]; gruppen: KartenGruppe[] }
+
+export const MERKMAL: Record<Merkmal, string> = {
+  vegan: 'vegan', vegetarisch: 'vegetarisch', scharf: 'scharf', glutenfrei: 'glutenfrei',
+  laktosefrei: 'laktosefrei', alkoholfrei: 'alkoholfrei', neu: 'neu', saison: 'Saison',
+};
+
+/** Ein Text aus content.texte: Satz oder Absatzliste, immer als Liste. */
+export function absaetze(wert: string | string[] | undefined): string[] {
+  return wert === undefined ? [] : Array.isArray(wert) ? wert : [wert];
+}

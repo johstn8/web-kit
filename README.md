@@ -11,14 +11,16 @@ schreibt, den es hier gibt, hat den falschen Weg genommen.
 
 ```
 tokens/     tokens.json als Quelle, tokens.css generiert, Theme-Ableitung
-tokens/presets/  fünf Art-Direction-Presets als Datei statt als Prosa
+tokens/presets/  acht Art-Direction-Presets als Datei, kacheln/ mit Übersicht
 blocks/     Kopfzeile, auftakt/ (fünf Kompositionen), Leistungen,
             Öffnungszeiten, Anfahrt, Team, Kontaktformular, Bewertungen,
-            Preise, FAQ, Fußzeile
+            Preise, Karte (Speise- und Preiskarten), FAQ, Fußzeile
 legal/      Impressum, Datenschutz, consent/
-content/    schema.json - Datenmodell für Betriebsdaten
+content/    schema.json - Datenmodell für Betriebsdaten, mit Karten
+            (Speisen, Getränke, Preislisten) und freien Texten
 scripts/    extract-old-site.ts, render-shots.ts, check-axe.ts,
             check-slop.ts, check-contrast.ts, link-check.ts, tokens-*.ts, qa.sh,
+            stilverlauf.ts, routen.ts,
             deploy.sh, kontakt-endpoint.mjs, nginx-site.conf.template,
             fetch-fonts.ts
 starter/    lauffähiges Astro-Projekt, das alles einbindet
@@ -62,10 +64,16 @@ node --experimental-strip-types scripts/tokens-to-css.ts  --preset werkstatt --o
 node --experimental-strip-types scripts/fetch-fonts.ts    --preset werkstatt
 ```
 
-Fünf Richtungen — `werkstatt`, `praxis`, `tisch`, `kanzlei`, `atelier` —
-mit je eigener Schrift, Palette, Radius- und Trenngrammatik, belegt an
-konkreten Seiten aus dem Website Reference Pool des Brains. Einzelheiten in
+Acht Richtungen, fünf davon gegenwärtig (`produkt`, `freundlich`, `klar`,
+`atelier`, `werkstatt`) und drei klassisch mit Serife (`praxis`, `tisch`,
+`kanzlei`). Jede hat eigene Schrift, Palette, Radius-, Trenn- und
+Aktionsgrammatik. Einzelheiten und Übersichtsbild in
 [tokens/presets/README.md](tokens/presets/README.md).
+
+Ein Preset ist der technische Startpunkt. Der Stil eines Auftrags entsteht
+aus der Stilrecherche dieses Laufs und liegt als eigenes Preset im Projekt;
+`--preset` nimmt dafür auch einen Pfad. `scripts/stilverlauf.ts` zeigt, was
+die letzten Websites trugen, und meldet Wiederholungen.
 
 Der Sinn: Wer eine Richtung wählt, startet nicht beim statistischen Mittel.
 Genau dieses Mittel ist der Grund, warum generierte Websites einander
@@ -94,6 +102,8 @@ lauter Abbruch.
 
 `scripts/qa.sh` prüft Platzhalter- und `TODO`-Reste, interne Links,
 Screenshots bei 375 und 1280 Pixel, axe gegen WCAG 2.1 AA und Lighthouse.
+Screenshots, axe und harte Sperren laufen über alle Routen der Website:
+Sitemap und HTML-Dateien im Build, nicht über eine feste Liste.
 Fehlt ein Werkzeug, wird die Prüfung als **übersprungen** gemeldet, nie als
 bestanden; übersprungene Prüfungen gehören als offener Punkt in
 `release-readiness/<website-slug>.md`.

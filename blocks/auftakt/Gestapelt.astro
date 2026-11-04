@@ -28,7 +28,7 @@ const { titel, lead, aktion, beweis, ort } = Astro.props;
   h1 { font-size: var(--text-display); line-height: var(--text-display--line-height); font-weight: var(--text-display--font-weight); letter-spacing: var(--text-display--letter-spacing); text-wrap: balance; max-width: 18ch; margin: 0; }
   .lead { font-size: var(--text-lead); line-height: var(--text-lead--line-height); color: var(--color-text-secondary); text-wrap: pretty; max-width: var(--prose); margin: var(--space-5) 0 0; }
   .handlung { margin: var(--space-6) 0 0; }
-  .handlung a { display: inline-block; font-weight: 500; padding: var(--space-3) var(--space-5); border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; transition: opacity var(--duration-fast) var(--ease-out); }
+  .handlung a { display: inline-block; font-weight: 500; padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-sm)); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; transition: opacity var(--duration-fast) var(--ease-out); }
   .handlung a:hover { opacity: 0.88; }
   .beweis { margin: var(--space-5) 0 0; font-size: var(--text-small); color: var(--color-text-tertiary); max-width: var(--prose); }
 </style>

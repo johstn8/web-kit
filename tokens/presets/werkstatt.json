@@ -3,14 +3,14 @@
     "name": "Werkstatt",
     "description": "Handwerk, Fahrzeugservice, Logistik, Bau. Technisch und robust: Kante statt Rundung, Rahmen statt Schatten, Gewicht statt Farbe. Belegt an car-tex.de, spedition-stuckmann.de und fahrschule-gosink.de aus dem Website Reference Pool.",
     "version": "1.0.0",
-    "updated": "2026-09-19"
+    "updated": "2026-09-19", "anmutung": "gegenwaertig"
   },
   "grammar": {
     "abgrenzung": "rahmen",
     "tiefe": "keine",
     "versalbeschriftung": false,
     "sektionstrenner": "linie",
-    "ziffernmarken": "nur bei echter Abfolge"
+    "ziffernmarken": "nur bei echter Abfolge", "aktionsform": "kante"
   },
   "font": [
     {

@@ -2,7 +2,7 @@
  * Ganzseitige Screenshots bei 375 und 1280 Pixel.
  *
  *   node --experimental-strip-types scripts/render-shots.ts \
- *     --base http://localhost:4321 --out qa-bericht/shots [--pfade /,/kontakt]
+ *     --base http://localhost:4321 --out qa-bericht/shots [--pfade /,/kontakt] [--dir dist]
  *
  * Der Render ist zuerst Arbeitsmittel und erst danach Nachweis. Er ist
  * ganzseitig, nicht nur bis zur Falz: Ueberlauf, Kollision, abgeschnittene
@@ -18,6 +18,7 @@ import { mkdirSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { spawn } from 'node:child_process';
 import { homedir } from 'node:os';
+import { routen } from './routen.ts';
 
 function arg(flag: string, standard?: string): string | undefined {
   const i = process.argv.indexOf(flag);
@@ -26,7 +27,7 @@ function arg(flag: string, standard?: string): string | undefined {
 
 const basis = arg('--base', 'http://localhost:4321')!.replace(/\/$/, '');
 const ziel = resolve(arg('--out', 'qa-bericht/shots')!);
-const pfade = (arg('--pfade', '/,/leistungen,/kontakt')!).split(',').map((p) => p.trim()).filter(Boolean);
+const pfade = await routen(basis);
 const BREITEN = [375, 1280] as const;
 
 mkdirSync(ziel, { recursive: true });

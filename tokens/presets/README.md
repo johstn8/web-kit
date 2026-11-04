@@ -1,6 +1,6 @@
 # Art-Direction-Presets
 
-Fünf Stilrichtungen als **Datei**, nicht als Prosa. Jede ist ein
+Acht Stilrichtungen als **Datei**, nicht als Prosa. Jede ist ein
 vollständiger Tokensatz: Schriftrollen, Palette für Licht und Dunkel,
 Radius-, Abstands- und Bewegungsgrammatik, dazu die Entscheidung, was die
 Abgrenzung trägt.
@@ -10,13 +10,46 @@ Mittel. Genau dieses Mittel ist der Grund, warum generierte Websites
 einander gleichen — das Modell greift ohne Vorgabe zur wahrscheinlichsten
 Lösung, und die ist überall dieselbe.
 
-| Preset | Für | Abgrenzung | Radius | Display / Text | Belegt an |
-|---|---|---|---|---|---|
-| `werkstatt` | Handwerk, Fahrzeugservice, Logistik, Bau | Rahmen | 0 | Archivo 800 / Public Sans | car-tex.de, spedition-stuckmann.de, fahrschule-gosink.de |
-| `praxis` | Gesundheit, Pflege, Therapie | Fläche | 0,875 rem | Source Serif 4 / Public Sans | zahnarztpraxis-uhlenhorst.de, drquidenus.at, daylight-health.com |
-| `tisch` | Gastronomie, Bäckerei, Hofladen, Hotellerie | Fläche, dunkel | 0,25 rem | Alegreya 400 / Work Sans | minerestaurant.de, amritpalace.com, munrooftoprome.com |
-| `kanzlei` | Kanzlei, Steuerberatung, Verwaltung | Linie | 0 | Spectral / Spectral | sacherer-partner.de, ko-mon.de, dediq.com |
-| `atelier` | Studio, Architektur, Fotografie, Portfolio | Weißraum | 0 | Bricolage Grotesque / Hanken Grotesk | kononenkogroup.com, phillipohren.com, huts.com |
+| Preset | Anmutung | Für | Abgrenzung | Aktion | Display / Text | Belegt an |
+|---|---|---|---|---|---|---|
+| `produkt` | gegenwärtig | Hersteller, Industrie, Technik, B2B mit Produkten | Fläche, Kacheln mit großem Radius | weich | Onest / Onest | rico-gmbh.de |
+| `freundlich` | gegenwärtig | Kita, Friseur, Café, Sport, Fahrschule, Nachhilfe | Farbfläche | Pille | Gabarito / Figtree | – |
+| `klar` | gegenwärtig | Beratung, Immobilien, IT-Dienstleister, moderne Praxis | Haarlinie | rund | Golos Text / Golos Text | – |
+| `atelier` | gegenwärtig | Studio, Architektur, Fotografie, Portfolio | Weißraum | Pille | Bricolage Grotesque / Hanken Grotesk | kononenkogroup.com, phillipohren.com, huts.com |
+| `werkstatt` | gegenwärtig | Handwerk, Fahrzeugservice, Logistik, Bau | Rahmen | Kante | Archivo 800 / Public Sans | car-tex.de, spedition-stuckmann.de, fahrschule-gosink.de |
+| `praxis` | klassisch | Gesundheit, Pflege, Therapie | Fläche | rund | Source Serif 4 / Public Sans | zahnarztpraxis-uhlenhorst.de, drquidenus.at, daylight-health.com |
+| `tisch` | klassisch | Gastronomie, Bäckerei, Hofladen, Hotellerie | Fläche, dunkel | weich | Alegreya 400 / Work Sans | minerestaurant.de, amritpalace.com, munrooftoprome.com |
+| `kanzlei` | klassisch | Kanzlei, Steuerberatung, Verwaltung | Linie | Kante | Spectral / Spectral | sacherer-partner.de, ko-mon.de, dediq.com |
+
+Alle acht nebeneinander, mit derselben Auftaktzeile gerendert:
+[`kacheln/uebersicht.webp`](kacheln/uebersicht.webp).
+
+**Gegenwärtig ist der Normalfall.** Die drei klassischen Presets tragen eine
+Serife und zitieren damit eine ältere Anmutung. Sie werden nur gewählt, wenn
+Marke, Ort oder Auftrag diesen Zeitbezug tragen, nicht weil die Gattung es
+nahelegt. Bis 2026-11-04 gab es nur fünf Presets, drei davon mit Radius null
+und drei mit Serife; fünf der letzten acht gebauten Websites trugen danach
+eine Serife als Displayschrift. Regel in
+`web-brain 20-design/design-direction.md#Stilwahl je Auftrag`.
+
+**Ein Preset ist ein technischer Startpunkt, kein Stil.** Der Stil eines
+Auftrags entsteht aus der eigenen Stilrecherche dieses Laufs und liegt danach
+als projekteigenes Preset unter `<projekt>/design/<name>.json`. Die Skripte
+nehmen dafür einen Pfad statt eines Namens:
+
+```bash
+node --experimental-strip-types scripts/tokens-to-css.ts --preset ../projekte/<kunde>/design/<name>.json --out ...
+```
+
+**Vor der Festlegung den Stilverlauf prüfen:**
+
+```bash
+node --experimental-strip-types scripts/stilverlauf.ts --kandidat ../projekte/<kunde>/design/<name>.json
+```
+
+Das Skript liest Displayschrift, Aktionsform, Grundhelligkeit und Papiergrund
+aus dem ausgelieferten CSS der letzten Websites und meldet, wenn der
+Kandidat sie wiederholt.
 
 **Schriften gegen die Sperrliste.** Bis 2026-10-02 schlugen drei der fünf
 Presets eine Familie vor, die auf der Sperrliste übernutzter Schriften steht
@@ -59,6 +92,7 @@ Jedes Preset trägt einen `grammar`-Block. Er wird von
 | `versalbeschriftung` | schaltet Versalien für Beschriftungen; in allen fünf Presets `false` |
 | `sektionstrenner` | `linie` \| `flaeche` \| `weissraum` \| `bild` |
 | `ziffernmarken` | wann `01 / 02 / 03` zulässig ist: nur im Inhalt einer echten Abfolge, nie als Marke über einer Überschrift |
+| `aktionsform` | `kante` \| `weich` \| `rund` \| `pille` — Form der Buttons, unabhängig vom Radius der Container; wird zu `--aktion-radius` |
 
 Ohne diesen Block wäre ein Preset nur ein Farb- und Schriftwechsel. Die
 Entscheidung „Rahmen oder Fläche oder Weißraum" ist aber der Teil, der zwei
@@ -72,7 +106,7 @@ Keine von ihnen ist eine der Familien, zu denen ein Modell ohne Vorgabe
 greift. Inter, Roboto, Open Sans, Lato und der System-Stack sind die
 zuverlässigsten Schrifthinweise auf eine generierte Seite.
 
-Alle fünf Presets verwenden ausschließlich Schriften unter der
+Alle Presets verwenden ausschließlich Schriften unter der
 **SIL Open Font License 1.1**. `fetch-fonts.ts` lädt sie herunter und
 hostet sie im Projekt: eine Einbindung von `fonts.googleapis.com` wäre ein
 Drittanbieter-Datenfluss und damit ein Consent-Fall für etwas, das keinen

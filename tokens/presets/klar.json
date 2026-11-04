@@ -1,0 +1,314 @@
+{
+  "meta": {
+    "name": "Klar",
+    "description": "Beratung, Immobilien, IT-Dienstleister, moderne Praxis, Agentur. Gegenwaertig-sachlich: Schwarz-Weiss mit einer Signalfarbe, grosse ruhige Grotesk, Haarlinien statt Kacheln, maessig runde Aktionen. Die Alternative zu kanzlei und praxis ohne Serife.",
+    "version": "1.0.0",
+    "updated": "2026-11-04",
+    "anmutung": "gegenwaertig"
+  },
+  "grammar": {
+    "abgrenzung": "linie",
+    "tiefe": "keine",
+    "versalbeschriftung": false,
+    "sektionstrenner": "weissraum",
+    "ziffernmarken": "nur bei echter Abfolge",
+    "aktionsform": "rund"
+  },
+  "font": [
+    {
+      "name": "display",
+      "value": "Golos Text, Helvetica Neue, Arial, sans-serif",
+      "usage": "ruhige Grotesk mit offener Form, gross und mittelschwer gesetzt",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    },
+    {
+      "name": "body",
+      "value": "Golos Text, Helvetica Neue, Arial, sans-serif",
+      "usage": "dieselbe Familie; Hierarchie ueber Groesse und Gewicht",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    },
+    {
+      "name": "mono",
+      "value": "JetBrains Mono, ui-monospace, monospace",
+      "usage": "Kennzahlen und Aktenzeichen, sonst nicht",
+      "quelle": "Google Fonts, SIL OFL 1.1"
+    }
+  ],
+  "color": [
+    {
+      "name": "bg",
+      "value": {
+        "light": "#fafafa",
+        "dark": "#0b0b0c"
+      },
+      "usage": "Seitengrund, neutrales Weiss"
+    },
+    {
+      "name": "surface",
+      "value": {
+        "light": "#ffffff",
+        "dark": "#141416"
+      },
+      "usage": "Inhaltsflaeche"
+    },
+    {
+      "name": "surface-alt",
+      "value": {
+        "light": "#f0f0f1",
+        "dark": "#1c1c1f"
+      },
+      "usage": "abgesetzte Flaeche, sparsam"
+    },
+    {
+      "name": "text",
+      "value": {
+        "light": "#0a0a0b",
+        "dark": "#f5f5f6"
+      },
+      "usage": "Ueberschriften und primaerer Text"
+    },
+    {
+      "name": "text-secondary",
+      "value": {
+        "light": "#46464c",
+        "dark": "#b0b0b8"
+      },
+      "usage": "Fliesstext zweiter Ordnung"
+    },
+    {
+      "name": "text-tertiary",
+      "value": {
+        "light": "#66666e",
+        "dark": "#8d8d96"
+      },
+      "usage": "Metazeile und Beschriftung"
+    },
+    {
+      "name": "border",
+      "value": {
+        "light": "#e2e2e5",
+        "dark": "#2a2a2e"
+      },
+      "usage": "Haarlinie, traegt die Abgrenzung"
+    },
+    {
+      "name": "border-hover",
+      "value": {
+        "light": "#0a0a0b",
+        "dark": "#f5f5f6"
+      },
+      "usage": "Linie bei Hover, volle Tinte"
+    },
+    {
+      "name": "accent",
+      "value": {
+        "light": "#0b6e4f",
+        "dark": "#3ddc97"
+      },
+      "usage": "Tiefgruen als Platzhalter; wird durch die Markenfarbe ersetzt"
+    },
+    {
+      "name": "accent-subtle",
+      "value": {
+        "light": "#ddf2ea",
+        "dark": "#0f2e23"
+      },
+      "usage": "getoente Flaeche"
+    },
+    {
+      "name": "accent-contrast",
+      "value": {
+        "light": "#ffffff",
+        "dark": "#06140f"
+      },
+      "usage": "Schrift auf Akzentflaeche"
+    },
+    {
+      "name": "focus",
+      "value": {
+        "light": "#1d4ed8",
+        "dark": "#7aa2ff"
+      },
+      "usage": "Fokusring"
+    },
+    {
+      "name": "success",
+      "value": {
+        "light": "#17713a",
+        "dark": "#4ccf7e"
+      },
+      "usage": "Erfolgszustand"
+    },
+    {
+      "name": "success-subtle",
+      "value": {
+        "light": "#dcf3e4",
+        "dark": "#12301d"
+      },
+      "usage": "getoente Erfolgsflaeche"
+    },
+    {
+      "name": "warning",
+      "value": {
+        "light": "#8a5a00",
+        "dark": "#f0b429"
+      },
+      "usage": "Warnzustand"
+    },
+    {
+      "name": "warning-subtle",
+      "value": {
+        "light": "#faeecc",
+        "dark": "#332a0a"
+      },
+      "usage": "getoente Warnflaeche"
+    },
+    {
+      "name": "danger",
+      "value": {
+        "light": "#a81b1b",
+        "dark": "#ff6b6b"
+      },
+      "usage": "Fehlerzustand"
+    },
+    {
+      "name": "danger-subtle",
+      "value": {
+        "light": "#f7dcdc",
+        "dark": "#3b1414"
+      },
+      "usage": "getoente Fehlerflaeche"
+    }
+  ],
+  "radius": [
+    {
+      "name": "radius-sm",
+      "value": "0.375rem",
+      "usage": "Eingabefelder"
+    },
+    {
+      "name": "radius-md",
+      "value": "0.75rem",
+      "usage": "Buttons und Karten"
+    },
+    {
+      "name": "radius-lg",
+      "value": "1.25rem",
+      "usage": "Bilder"
+    },
+    {
+      "name": "radius-full",
+      "value": "9999px",
+      "usage": "Status und Tags"
+    }
+  ],
+  "typography": [
+    {
+      "name": "display",
+      "value": {
+        "size": "clamp(2.5rem, 6vw, 4.5rem)",
+        "line-height": "1.02",
+        "weight": "600",
+        "tracking": "-0.035em"
+      },
+      "usage": "Auftaktzeile, gross statt schwer"
+    },
+    {
+      "name": "h1",
+      "value": {
+        "size": "clamp(2rem, 4.5vw, 3rem)",
+        "line-height": "1.08",
+        "weight": "600",
+        "tracking": "-0.03em"
+      },
+      "usage": "Seitentitel"
+    },
+    {
+      "name": "h2",
+      "value": {
+        "size": "clamp(1.625rem, 2.6vw, 2.125rem)",
+        "line-height": "1.15",
+        "weight": "600",
+        "tracking": "-0.02em"
+      },
+      "usage": "Sektionstitel"
+    },
+    {
+      "name": "h3",
+      "value": {
+        "size": "1.1875rem",
+        "line-height": "1.35",
+        "weight": "600",
+        "tracking": "-0.01em"
+      },
+      "usage": "Untertitel"
+    },
+    {
+      "name": "lead",
+      "value": {
+        "size": "1.1875rem",
+        "line-height": "1.55",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Erklaerzeile"
+    },
+    {
+      "name": "body",
+      "value": {
+        "size": "1rem",
+        "line-height": "1.65",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Fliesstext"
+    },
+    {
+      "name": "small",
+      "value": {
+        "size": "0.875rem",
+        "line-height": "1.45",
+        "weight": "400",
+        "tracking": "0"
+      },
+      "usage": "Nebentext"
+    },
+    {
+      "name": "label",
+      "value": {
+        "size": "0.8125rem",
+        "line-height": "1.3",
+        "weight": "500",
+        "tracking": "0"
+      },
+      "usage": "Beschriftung"
+    }
+  ],
+  "motion": [
+    {
+      "name": "duration-fast",
+      "value": "100ms",
+      "usage": "Zustandswechsel"
+    },
+    {
+      "name": "duration-base",
+      "value": "200ms",
+      "usage": "Ein- und Ausblenden"
+    },
+    {
+      "name": "duration-slow",
+      "value": "360ms",
+      "usage": "Overlay"
+    },
+    {
+      "name": "ease-out",
+      "value": "cubic-bezier(0.2, 0, 0, 1)",
+      "usage": "Eintritt"
+    },
+    {
+      "name": "ease-in-out",
+      "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "usage": "Positionswechsel"
+    }
+  ]
+}

@@ -3,14 +3,14 @@
   "meta": {
     "name": "Atelier",
     "description": "Studio, Architektur, Fotografie, Portfolio. Radikal reduziert: Weissraum ist das einzige Trennmittel, die Schrift ist gross, Farbe kommt nur aus dem Bild. Belegt an kononenkogroup.com, phillipohren.com und huts.com aus dem Website Reference Pool.",
-    "version": "1.0.0", "updated": "2026-10-02"
+    "version": "1.0.0", "updated": "2026-10-02", "anmutung": "gegenwaertig"
   },
   "grammar": {
     "abgrenzung": "weissraum",
     "tiefe": "keine",
     "versalbeschriftung": false,
     "sektionstrenner": "weissraum",
-    "ziffernmarken": "nur bei echter Abfolge"
+    "ziffernmarken": "nur bei echter Abfolge", "aktionsform": "pille"
   },
   "font": [
     { "name": "display", "value": "Bricolage Grotesque, Helvetica Neue, sans-serif", "usage": "Grotesk mit eigenwilligen Formen und weitem Gewichtsraum; sie ist hier das Gestaltungsmittel, nicht der Traeger", "quelle": "Google Fonts, SIL OFL 1.1" },

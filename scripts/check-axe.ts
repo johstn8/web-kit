@@ -2,7 +2,7 @@
  * axe-core gegen eine laufende Website, ueber das DevTools-Protokoll.
  *
  *   node --experimental-strip-types scripts/check-axe.ts \
- *     --base http://localhost:4321 [--pfade /,/kontakt] [--out bericht/axe.json]
+ *     --base http://localhost:4321 [--pfade /,/kontakt] [--dir dist] [--out bericht/axe.json]
  *
  * Bewusst ohne @axe-core/cli: die braucht chromedriver und faellt damit auf
  * jeder Maschine aus, auf der nur ein entpackter Chromium liegt. Hier wird
@@ -15,6 +15,7 @@ import { resolve, join, dirname } from 'node:path';
 import { spawn } from 'node:child_process';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { routen } from './routen.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -24,7 +25,7 @@ function arg(flag: string, standard?: string): string | undefined {
 }
 
 const basis = arg('--base', 'http://localhost:4321')!.replace(/\/$/, '');
-const pfade = arg('--pfade', '/,/leistungen,/kontakt')!.split(',').map((p) => p.trim()).filter(Boolean);
+const pfade = await routen(basis);
 const ausgabe = resolve(arg('--out', join(here, '../starter/qa-bericht/axe.json'))!);
 
 const axeQuelle = [

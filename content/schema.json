@@ -94,6 +94,45 @@
         }
       }
     },
+    "karten": {
+      "type": "array",
+      "description": "Speise-, Getraenke- oder Preiskarten mit Gruppen. Fuer Gastronomie, Baeckerei, Friseur, Kosmetik und alles mit mehr als einer Handvoll Positionen; 'preise' bleibt fuer kurze flache Listen.",
+      "items": {
+        "type": "object",
+        "required": ["id", "titel", "gruppen"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "Stabiler Pointer, etwa speisen oder getraenke. Wird nie umbenannt." },
+          "titel": { "type": "string", "maxLength": 80 },
+          "hinweise": { "type": "array", "items": { "type": "string", "maxLength": 240 }, "description": "Allergene, Preisangaben, Zeiten der Karte." },
+          "gruppen": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["titel", "positionen"],
+              "additionalProperties": false,
+              "properties": {
+                "titel": { "type": "string", "maxLength": 80 },
+                "hinweis": { "type": "string", "maxLength": 240 },
+                "positionen": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/position" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "texte": {
+      "type": "object",
+      "description": "Fliesstexte, die der Betreiber selbst aendern darf, je stabilem Schluessel. Ein Wert ist ein Satz oder eine Liste von Absaetzen. Keine Komponente traegt eigenen Text, der nicht hier oder in einem anderen Feld steht.",
+      "propertyNames": { "pattern": "^[a-z0-9_]+$" },
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string", "maxLength": 2000 },
+          { "type": "array", "items": { "type": "string", "maxLength": 2000 }, "maxItems": 12 }
+        ]
+      }
+    },
     "team": {
       "type": "array",
       "items": {
@@ -164,12 +203,13 @@
               "required": ["typ"],
               "properties": {
                 "typ": {
-                  "enum": ["auftakt", "leistungen", "oeffnungszeiten", "anfahrt", "team", "kontaktformular", "bewertungen", "preise", "faq", "text"]
+                  "enum": ["auftakt", "leistungen", "oeffnungszeiten", "anfahrt", "team", "kontaktformular", "bewertungen", "preise", "karte", "faq", "text"]
                 },
                 "komposition": {
                   "enum": ["gestapelt", "zweispaltig", "bildbuehne", "zeilenindex"],
                   "description": "Nur fuer typ=auftakt. Repertoire in web-brain 20-design/landing-page-craft.md#Auftakt-Repertoire."
                 },
+                "karte": { "type": "string", "description": "Nur fuer typ=karte: id der Karte aus /karten." },
                 "titel": { "type": "string", "maxLength": 120 },
                 "text": { "type": "string", "maxLength": 2000 },
                 "bild": { "$ref": "#/$defs/bild" },
@@ -211,6 +251,28 @@
         "betrag": { "type": "number", "minimum": 0 },
         "waehrung": { "type": "string", "default": "EUR" },
         "ab": { "type": "boolean", "default": false }
+      }
+    },
+    "position": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "maxLength": 120 },
+        "beschreibung": { "type": "string", "maxLength": 600 },
+        "preis": { "$ref": "#/$defs/preis" },
+        "varianten": {
+          "type": "array",
+          "description": "Mehrere Groessen oder Mengen, etwa 0,2 l und 0,4 l. Ersetzt preis.",
+          "items": {
+            "type": "object",
+            "required": ["menge", "preis"],
+            "additionalProperties": false,
+            "properties": { "menge": { "type": "string", "maxLength": 40 }, "preis": { "$ref": "#/$defs/preis" } }
+          }
+        },
+        "merkmale": { "type": "array", "uniqueItems": true, "items": { "enum": ["vegan", "vegetarisch", "scharf", "glutenfrei", "laktosefrei", "alkoholfrei", "neu", "saison"] } },
+        "bild": { "$ref": "#/$defs/bild" }
       }
     },
     "aktion": {

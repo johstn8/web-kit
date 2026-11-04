@@ -6,10 +6,10 @@
  * Die CSS-Datei ist generiert und wird nicht von Hand bearbeitet.
  * Quelle der Wahrheit ist immer die JSON-Datei.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { validate, resolveAlias, applyPreset, type TokenFile, type ColorToken, type Theme, type Preset } from './tokens-lib.ts';
+import { validate, resolveAlias, applyPreset, type TokenFile, type ColorToken, type Theme, type Preset, presetPfad } from './tokens-lib.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 function arg(flag: string): string | undefined {
@@ -24,7 +24,7 @@ const out = resolve(arg('--out') ?? frei[1] ?? resolve(here, '../tokens/tokens.c
 
 const basis: TokenFile = JSON.parse(readFileSync(src, 'utf8'));
 const preset: Preset | undefined = presetName
-  ? JSON.parse(readFileSync(resolve(here, `../tokens/presets/${presetName}.json`), 'utf8'))
+  ? JSON.parse(readFileSync(presetPfad(presetName, here), 'utf8'))
   : undefined;
 const tokens: TokenFile = applyPreset(basis, preset);
 const problems = validate(tokens);
@@ -64,6 +64,11 @@ const grammatik = [
   `  --container-tiefe: ${g?.tiefe === 'schatten' ? '0 1px 2px rgb(0 0 0 / 0.06)' : 'none'};`,
   `  --sektion-trennlinie: ${g?.sektionstrenner === 'linie' ? '1px solid var(--color-border)' : 'none'};`,
   `  --sektion-flaechenwechsel: ${g?.sektionstrenner === 'flaeche' || g?.sektionstrenner === 'bild' ? '1' : '0'};`,
+  `  --aktion-radius: ${
+    g?.aktionsform === 'kante' ? '0'
+    : g?.aktionsform === 'rund' ? 'var(--radius-md)'
+    : g?.aktionsform === 'pille' ? 'var(--radius-full)'
+    : 'var(--radius-sm)'};`,
   `  --beschriftung-versalien: ${g?.versalbeschriftung ? 'uppercase' : 'none'};`,
   `  --beschriftung-sperrung: ${g?.versalbeschriftung ? '0.06em' : '0'};`,
 ].join('\n');
@@ -120,5 +125,6 @@ ${colorBlock('dark')}
 }
 `;
 
+mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, css, 'utf8');
 console.log(`tokens.css geschrieben: ${out} (${tokens.color.length} Farbrollen, beide Themes${presetName ? `, Preset ${presetName}` : ''})`);

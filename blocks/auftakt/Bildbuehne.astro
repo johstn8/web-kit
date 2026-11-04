@@ -24,5 +24,5 @@ const { titel, lead, bild, aktion } = Astro.props;
   h1 { font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: var(--text-h1--font-weight); letter-spacing: var(--text-h1--letter-spacing); text-wrap: balance; max-width: 20ch; margin: 0; }
   .lead { font-size: var(--text-lead); line-height: var(--text-lead--line-height); color: var(--color-text-secondary); text-wrap: pretty; max-width: var(--prose); margin: var(--space-5) 0 0; }
   .handlung { margin: var(--space-6) 0 0; }
-  .handlung a { display: inline-block; font-weight: 500; padding: var(--space-3) var(--space-5); border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; }
+  .handlung a { display: inline-block; font-weight: 500; padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-sm)); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; }
 </style>

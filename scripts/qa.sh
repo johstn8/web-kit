@@ -13,6 +13,9 @@
 #      Teilauszeichnung, Verlauf ueber Foto, gleichfoermige Startseite)
 #   6. Lighthouse (Performance, SEO, Best Practices)
 #
+# Screenshots, axe und harte Sperren laufen ueber alle Routen der Website:
+# aus /sitemap.xml, sonst aus den HTML-Dateien im Build (scripts/routen.ts).
+#
 # Exit-Code 1, sobald eine Pflichtpruefung faellt. Fehlende optionale
 # Werkzeuge werden als UEBERSPRUNGEN gemeldet, nicht als bestanden.
 
@@ -92,7 +95,7 @@ if ueberspringen screenshots; then
   fehlt screenshots "durch --skip abgewaehlt"
 else
   "$node_bin" --experimental-strip-types "$KIT/scripts/render-shots.ts" \
-    --base "http://localhost:$PORT" --out "$BERICHT/shots" 2>&1 | sed 's/^/   /'
+    --base "http://localhost:$PORT" --dir "$DIR" --out "$BERICHT/shots" 2>&1 | sed 's/^/   /'
   if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
     fehlt screenshots "kein Browser verfuegbar - ohne Render ist Gate G1 nicht erfuellt"
   fi
@@ -104,7 +107,7 @@ if ueberspringen axe; then
   fehlt axe "durch --skip abgewaehlt"
 else
   "$node_bin" --experimental-strip-types "$KIT/scripts/check-axe.ts" \
-    --base "http://localhost:$PORT" --out "$BERICHT/axe.json" 2>&1 | sed 's/^/   /'
+    --base "http://localhost:$PORT" --dir "$DIR" --out "$BERICHT/axe.json" 2>&1 | sed 's/^/   /'
   case "${PIPESTATUS[0]}" in
     0) : ;;
     1) FEHLER=1 ;;
@@ -117,7 +120,7 @@ fi
 # begruendbar. Regeln: web-brain 20-design/anti-ai-slop.md#Harte Sperren
 kopf "Harte Sperren gegen KI-Anmutung"
 "$node_bin" --experimental-strip-types "$KIT/scripts/check-slop.ts" \
-  --base "http://localhost:$PORT" --out "$BERICHT/slop.json" 2>&1 | sed 's/^/   /'
+  --base "http://localhost:$PORT" --dir "$DIR" --out "$BERICHT/slop.json" 2>&1 | sed 's/^/   /'
 case "${PIPESTATUS[0]}" in
   0) : ;;
   1) FEHLER=1 ;;

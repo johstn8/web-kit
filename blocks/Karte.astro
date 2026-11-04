@@ -1,0 +1,73 @@
+---
+/**
+ * Speise-, Getraenke- oder Preiskarte mit Gruppen. Daten: content.karten[].
+ *
+ * Grundform ist die Zeile, nicht die Karte: Name und Preis auf einer
+ * Achse, Beschreibung darunter. Merkmale wie "vegan" stehen neben dem
+ * Namen, nie in einer Ueberschrift (harte Sperre S3).
+ * Mit sprungmarken=true entsteht eine Leiste zu den Gruppen; ab etwa
+ * fuenf Gruppen lohnt sie sich.
+ */
+import { preis, MERKMAL, type Karte } from './_lib.ts';
+interface Props { karte: Karte; sprungmarken?: boolean; ueberschrift?: 'h2' | 'h3' }
+const { karte, sprungmarken = false, ueberschrift = 'h2' } = Astro.props;
+const Titel = ueberschrift;
+const anker = (titel: string) => `${karte.id}-${titel.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+---
+<div class="karte" id={karte.id}>
+  {sprungmarken && (
+    <nav class="sprung" aria-label={`Gruppen der Karte ${karte.titel}`}>
+      {karte.gruppen.map((g) => <a href={`#${anker(g.titel)}`}>{g.titel}</a>)}
+    </nav>
+  )}
+  {karte.gruppen.map((g) => (
+    <section class="gruppe" id={anker(g.titel)} aria-labelledby={`${anker(g.titel)}-t`}>
+      <Titel class="gruppe-titel" id={`${anker(g.titel)}-t`}>{g.titel}</Titel>
+      {g.hinweis && <p class="gruppe-hinweis">{g.hinweis}</p>}
+      <ul class="positionen">
+        {g.positionen.map((p) => (
+          <li>
+            <div class="zeile">
+              <span class="name">{p.name}</span>
+              {p.merkmale?.length ? <span class="merkmale">{p.merkmale.map((m) => MERKMAL[m]).join(' · ')}</span> : null}
+              {p.preis && <span class="preis">{preis(p.preis)}</span>}
+            </div>
+            {p.beschreibung && <p class="beschreibung">{p.beschreibung}</p>}
+            {p.varianten?.length ? (
+              <ul class="varianten">
+                {p.varianten.map((v) => <li><span>{v.menge}</span><span class="preis">{preis(v.preis)}</span></li>)}
+              </ul>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+  {karte.hinweise?.length ? <div class="hinweise">{karte.hinweise.map((h) => <p>{h}</p>)}</div> : null}
+</div>
+
+<style>
+  .karte { max-width: var(--prose); }
+  .sprung { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-8); }
+  .sprung a { font-size: var(--text-small); padding: var(--space-2) var(--space-3); border-radius: var(--aktion-radius, var(--radius-sm)); background: var(--color-surface-alt); color: var(--color-text); text-decoration: none; }
+  .sprung a:hover { background: var(--color-accent-subtle); }
+  @media (max-width: 40rem) {
+    .sprung { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; }
+    .sprung a { flex: none; }
+  }
+  .gruppe { scroll-margin-top: var(--kopf-hoehe, 5rem); }
+  .gruppe + .gruppe { margin-top: var(--space-12); }
+  .gruppe-titel { font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); letter-spacing: var(--text-h2--letter-spacing); margin: 0; }
+  .gruppe-hinweis { margin: var(--space-2) 0 0; font-size: var(--text-small); color: var(--color-text-tertiary); }
+  .positionen { list-style: none; margin: var(--space-5) 0 0; padding: 0; }
+  .positionen > li { padding: var(--space-4) 0; border-top: 1px solid var(--color-border); }
+  .zeile { display: flex; align-items: baseline; gap: var(--space-3); }
+  .name { font-weight: 600; font-size: var(--text-body); }
+  .merkmale { font-size: var(--text-small); color: var(--color-success); }
+  .preis { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .beschreibung { margin: var(--space-1) 0 0; color: var(--color-text-secondary); font-size: var(--text-small); line-height: 1.5; max-width: 40rem; text-wrap: pretty; }
+  .varianten { list-style: none; margin: var(--space-2) 0 0; padding: 0; font-size: var(--text-small); color: var(--color-text-secondary); }
+  .varianten li { display: flex; gap: var(--space-3); }
+  .hinweise { margin-top: var(--space-8); font-size: var(--text-small); color: var(--color-text-tertiary); }
+  .hinweise p { margin: 0 0 var(--space-2); }
+</style>

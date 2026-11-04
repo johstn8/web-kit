@@ -91,7 +91,7 @@ const {
   .einwilligung { grid-template-columns: auto 1fr; align-items: start; gap: var(--space-3); }
   .einwilligung input { width: 1.125rem; height: 1.125rem; margin-top: 0.15rem; }
   .einwilligung label { font-weight: 400; color: var(--color-text-secondary); line-height: 1.5; }
-  button { justify-self: start; font: inherit; font-weight: 500; padding: var(--space-3) var(--space-5); border: 0; border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-accent-contrast); cursor: pointer; transition: opacity var(--duration-fast) var(--ease-out); }
+  button { justify-self: start; font: inherit; font-weight: 500; padding: var(--space-3) var(--space-5); border: 0; border-radius: var(--aktion-radius, var(--radius-sm)); background: var(--color-accent); color: var(--color-accent-contrast); cursor: pointer; transition: opacity var(--duration-fast) var(--ease-out); }
   button:hover { opacity: 0.88; }
   button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
   button:disabled { opacity: 0.5; cursor: not-allowed; }

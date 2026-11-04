@@ -3,14 +3,14 @@
     "name": "Praxis",
     "description": "Gesundheit, Pflege, Therapie. Ruhig und vertrauensnah: Flaechenwechsel statt Rahmen, grosszuegiger Raum, weiche aber nicht blasige Rundung. Belegt an zahnarztpraxis-uhlenhorst.de, drquidenus.at und daylight-health.com aus dem Website Reference Pool.",
     "version": "1.0.0",
-    "updated": "2026-10-02"
+    "updated": "2026-10-02", "anmutung": "klassisch"
   },
   "grammar": {
     "abgrenzung": "flaeche",
     "tiefe": "keine",
     "versalbeschriftung": false,
     "sektionstrenner": "weissraum",
-    "ziffernmarken": "nur bei echter Abfolge"
+    "ziffernmarken": "nur bei echter Abfolge", "aktionsform": "rund"
   },
   "font": [
     {

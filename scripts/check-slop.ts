@@ -4,7 +4,7 @@
  *   node --experimental-strip-types scripts/check-slop.ts \
  *     --base http://localhost:4321 [--pfade /,/kontakt] [--out bericht/slop.json]
  *
- * Ohne --pfade werden die Routen aus /sitemap.xml gelesen.
+ * Ohne --pfade werden die Routen aus /sitemap.xml oder --dir gelesen, siehe routen.ts.
  *
  * Geprueft wird, was web-brain 20-design/anti-ai-slop.md#Harte Sperren
  * ausdruecklich sperrt und was sich am Render feststellen laesst:
@@ -35,6 +35,7 @@ import { resolve, join, dirname } from 'node:path';
 import { spawn } from 'node:child_process';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { routen } from './routen.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 function arg(flag: string, standard?: string): string | undefined {
@@ -45,18 +46,6 @@ function arg(flag: string, standard?: string): string | undefined {
 const basis = arg('--base', 'http://localhost:4321')!.replace(/\/$/, '');
 const ausgabe = resolve(arg('--out', join(here, '../starter/qa-bericht/slop.json'))!);
 
-async function routen(): Promise<string[]> {
-  const gegeben = arg('--pfade');
-  if (gegeben) return gegeben.split(',').map((p) => p.trim()).filter(Boolean);
-  try {
-    const xml = await (await fetch(`${basis}/sitemap.xml`)).text();
-    const pfade = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => {
-      try { return new URL(m[1]).pathname; } catch { return m[1]; }
-    });
-    if (pfade.length) return [...new Set(pfade)];
-  } catch { /* keine Sitemap */ }
-  return ['/'];
-}
 
 function chromiumSuchen(): string | null {
   const kandidaten: string[] = [];
@@ -256,7 +245,7 @@ const MESSUNG = String.raw`(() => {
   return JSON.stringify({ befunde, sektionen: folge.map((x) => x.s) });
 })()`;
 
-const routenListe = await routen();
+const routenListe = await routen(basis);
 const binary = chromiumSuchen();
 if (!binary) { console.error('Kein Browser verfuegbar. Ohne Browser ist diese Pruefung nicht belegt.'); process.exit(2); }
 

@@ -2,14 +2,14 @@
   "meta": {
     "name": "Tisch",
     "description": "Gastronomie, Baeckerei, Hofladen, Hotellerie. Warm und redaktionell: das Bild fuehrt, die Schrift begleitet, dunkle Grundflaeche traegt Speisefotografie. Belegt an minerestaurant.de, amritpalace.com und munrooftoprome.com aus dem Website Reference Pool. Der Auftakt der Gattung ist das randlose Leitbild, siehe web-brain 20-design/landing-page-craft.md#Gattungsregeln fuer den Auftakt.",
-    "version": "1.1.0", "updated": "2026-10-02"
+    "version": "1.1.0", "updated": "2026-10-02", "anmutung": "klassisch"
   },
   "grammar": {
     "abgrenzung": "flaeche",
     "tiefe": "ueberlagerung",
     "versalbeschriftung": false,
     "sektionstrenner": "bild",
-    "ziffernmarken": "nur bei echter Abfolge"
+    "ziffernmarken": "nur bei echter Abfolge", "aktionsform": "weich"
   },
   "font": [
     { "name": "display", "value": "Alegreya, Palatino Linotype, Georgia, serif", "usage": "humanistische, kalligrafisch gepraegte Serife; traegt Handwerk und Genuss ohne Hochglanz. Ersetzt am 2026-10-02 Fraunces, die auf der Sperrliste uebernutzter Schriften steht; erprobt an trattoria-alberto/04-tavola", "quelle": "Google Fonts, SIL OFL 1.1" },

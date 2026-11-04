@@ -16,7 +16,7 @@
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { applyPreset, gewichteJeRolle, type TokenFile, type Preset } from './tokens-lib.ts';
+import { applyPreset, gewichteJeRolle, type TokenFile, type Preset, presetPfad } from './tokens-lib.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 function arg(flag: string, standard?: string): string | undefined {
@@ -30,7 +30,7 @@ const cssZiel = resolve(arg('--css', join(here, '../starter/src/styles/fonts.css
 
 const basis: TokenFile = JSON.parse(readFileSync(join(here, '../tokens/tokens.json'), 'utf8'));
 const preset: Preset | undefined = presetName
-  ? JSON.parse(readFileSync(join(here, `../tokens/presets/${presetName}.json`), 'utf8'))
+  ? JSON.parse(readFileSync(presetPfad(presetName, here), 'utf8'))
   : undefined;
 const tokens = applyPreset(basis, preset);
 
@@ -75,14 +75,29 @@ for (const [name, menge] of gebraucht) {
   const gesichter = [...css.matchAll(/\/\*\s*([\w-]+)\s*\*\/\s*@font-face\s*\{([^}]*)\}/g)]
     .filter((m) => m[1] === 'latin' || m[1] === 'latin-ext');
 
+  // Bei variablen Familien liefert Google fuer jedes angefragte Gewicht
+  // einen eigenen @font-face-Block, aber dieselbe Datei. Je Datei wird
+  // deshalb einmal geladen und ein Block mit Gewichtsbereich geschrieben;
+  // vorher landete dieselbe Datei bis zu dreimal im Projekt und im Netz.
+  const jeDatei = new Map<string, { teilmenge: string; gewichte: number[]; unicode?: string }>();
   for (const gesicht of gesichter) {
     const block = gesicht[2];
-    const gewicht = /font-weight:\s*([^;]+);/.exec(block)?.[1].trim() ?? '400';
     const quelle = /url\((https:[^)]+\.woff2)\)/.exec(block)?.[1];
     if (!quelle) continue;
-    const unicode = /unicode-range:\s*([^;]+);/.exec(block)?.[1].trim();
+    const gewicht = Number(/font-weight:\s*(\d+)/.exec(block)?.[1] ?? 400);
+    const eintrag = jeDatei.get(quelle) ?? {
+      teilmenge: gesicht[1],
+      gewichte: [],
+      unicode: /unicode-range:\s*([^;]+);/.exec(block)?.[1].trim(),
+    };
+    eintrag.gewichte.push(gewicht);
+    jeDatei.set(quelle, eintrag);
+  }
 
-    const dateiname = `${name.toLowerCase().replace(/\s+/g, '-')}-${gewicht.replace(/\s+/g, '-')}-${gesicht[1]}.woff2`;
+  for (const [quelle, { teilmenge, gewichte, unicode }] of jeDatei) {
+    const von = Math.min(...gewichte), bis = Math.max(...gewichte);
+    const gewicht = von === bis ? `${von}` : `${von} ${bis}`;
+    const dateiname = `${name.toLowerCase().replace(/\s+/g, '-')}-${gewicht.replace(' ', '-')}-${teilmenge}.woff2`;
     const daten = Buffer.from(await (await fetch(quelle, { headers: { 'User-Agent': UA } })).arrayBuffer());
     writeFileSync(join(zielVerzeichnis, dateiname), daten);
     geladen++;

@@ -5,6 +5,7 @@
  * deshalb laufen alle Kit-Bloecke ohne Aenderung in jedem Kundensystem.
  * Kanonisch in web-brain 20-design/color-system.md#Tokenvertrag.
  */
+import { resolve as resolvePfad } from 'node:path';
 
 export type Theme = 'light' | 'dark';
 
@@ -231,6 +232,14 @@ export interface Grammar {
   versalbeschriftung: boolean;
   sektionstrenner: 'linie' | 'flaeche' | 'weissraum' | 'bild';
   ziffernmarken: string;
+  /**
+   * Form der Aktionen (Buttons, Links mit Flaeche), unabhaengig vom Radius
+   * der Container: kante 0, weich radius-sm, rund radius-md, pille voll
+   * gerundet. Ohne Angabe weich. Eigenes Feld, weil die Aktionsform das
+   * auffaelligste Einzelmerkmal ist und vorher an radius-sm hing, das in
+   * vier von fuenf Presets null oder fast null war.
+   */
+  aktionsform?: 'kante' | 'weich' | 'rund' | 'pille';
 }
 
 export type Preset = Partial<TokenFile> & { grammar?: Grammar };
@@ -282,4 +291,16 @@ export function gewichteJeRolle(tokens: TokenFile): Record<string, Set<number>> 
     aus[rolle].add(Number(stufe.value.weight));
   }
   return aus;
+}
+
+/**
+ * Pfad eines Presets: ein Name aus tokens/presets/ oder ein Pfad zu einer
+ * eigenen Datei im Projekt (endet auf .json oder enthaelt einen Schraegstrich).
+ * Das projekteigene Preset ist der Normalfall, das Kit-Preset ein Startpunkt.
+ */
+export function presetPfad(name: string, kitScripts: string): string {
+  if (name.endsWith('.json') || name.includes('/')) {
+    return name.endsWith('.json') ? resolvePfad(name) : resolvePfad(`${name}.json`);
+  }
+  return resolvePfad(kitScripts, `../tokens/presets/${name}.json`);
 }
