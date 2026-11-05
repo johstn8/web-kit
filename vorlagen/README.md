@@ -22,8 +22,14 @@ Seitenaufbau, damit sich nichts wieder angleicht.
 | `abend` | carbonenewyork.com | Restaurant mit Geschichte, Bar, Club | Marine und Creme, vollbreite Fotos, Halbseiten, keine Bewegung |
 | `kurs` | scaly.com | Weiterbildung, Coaching, Förderangebote | Pfirsichkarte im Auftakt, Reiter, Blob-Foto, viel Beweis |
 | `bogen` | tunymedia.at | Agentur, Dienstleister für eine Branche | Bogenkanten, gekippte Bildcollagen, Gerät im Abschluss |
+| `kachel` | dentalize.de | Agentur, Praxis, Dienstleister mit Film | Filmkacheln, Überschriften in Grau und Schwarz, Bento, klebende Schritte |
+| `kerbe` | inno-one.de | B2B, Software, Beratung | dunkle Tafeln mit Kerbe, leichte Schrift, Liniendiagramme, Bewertungen |
+| `gastgeber` | cornelia-poletto.de | Küche, Praxis, Kanzlei mit einer Person im Mittelpunkt | Porträt, Satz mit Unterschrift, drei Halbseiten, viel Luft |
+| `tageskarte` | padella.co | Pastabar, Imbiss, kleine Kette | Schwarz, drei Hover-Bilder, Karte im Rahmen, weiches Scrollen |
+| `konditorei` | salswee.com | Patisserie, Café, Manufaktur | Creme, Stücke ragen über Streifen, Bildraster, Teller auf Muster |
+| `gasthaus` | zum-hecht.de | Landgasthaus, Weingut, Hotel | Schwarz-Weiß-Wechsel, gebrochene Wortmarke, Bilder tragen, Galerie |
 
-Alle vierzehn auf einen Blick: [`uebersicht.webp`](uebersicht.webp).
+Alle zwanzig auf einen Blick: [`uebersicht.webp`](uebersicht.webp).
 
 Die Spalte „Passt zu" ist ein Hinweis. Ein Bäcker kann `hafen` tragen.
 
@@ -44,6 +50,12 @@ einsetzen. **Der Aufbau bleibt.** Am Ende neben das Original legen.
   `system`, Orange bei `kongress`.
 - `kongress` färbt wie ko:mon einzelne Wörter in Überschriften. In `qa.sh` dafür
   `--erlaubt teilauszeichnung` setzen. `hafen` trägt die Riesenziffern von the1.
+- `kachel` trägt wie Dentalize zweistimmige Überschriften (`--erlaubt teilauszeichnung`). Die ovalen
+  Stichwörter in den Schritten, die keine Knöpfe sind, fehlen: Der Nutzer erkennt daran KI-Machart.
+- `gasthaus` lässt den Abschnitt „Termine" weg, den der Nutzer nicht mag, dazu Karussellpfeile und
+  Einwilligungsleiste. Die Kopffarbe steht in `--kopf`, damit sie je Betrieb wechseln kann.
+- `tageskarte` ersetzt Lenis durch ein kleines Skript ohne Abhängigkeit, nur am Mausrad.
+- `gastgeber` zeigt ein Stockfoto. Die Seite lebt vom echten Porträt der Person.
 - Dachzeilen der Originale sind entfallen; der Nutzer hat sie als KI-typisch benannt.
 - `salon` trägt statt der Michelin-Plakette einen neutralen Gutschein-Aufkleber, und die
   Auszeichnungen sind zu Partnern geworden: Eine Vorlage behauptet keinen Preis.

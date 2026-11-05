@@ -105,7 +105,7 @@ const MESSUNG = String.raw`(() => {
     let kandidat = h.previousElementSibling, knoten = h, ebene = 0;
     while (!kandidat && ebene < 2 && knoten.parentElement) { knoten = knoten.parentElement; kandidat = knoten.previousElementSibling; ebene++; }
     if (!kandidat || !sicht(kandidat)) continue;
-    if (/^(H[1-6]|NAV|HEADER|IMG|PICTURE|FIGURE|SVG|BUTTON|FORM|TABLE|VIDEO|IFRAME|SELECT|INPUT)$/.test(kandidat.tagName)) continue;
+    if (/^(H[1-6]|NAV|HEADER|IMG|PICTURE|FIGURE|SVG|BUTTON|FORM|TABLE|VIDEO|IFRAME|SELECT|INPUT)$/.test(kandidat.tagName.toUpperCase())) continue; /* svg meldet seinen Namen klein */
     if (kandidat.querySelector('img, picture, video, svg, h1, h2, h3, button, input')) continue;
     const t = text(kandidat);
     if (!t || t.length > 90) continue;
