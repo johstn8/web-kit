@@ -1,12 +1,16 @@
 ---
 /**
- * Auftakt mit einem Gegenstand, der auf einer gestrichelten Bahn durch die Schritte
- * fliegt. Nach dem Auftakt von sales-culture.de, vom Nutzer 2026-11-07 gelobt
+ * Auftakt mit einem Gegenstand, der in eine gestrichelte Bahn durch die Schritte
+ * hineinfliegt. Nach dem Auftakt von sales-culture.de, vom Nutzer 2026-11-07 gelobt
  * ("Landing Page mit dem bewegenden Flieger"). Text links, Bahn rechts, darunter die
  * Schritte als Leiste. Statt des Papierfliegers darf jedes einfache SVG im Slot stehen,
  * das zum Betrieb passt: ein Paket, ein Blatt, ein Auto.
  * Die letzte Zeile ist im Original farbig; das faellt unter S3 und entfaellt.
- * Bewegung ueber offset-path; bei reduzierter Bewegung steht der Gegenstand am Ziel.
+ * Ablauf gemessen 2026-11-07 an sales-culture.de: Die Bahn zeichnet sich in 1,2 s,
+ * die Punkte springen danach in je 0,5 s auf (40 % ueber 112 % auf 100 %), der Flieger
+ * fliegt in 1,85 s von links unten ein (verschoben, -14 Grad, 86 %, unsichtbar) und
+ * schwebt danach endlos: Auf und Ab 0,55 rem in 5,6 s, Kippen bis 2,6 Grad in 4,2 s.
+ * Knopf hebt beim Hover um 2 px in 0,22 s. Bei reduzierter Bewegung steht alles still.
  */
 import type { Aktion } from '../_lib.ts';
 interface Props { titel: string[]; lead: string; aktion: Aktion; schritte: string[] }
@@ -21,11 +25,12 @@ const punkte = [[30, 300], [230, 190], [400, 150], [560, 70]];
     <a class="aktion" href={aktion.ziel}>{aktion.label} <span aria-hidden="true">→</span></a>
   </div>
   <svg class="szene" viewBox="0 0 600 360" aria-hidden="true">
-    <path class="bahn" d={bahn} />
-    {punkte.slice(0, schritte.length).map(([x, y], i) => <g><circle cx={x} cy={y} r="13" /><text x={x} y={y + 5}>{i + 1}</text></g>)}
-    <g class="flieger" style={`offset-path: path('${bahn}')`}><slot><path d="M-22 -10 24 0 -22 12 -12 0z M-12 0 24 0" /></slot></g>
+    <defs><mask id="pfadflug-spur" maskUnits="userSpaceOnUse" x="-20" y="-20" width="640" height="400"><path class="spur" d={bahn} pathLength="1" /></mask></defs>
+    <path class="bahn" d={bahn} mask="url(#pfadflug-spur)" />
+    {punkte.slice(0, schritte.length).map(([x, y], i) => <g class="punkt" style={`--i:${i}`}><circle cx={x} cy={y} r="13" /><text x={x} y={y + 5}>{i + 1}</text></g>)}
+    <g transform="translate(560 70) rotate(-18)"><g class="flieger"><g class="kippen"><slot><path d="M-26 -12 28 0 -26 14 -14 0z M-14 0 28 0" /></slot></g></g></g>
   </svg>
-  <ol class="leiste">{schritte.map((s, i) => <li><span>{i + 1}</span>{s}</li>)}</ol>
+  <ol class="leiste">{schritte.map((s, i) => <li style={`--n:${i}`}><span>{i + 1}</span>{s}</li>)}</ol>
 </section>
 
 <style>
@@ -33,17 +38,30 @@ const punkte = [[30, 300], [230, 190], [400, 150], [560, 70]];
   h1 { margin: 0; font-size: var(--text-display); line-height: 1.08; font-weight: var(--text-display--font-weight); letter-spacing: var(--text-display--letter-spacing); }
   h1 span { display: block; }
   .text p { margin: var(--space-5) 0 var(--space-6); max-width: 34rem; color: var(--color-text-secondary); }
-  .aktion { display: inline-flex; gap: var(--space-2); padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-full)); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; font-weight: 600; transition: translate var(--duration-base) var(--ease-out); }
-  .aktion:hover { translate: 0 -2px; }
+  .aktion { display: inline-flex; gap: var(--space-2); padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-full)); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; font-weight: 600; transition: translate .22s cubic-bezier(.22,.61,.36,1), filter .22s; }
+  .aktion:hover { translate: 0 -2px; filter: brightness(.9); }
   .szene { width: 100%; overflow: visible; }
   .bahn { fill: none; stroke: var(--color-border-hover); stroke-width: 2; stroke-dasharray: 6 8; }
+  .spur { fill: none; stroke: #fff; stroke-width: 8; stroke-dasharray: 1; stroke-dashoffset: 0; }
   circle { fill: var(--color-surface); stroke: var(--color-text); stroke-width: 1.5; }
   text { font: 600 13px var(--font-body); fill: var(--color-text); text-anchor: middle; }
-  .flieger { offset-rotate: auto; offset-distance: 100%; fill: var(--color-accent-subtle); stroke: var(--color-accent); stroke-width: 1.6; stroke-linejoin: round; animation: flug 5.5s var(--ease-in-out) .4s both; }
-  @keyframes flug { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+  .flieger, .kippen { transform-box: fill-box; transform-origin: center; }
+  .flieger { fill: var(--color-accent-subtle); stroke: var(--color-accent); stroke-width: 1.6; stroke-linejoin: round; }
+  @media (prefers-reduced-motion: no-preference) {
+    .spur { animation: zeichnen 1.2s linear both; }
+    .punkt { transform-box: fill-box; transform-origin: center; animation: auf .5s linear both; animation-delay: calc(1.2s + var(--i) * .15s); }
+    .flieger { animation: einflug 1.85s cubic-bezier(.22,.61,.36,1) .3s both, schweben 5.6s ease-in-out 2.15s infinite; }
+    .kippen { animation: kippen 4.2s ease-in-out 2.15s infinite; }
+    .leiste li { animation: schritt .5s ease-out both; animation-delay: calc(1.4s + var(--n, 0) * .1s); }
+  }
+  @keyframes zeichnen { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes auf { 0% { opacity: 0; scale: .4; } 70% { opacity: 1; scale: 1.12; } 100% { opacity: 1; scale: 1; } }
+  @keyframes einflug { from { opacity: 0; translate: -240px 150px; rotate: -14deg; scale: .86; } to { opacity: 1; translate: 0 0; rotate: 0deg; scale: 1; } }
+  @keyframes schweben { 0%, 100% { translate: 0 0; } 25% { translate: 0 -.55rem; } 75% { translate: 0 .2rem; } }
+  @keyframes kippen { 0%, 100% { rotate: 0deg; } 25% { rotate: 2.6deg; } 75% { rotate: -1.4deg; } }
+  @keyframes schritt { from { opacity: 0; translate: 0 .5rem; } to { opacity: 1; translate: 0 0; } }
   .leiste { grid-column: 1 / -1; display: flex; gap: var(--space-4); list-style: none; margin: 0; padding: var(--space-5) 0 0; border-top: 1px solid var(--color-border); font-size: var(--text-small); }
   .leiste li { flex: 1; display: flex; align-items: center; gap: var(--space-2); }
   .leiste span { display: grid; place-content: center; flex: none; width: 1.6rem; height: 1.6rem; border-radius: 50%; border: 1px solid var(--color-text); font-size: 12px; }
-  @media (prefers-reduced-motion: reduce) { .flieger { animation: none; } }
   @media (max-width: 52rem) { .pfadflug { grid-template-columns: 1fr; } .leiste { flex-wrap: wrap; } .leiste li { flex: 1 1 45%; } }
 </style>

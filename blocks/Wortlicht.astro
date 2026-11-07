@@ -1,7 +1,8 @@
 ---
 /**
- * Grosser Absatz, dessen Woerter sich beim Scrollen nacheinander einfaerben.
- * Abgeleitet aus der Scrollstrecke von ko-mon.de. Ohne Bibliothek.
+ * Grosser Absatz, der sich beim Scrollen Zeile fuer Zeile von links nach rechts einfaerbt.
+ * Werte am 2026-11-07 an ko-mon.de gemessen (gsap): 2,9 s je Zeile, 0,4 s Versatz,
+ * Scrollbereich Oberkante 70 % bis Unterkante 60 %, Nachlauf. Hier ohne Bibliothek.
  *
  * Fuer einen Satz, der die Haltung des Betriebs traegt, einmal je Seite.
  * Die gedimmte Farbe ist text-tertiary und besteht den Kontrast: der Text
@@ -20,33 +21,32 @@ const woerter = text.trim().split(/\s+/);
 </section>
 
 <script is:inline>
-  (() => {
-    if (window.__wortlicht || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    window.__wortlicht = true;
-    const felder = [...document.querySelectorAll('[data-wortlicht]')].map((el) => ({ el, woerter: [...el.querySelectorAll('span')], stand: -1 }));
-    const zeichnen = () => {
-      const h = innerHeight;
-      for (const f of felder) {
-        const r = f.el.getBoundingClientRect();
-        if (r.bottom < -h || r.top > h * 2) continue;
-        const fortschritt = Math.min(1, Math.max(0, (h * 0.8 - r.top) / (r.height * 0.9 + h * 0.3)));
-        const bis = Math.round(fortschritt * f.woerter.length);
-        if (bis === f.stand) continue;
-        f.stand = bis;
-        f.woerter.forEach((w, i) => w.toggleAttribute('data-an', i < bis));
-      }
-    };
-    let wartet = false;
-    addEventListener('scroll', () => { if (!wartet) { wartet = true; requestAnimationFrame(() => { wartet = false; zeichnen(); }); } }, { passive: true });
-    addEventListener('resize', zeichnen);
-    document.documentElement.classList.add('wortlicht-an');
-    zeichnen();
-  })();
+(() => {
+  // Gemessen an ko-mon.de (gsap): je Zeile ein Farbverlauf, der von links nach rechts
+  // laeuft, 2,9 s je Zeile, 0,4 s Versatz, an den Scroll gebunden von "Oberkante bei
+  // 70 % der Hoehe" bis "Unterkante bei 60 %", mit Nachlauf (scrub 2).
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const felder = [...document.querySelectorAll('[data-wortlicht] p')];
+  if (!felder.length) return;
+  document.documentElement.classList.add('licht-an');
+  const zeilen = (f) => { const w = [...f.querySelectorAll('span')], z = []; let oben = null; for (const s of w) { const t = s.offsetTop; if (oben === null || Math.abs(t - oben) > 4) { z.push([]); oben = t; } z[z.length - 1].push(s); } return z.map((ws) => ({ ws, links: ws[0].offsetLeft, breite: ws[ws.length - 1].offsetLeft + ws[ws.length - 1].offsetWidth - ws[0].offsetLeft })); };
+  const daten = felder.map((f) => ({ f, z: zeilen(f), jetzt: 0 }));
+  addEventListener('resize', () => daten.forEach((d) => { d.z = zeilen(d.f); }));
+  const ziel = (f) => { const r = f.getBoundingClientRect(), h = innerHeight; return Math.min(1, Math.max(0, (h * .7 - r.top) / (h * .1 + r.height))); };
+  const schritt = () => {
+    for (const d of daten) {
+      d.jetzt += (ziel(d.f) - d.jetzt) * .06;
+      const n = d.z.length, gesamt = 2.9 + .4 * (n - 1), t = d.jetzt * gesamt;
+      d.z.forEach((z, i) => { const p = Math.min(1, Math.max(0, (t - .4 * i) / 2.9)), x = z.links + p * z.breite; for (const s of z.ws) s.style.setProperty('--f', String(Math.min(1, Math.max(0, (x - s.offsetLeft) / s.offsetWidth)))); });
+    }
+    requestAnimationFrame(schritt);
+  };
+  schritt();
+})();
 </script>
 
 <style>
   .wortlicht { padding: var(--space-12) var(--gutter); }
   p { max-width: 58rem; margin-inline: auto; font-family: var(--font-display); font-size: var(--text-h2); line-height: 1.25; font-weight: var(--text-h2--font-weight); letter-spacing: var(--text-h2--letter-spacing); color: var(--color-text); text-wrap: pretty; }
-  :global(.wortlicht-an) span { color: var(--color-text-tertiary); transition: color var(--duration-base) var(--ease-out); }
-  :global(.wortlicht-an) span[data-an] { color: var(--color-text); }
+  :global(.licht-an) .wortlicht span { color: transparent; background: linear-gradient(90deg, var(--color-text) calc(var(--f, 0) * 100%), var(--color-text-tertiary) calc(var(--f, 0) * 100%)); -webkit-background-clip: text; background-clip: text; }
 </style>

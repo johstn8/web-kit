@@ -1,7 +1,9 @@
 ---
 /**
- * Einzelne Elemente schweben mit Versatz ueber dem Grund und verschieben sich beim
- * Scrollen leicht gegeneinander; darunter Karten mit ruhigem Hover. Nach saadsalman.org,
+ * Einzelne Elemente schweben mit Versatz und Rahmen ueber dem Grund; darunter Karten mit
+ * ruhigem Hover. Gemessen 2026-11-07: kein Scrollversatz; beim Hover hebt sich der Inhalt
+ * einer Karte um 6 px, ein Bild waechst auf 104 %, der Titel nimmt den Akzent an, 0,3 s
+ * cubic-bezier(0, 0, .2, 1), dazu ein Schatten 0 8px 30px rgba(0,0,0,.06). Nach saadsalman.org,
  * vom Nutzer 2026-11-07 nur dafuer gelobt ("einzelne Elemente schwebend", "Hover-Effekte").
  * Nicht uebernommen: Ovale ueber Ueberschriften und Verlaeufe in der Schrift.
  * Hover nach B5: ein bis zwei Pixel Hub, Rahmen nimmt den Akzent an, ein flacher Schatten.
@@ -20,14 +22,7 @@ const lage = [[6, 8], [62, 0], [30, 46], [78, 52], [0, 70], [50, 82]];
   ))}</div>
   {karten.length > 0 && <ul class="karten">{karten.map((k) => <li><a href={k.ziel}><h3>{k.titel}</h3><p>{k.text}</p><span aria-hidden="true">→</span></a></li>)}</ul>}
 </section>
-<script is:inline>
-(() => {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const f = [...document.querySelectorAll('[data-schwebend] .feld')];
-  const z = () => f.forEach((x) => { const r = x.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight; x.querySelectorAll('.teil').forEach((t) => { t.style.translate = `0 ${p * t.style.getPropertyValue('--t') * -40}px`; }); });
-  addEventListener('scroll', z, { passive: true }); z();
-})();
-</script>
+
 
 <style>
   .schwebend { max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter); }
@@ -35,13 +30,14 @@ const lage = [[6, 8], [62, 0], [30, 46], [78, 52], [0, 70], [50, 82]];
   h2 { margin: 0; font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); }
   .kopf p { margin: 0; color: var(--color-text-secondary); }
   .feld { position: relative; height: 26rem; margin: var(--space-6) 0; overflow: hidden; }
-  .teil { position: absolute; will-change: translate; border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: var(--color-surface); box-shadow: 0 8px 30px rgb(0 0 0 / .06); }
+  .teil { position: absolute; border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: var(--color-surface); box-shadow: 0 8px 30px rgb(0 0 0 / .06); }
   .bild { width: clamp(8rem, 18vw, 13rem); aspect-ratio: 4 / 3; overflow: hidden; padding: 6px; } .bild img { width: 100%; height: 100%; object-fit: cover; border-radius: calc(var(--radius-lg) - 6px); }
   .notiz { padding: var(--space-3) var(--space-4); font-size: var(--text-small); max-width: 14rem; }
   .karten { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); list-style: none; margin: 0; padding: 0; }
-  .karten a { display: grid; gap: var(--space-2); height: 100%; padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); color: var(--color-text); text-decoration: none; transition: translate var(--duration-fast) var(--ease-out), border-color var(--duration-fast), box-shadow var(--duration-fast); }
+  .karten a { display: grid; gap: var(--space-2); height: 100%; padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); color: var(--color-text); text-decoration: none; transition: border-color .15s cubic-bezier(.4,0,.2,1), box-shadow .15s cubic-bezier(.4,0,.2,1); }
+  .karten h3, .karten p, .karten span { transition: translate .3s cubic-bezier(0,0,.2,1), color .3s; }
   .karten h3 { margin: 0; font-size: var(--text-h3); } .karten p { margin: 0; font-size: var(--text-small); color: var(--color-text-secondary); } .karten span { color: var(--color-accent); }
-  @media (hover: hover) and (pointer: fine) { .karten a:hover { translate: 0 -2px; border-color: var(--color-accent); box-shadow: 0 8px 30px rgb(0 0 0 / .06); } }
+  @media (hover: hover) and (pointer: fine) { .karten a:hover { border-color: var(--color-accent); box-shadow: 0 8px 30px rgb(0 0 0 / .06); } .karten a:hover h3, .karten a:hover p, .karten a:hover span { translate: 0 -6px; } .karten a:hover h3 { color: var(--color-accent); } .teil.bild { transition: scale .3s cubic-bezier(0,0,.2,1); } .teil.bild:hover { scale: 1.04; } }
   .karten a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
   @media (max-width: 52rem) { .kopf, .karten { grid-template-columns: 1fr; } .feld { height: 20rem; } }
 </style>

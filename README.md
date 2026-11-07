@@ -23,7 +23,7 @@ content/    schema.json - Datenmodell für Betriebsdaten, mit Karten
             (Speisen, Getränke, Preislisten) und freien Texten
 scripts/    extract-old-site.ts, render-shots.ts, check-axe.ts,
             check-slop.ts, check-contrast.ts, link-check.ts, tokens-*.ts, qa.sh,
-            stilverlauf.ts, stil-messen.ts, routen.ts,
+            stilverlauf.ts, stil-messen.ts, effekte-messen.ts, routen.ts,
             deploy.sh, kontakt-endpoint.mjs, nginx-site.conf.template,
             fetch-fonts.ts
 starter/    lauffähiges Astro-Projekt, das alles einbindet
@@ -79,7 +79,9 @@ Ein Preset ist der technische Startpunkt. Der Stil eines Auftrags entsteht
 aus der Stilrecherche dieses Laufs und liegt als eigenes Preset im Projekt;
 `--preset` nimmt dafür auch einen Pfad. `scripts/stil-messen.ts` misst an
 einer Referenzseite Schriften, Type Ramp, Aktions- und Kachelradien, Grund
-und Akzent, damit die Ableitung nicht geraten wird. `scripts/stilverlauf.ts`
+und Akzent, damit die Ableitung nicht geraten wird. `scripts/effekte-messen.ts`
+misst Hover, Scrollanimationen, Übergänge und Bibliotheken wie gsap, damit
+auch Bewegung nicht geraten wird. `scripts/stilverlauf.ts`
 zeigt, was die letzten Websites trugen, und meldet Wiederholungen.
 
 Der Sinn: Wer eine Richtung wählt, startet nicht beim statistischen Mittel.

@@ -104,6 +104,20 @@ einsetzen. **Der Aufbau bleibt.** Am Ende neben das Original legen.
   Die Vorlagen zeigen dort Stockfotos oder einfache CSS-Formen; besonders `gericht`,
   `schmal` und `verlauf` leben erst mit echtem Material.
 
+## Gemessene Effekte
+
+Seit 2026-11-07 sind Effekte, die der Nutzer gelobt hat, mit `scripts/effekte-messen.ts`
+am Original gemessen und danach eingestellt, nicht mehr aus Screenshots geschätzt:
+
+| Vorlage | Gemessen am Original | Jetzt |
+|---|---|---|
+| `tageskarte` | Bild zieht beim Hover auf 106 %, 0,3 s; Wortmarke blendet in 450 px Scroll aus; Lenis | wie gemessen; der vorher erfundene Bildwechsel und der steigende Name sind entfernt |
+| `kongress` | Text färbt sich zeilenweise von links, 2,9 s je Zeile, 0,4 s Versatz, an den Scroll gebunden mit Nachlauf; Navigation wächst beim Hover auf 120 %, 0,4 s; Kopfzeile verschwindet beim Abwärtsscrollen | wie gemessen; vorher Wort für Wort |
+| `rahmen` | Stapelkarten schrumpfen auf 85 %, während die nächste darüberfährt; Bilder beim Hover 102,5 % mit leichtem Beschnitt | wie gemessen |
+| `verlauf` | Filmbild schrumpft beim Hereinscrollen auf 77 % | wie gemessen |
+| `kachel` | Knöpfe beim Hover Petrol zu Schwarz, 0,3 s; Wortmarke wird schwarz; Bilder im Ablauf wechseln mit Zoom von 120 %; Einblendungen 1 s mit power3 | wie gemessen |
+| `creator` | Knöpfe beim Hover Blau zu Weiß mit schwarzer Schrift, 0,3 s; Navigation wird blau; Logoband läuft; Zähler zählen hoch | wie gemessen; der erfundene Bildzoom ist entfernt |
+
 ## Was eine Vorlage nicht enthält
 
 Texte, Bilder, Logos und Quellcode der Referenzseite. Die Firmen in den

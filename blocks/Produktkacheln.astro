@@ -4,6 +4,8 @@
  * Objekt, Marke oder Auftraggeber, Titel, ein Satz, Plus als Link. Nach modulo-
  * consulting.de, vom Nutzer 2026-11-07 gelobt ("eckige Kacheln mit den einzelnen
  * Produkten"). Die Kacheln sind versetzt hoch, damit das Raster nicht starr wirkt.
+ * Gemessen 2026-11-07: Die Kachel selbst reagiert nicht auf Hover; Knoepfe wachsen auf
+ * 110 % in 0,3 s.
  */
 import type { Bild } from './_lib.ts';
 interface Kachel { titel: string; marke?: string; text: string; bild: Bild; ziel?: string }
@@ -31,10 +33,9 @@ const { titel, kacheln } = Astro.props;
   .marke { font-weight: 700; color: var(--color-text-secondary); letter-spacing: .02em; }
   h3 { margin: var(--space-3) 0 var(--space-2); max-width: 14ch; font-size: var(--text-h3); line-height: 1.2; }
   p { margin: 0; max-width: 24ch; font-size: var(--text-small); color: var(--color-text-secondary); }
-  img { justify-self: end; align-self: end; width: 62%; max-height: 16rem; object-fit: contain; transition: scale var(--duration-slow) var(--ease-out); }
-  a:hover img { scale: 1.05; }
-  i { position: absolute; right: var(--space-4); top: var(--space-4); display: grid; place-content: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--color-surface); font-style: normal; transition: rotate var(--duration-base) var(--ease-out); }
-  a:hover i { rotate: 90deg; }
+  img { justify-self: end; align-self: end; width: 62%; max-height: 16rem; object-fit: contain; }
+  i { position: absolute; right: var(--space-4); top: var(--space-4); display: grid; place-content: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--color-surface); font-style: normal; transition: transform .3s; }
+  a:hover i { transform: scale(1.1); }
   a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
   @media (max-width: 40rem) { ul { grid-template-columns: 1fr; } li:nth-child(even) { translate: none; } a { min-height: 20rem; } }
 </style>

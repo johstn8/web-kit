@@ -3,7 +3,8 @@
  * Ein Produkt steht fest, und beim Scrollen steigt ein Satz von unten aus ihm heraus.
  * Nach modulo-consulting.de, vom Nutzer 2026-11-07 nur dieses Element und die Produkt-
  * kacheln gelobt. Das Bild liegt ueber dem Text, damit der Satz hinter dem Produkt
- * hervorkommt. Ohne scroll-gebundene Animation steht der Satz einfach unter dem Bild.
+ * hervorkommt. Gemessen 2026-11-07: Inhalte steigen dort linear mit dem Scroll und blenden
+ * dabei von 0 auf 1 auf; die Strecke hier ist laenger, damit der Satz ganz hervorkommt. Ohne scroll-gebundene Animation steht der Satz einfach unter dem Bild.
  */
 import type { Bild } from './_lib.ts';
 interface Props { bild: Bild; satz: string }
@@ -25,7 +26,7 @@ const { bild, satz } = Astro.props;
     @media (prefers-reduced-motion: no-preference) {
       .aufstieg { view-timeline: --aufstieg block; }
       p { animation: steigen linear both; animation-timeline: --aufstieg; animation-range: contain 0% contain 80%; }
-      @keyframes steigen { from { translate: -50% 20%; opacity: 0; } 35% { opacity: 1; } to { translate: -50% -125%; opacity: 1; } }
+      @keyframes steigen { from { translate: -50% 0; opacity: 0; } 30% { opacity: 1; } to { translate: -50% -105%; opacity: 1; } }
     }
   }
   @supports not (animation-timeline: view()) { .aufstieg { height: auto; } .buehne { position: static; height: auto; padding: var(--space-12) var(--gutter); gap: var(--space-6); } p { position: static; translate: none; } }
