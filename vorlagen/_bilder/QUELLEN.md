@@ -61,3 +61,11 @@ Vorlage mit echten Fotos wirkt, und werden im Kundenprojekt ersetzt.
 | 1012.webp | Scott Webb | https://unsplash.com/photos/uAgLGG1WBd4 |
 | 338.webp | Patryk Sobczak | https://unsplash.com/photos/9VPtNW84vGI |
 | 445.webp | Aleksi Tappura | https://unsplash.com/photos/mCg0ZgD7BgU |
+
+Außer Unsplash, von Wikimedia Commons, für `signal`:
+
+| Datei | Urheber, Lizenz | Quelle |
+|---|---|---|
+| solar-feld.webp | Tom-bna, CC0 | https://commons.wikimedia.org/wiki/File:Solarpark_Borna_2021.jpg |
+| solar-montage.webp | John Prettyman, U.S. Army, gemeinfrei | https://commons.wikimedia.org/wiki/File:Solar_project_at_Fort_Hunter_Liggett_130312-A-AN535-014.jpg |
+| solar-dach.webp | Cocreatr, CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Roof_top_installation_4.jpg |

@@ -3,6 +3,7 @@
  *
  *   node --experimental-strip-types scripts/render-shots.ts \
  *     --base http://localhost:4321 --out qa-bericht/shots [--pfade /,/kontakt] [--dir dist]
+ *     [--breiten 390,1440]
  *
  * Der Render ist zuerst Arbeitsmittel und erst danach Nachweis. Er ist
  * ganzseitig, nicht nur bis zur Falz: Ueberlauf, Kollision, abgeschnittene
@@ -28,7 +29,7 @@ function arg(flag: string, standard?: string): string | undefined {
 const basis = arg('--base', 'http://localhost:4321')!.replace(/\/$/, '');
 const ziel = resolve(arg('--out', 'qa-bericht/shots')!);
 const pfade = await routen(basis);
-const BREITEN = [375, 1280] as const;
+const BREITEN = (arg('--breiten', '375,1280')!).split(',').map(Number);
 
 mkdirSync(ziel, { recursive: true });
 

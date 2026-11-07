@@ -1,0 +1,222 @@
+---
+/**
+ * Vorlage "signal", Aufbau nach INIZIO Solar (Figma Make), gemessen 2026-11-07 im echten
+ * Chrome des Nutzers. Messung: web-brain/.research/eingang/inizio-solar/.
+ * Vom Nutzer: stark, aber Ovale ueber Ueberschriften und Verlaeufe machen die KI sichtbar.
+ *
+ * Gelobt und gemessen [M]:
+ *   Vollbild-Leitbild mit Abdunklung 70 % (#0a0a0a), eine Signalfarbe #39ec2a auf fast
+ *   schwarzem Grund, Wechsel heller und dunkler Abschnitte, drei Schriften mit Rolle
+ *   (Space Grotesk 700/600 Display, Outfit 500/600 Navigation, Knoepfe, H3; Inter Text).
+ *   Kopfzeile sticky, 63 px, Grund 95 % + blur 12 px, Unterkante weiss 10 %.
+ *   Hover alle 300 ms cubic-bezier(.4,0,.2,1):
+ *     Nav-Link Unterstrich 2 px Signalfarbe, scale-x 0 -> 1 von der Mitte, Text bleibt weiss
+ *     Nav-Knopf transparent -> gefuellt, Text schwarz
+ *     Auftakt-Knopf gefuellt: nur der Pfeil 3,5 px nach rechts; Outline: weiss gefuellt
+ *     Leistungskachel scale 1 -> 1,05, Eckkreis scale 1,5 und Deckkraft .2 -> .1,
+ *     graue Kachel gray-50 -> gray-100, Text -> charcoal; kein Glow
+ *     Service-Zeile Icon-Kachel 10 % -> 20 %, Titel Signalfarbe, Text weiss
+ *     Wert Icon-Kachel gefuellt + scale 1,1, Icon schwarz
+ *     Footer-Link translate 3,5 px, Social-Kachel scale 1,1 mit Signalrand
+ *   Kein Reveal, kein Parallax, keine Scrollanimation; Menue mobil ohne Animation.
+ * Nicht uebernommen: Overline-Kicker, Badge-Pille ueber der H1, Verlauf in Ueberschriften
+ *   und auf Fotos, zweites Wort der H2 in Signalfarbe, Kennzahlen und Kundenstimmen ohne
+ *   Beleg, Glas-Kennzahlenkarte, Deko-Kreise, Scroll-Indikator, Newsletter.
+ * Abweichungen [A], bewusst:
+ *   Grautext auf Weiss #555 statt #888, Auftakt-Satz #d0d0d0 statt #888 (Kontrast AA).
+ *   Wert-Titel bleibt beim Hover dunkel, Signalgruen auf Weiss waere unlesbar.
+ *   Foto im Abschnitt Betrieb links statt rechts: zwei gleiche Anordnungen in Folge.
+ *   Farbe des Eckkreises: schwarz auf gefuellter, Signalfarbe auf grauer Kachel (geschaetzt).
+ */
+import '../styles/tokens.css';
+import '../styles/fonts.css';
+const b = (n: string) => `./bilder/${n}.webp`;
+const I: Record<string, string> = {
+  dach: 'M3 11l9-7 9 7M5 10v10h14V10M9 20v-6h6v6',
+  feld: 'M2 20l4-10h12l4 10zM8 10l-2 10M16 10l2 10M4 15h16',
+  speicher: 'M7 4h10v17H7zM10 2h4v2M10 10h4M10 14h4',
+  wallbox: 'M6 3h9v18H6zM15 8h2a2 2 0 0 1 2 2v5a2 2 0 0 0 4 0V7M10 8l-2 4h4l-2 4',
+  wartung: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
+  netz: 'M13 2L4 14h7l-1 8 9-12h-7z',
+  termin: 'M4 5h16v16H4zM4 10h16M9 3v4M15 3v4',
+  rechnung: 'M5 3h14v18H5zM8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h8',
+  foerder: 'M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6',
+  montage: 'M2 20h20M5 20V9l7-5 7 5v11M9 20v-5h6v5',
+  anmeldung: 'M14 3H6v18h12V7zM14 3v4h4M9 13l2 2 4-4',
+  preis: 'M20 12l-8 8-9-9V3h8zM7.5 7.5h0',
+  team: 'M16 21v-2a4 4 0 0 0-8 0v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.9M2 21v-2a4 4 0 0 1 3-3.9',
+  person: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8',
+};
+const Icon = ({ n }: { n: string }) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${I[n]}"/></svg>`;
+const leistungen = [
+  ['dach', 'Dachanlagen', 'Module, Unterkonstruktion und Wechselrichter für Ein- und Mehrfamilienhäuser.'],
+  ['feld', 'Freiflächen', 'Anlagen auf Feld und Brache, von der Fläche bis zum Netzanschluss.'],
+  ['speicher', 'Stromspeicher', 'Speicher, die den Tagesstrom in den Abend tragen, auch nachgerüstet.'],
+  ['wallbox', 'Wallboxen', 'Laden mit dem eigenen Strom, gesteuert nach Sonne und Tarif.'],
+  ['wartung', 'Wartung', 'Jährliche Prüfung, Reinigung und Fehlersuche an bestehenden Anlagen.'],
+  ['netz', 'Netzanschluss', 'Zählerschrank, Anmeldung beim Netzbetreiber und Inbetriebnahme.'],
+];
+const ablauf = [
+  ['termin', 'Termin vor Ort', 'Wir sehen uns Dach, Zählerschrank und Verbrauch an.'],
+  ['rechnung', 'Ertragsrechnung', 'Sie bekommen eine Rechnung mit Ertrag, Kosten und Amortisation.'],
+  ['foerder', 'Förderung', 'Wir sagen, welche Programme passen, und füllen die Anträge mit aus.'],
+  ['montage', 'Montage', 'Eigene Monteure bauen in zwei bis drei Tagen.'],
+  ['anmeldung', 'Anmeldung', 'Netzbetreiber und Marktstammdatenregister übernehmen wir.'],
+  ['wartung', 'Wartung', 'Auf Wunsch kommen wir einmal im Jahr wieder.'],
+];
+const werte = [
+  ['preis', 'Fester Preis', 'Das Angebot gilt, auch wenn auf dem Dach mehr Arbeit wartet.'],
+  ['team', 'Eigene Monteure', 'Keine Subunternehmer: Wer plant, kennt die, die bauen.'],
+  ['person', 'Ein Ansprechpartner', 'Vom ersten Termin bis zur Wartung dieselbe Person.'],
+];
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Lichtfeld – Solaranlagen in Musterstadt</title></head>
+<body>
+<header class="kopf">
+  <a class="marke" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="5" /><path d="M16 2v6M16 24v6M2 16h6M24 16h6M6 6l4 4M22 22l4 4M26 6l-4 4M10 22l-4 4" /></svg>Lichtfeld</a>
+  <nav aria-label="Hauptmenü" id="menue"><a href="#leistungen">Leistungen</a><a href="#ablauf">Ablauf</a><a href="#betrieb">Betrieb</a><a href="#kontakt">Kontakt</a></nav>
+  <a class="knopf rand" href="#kontakt">Beratung anfragen</a>
+  <button class="burger" type="button" aria-expanded="false" aria-controls="menue-mobil" aria-label="Menü"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg></button>
+  <div class="mobil" id="menue-mobil" hidden><a href="#leistungen">Leistungen</a><a href="#ablauf">Ablauf</a><a href="#betrieb">Betrieb</a><a href="#kontakt">Kontakt</a><a class="knopf rand" href="#kontakt">Beratung anfragen</a></div>
+</header>
+<main>
+  <section class="start">
+    <img src={b('solar-feld')} alt="Reihen von Solarmodulen auf einer Wiese unter bewölktem Himmel" />
+    <div class="inhalt">
+      <h1>Strom vom eigenen Dach, gebaut aus einer Hand</h1>
+      <p>Lichtfeld plant, baut und wartet Solaranlagen in Musterstadt und im Umland, mit eigenen Monteuren und einem festen Preis.</p>
+      <div class="aktionen"><a class="knopf voll" href="#kontakt">Beratung anfragen<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a><a class="knopf hell" href="#leistungen">Leistungen ansehen</a></div>
+    </div>
+  </section>
+
+  <section class="leistungen" id="leistungen">
+    <div class="kopfzeile"><h2>Was wir bauen</h2><p>Sechs Arbeiten, die wir selbst ausführen. Alles andere vermitteln wir an Betriebe, die wir kennen.</p></div>
+    <ul>{leistungen.map(([n, t, p], i) => <li class={i % 2 ? 'grau' : 'voll'}><span class="ic" set:html={Icon({ n })} /><h3>{t}</h3><p>{p}</p><i class="kreis" aria-hidden="true"></i></li>)}</ul>
+    <a class="knopf dunkel" href="#kontakt">Alle Leistungen besprechen</a>
+  </section>
+
+  <section class="ablauf" id="ablauf">
+    <div class="liste">
+      <h2>Von der ersten Rechnung bis zur Wartung</h2>
+      <p class="intro">Ein Ablauf, sechs Schritte, ein Ansprechpartner.</p>
+      <ol>{ablauf.map(([n, t, p]) => <li><span class="ic" set:html={Icon({ n })} /><div><h3>{t}</h3><p>{p}</p></div></li>)}</ol>
+      <a class="knopf voll" href="#kontakt">Termin vereinbaren<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+    </div>
+    <img src={b('solar-montage')} alt="Monteure auf einer Hebebühne unter einem Solardach" loading="lazy" />
+  </section>
+
+  <section class="betrieb" id="betrieb">
+    <div class="zwei">
+      <div><h2>Ein Betrieb aus Musterstadt</h2><p>Lichtfeld ist ein Elektrobetrieb mit eigener Solarabteilung. Wir planen nur, was wir selbst bauen können, und bauen nur, was wir danach auch warten.</p><p>Unsere Monteure sind fest angestellt und kommen aus der Region. Wer bei Ihnen auf dem Dach steht, war auch beim Termin vor Ort dabei.</p></div>
+      <img src={b('solar-dach')} alt="Monteure mit Helm auf einem Gerüst an der Dachkante" loading="lazy" />
+    </div>
+    <ul class="werte">{werte.map(([n, t, p]) => <li><span class="ic" set:html={Icon({ n })} /><h3>{t}</h3><p>{p}</p></li>)}</ul>
+  </section>
+</main>
+<footer id="kontakt">
+  <div class="raster">
+    <div class="spalte-marke"><a class="marke" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="5" /><path d="M16 2v6M16 24v6M2 16h6M24 16h6M6 6l4 4M22 22l4 4M26 6l-4 4M10 22l-4 4" /></svg>Lichtfeld</a><p>Musterstraße 10, 12345 Musterstadt<br /><a href="#">000 000 00</a><br /><a href="#">hallo@lichtfeld.example</a></p></div>
+    <div><h2>Leistungen</h2><ul>{leistungen.slice(0, 4).map(([, t]) => <li><a href="#leistungen">{t}</a></li>)}</ul></div>
+    <div><h2>Ablauf</h2><ul><li><a href="#ablauf">Termin vor Ort</a></li><li><a href="#ablauf">Förderung</a></li><li><a href="#ablauf">Wartung</a></li></ul></div>
+    <div><h2>Betrieb</h2><ul><li><a href="#betrieb">Über uns</a></li><li><a href="#">Ausbildung</a></li><li><a href="#">Jobs</a></li></ul></div>
+    <div><h2>Rechtliches</h2><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li></ul></div>
+  </div>
+  <div class="fuss"><p>Beispielinhalte, der Betrieb ist erfunden.</p><ul class="sozial"><li><a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /></svg></a></li><li><a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4v11H4zM6 4v1M11 20v-6a3 3 0 0 1 6 0v6M11 9v11" /></svg></a></li><li><a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" /><path d="M10 9l5 3-5 3z" /></svg></a></li></ul></div>
+</footer>
+<script is:inline>
+(() => {
+  const k = document.querySelector('.burger'), m = document.getElementById('menue-mobil');
+  k.addEventListener('click', () => { const auf = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(auf)); m.hidden = !auf; });
+  m.addEventListener('click', (e) => { if (e.target.closest('a')) { k.setAttribute('aria-expanded', 'false'); m.hidden = true; } });
+})();
+</script>
+<style is:global>
+  :root { --neon: var(--color-accent); --schwarz: #0a0a0a; --kohle: #1a1a1a; --grau: #888; --kurve: cubic-bezier(.4, 0, .2, 1); --dauer: 300ms; --breite: 70rem; }
+  * { box-sizing: border-box; } html { overflow-x: clip; scroll-padding-top: 70px; }
+  body { margin: 0; background: #fff; color: var(--kohle); font-family: var(--font-body); font-size: 14px; line-height: 1.6; letter-spacing: -.005em; }
+  img { display: block; max-width: 100%; } h1, h2, h3, p, ul, ol { margin: 0; padding: 0; } ul, ol { list-style: none; } a { color: inherit; text-decoration: none; }
+  svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; }
+  h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 4vw, 49px); line-height: 1.1; letter-spacing: -.02em; }
+  h3 { font-family: var(--font-mono); font-weight: 500; font-size: clamp(17.5px, 2vw, 21px); line-height: 1.3; letter-spacing: -.01em; }
+
+  .knopf { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border-radius: 12.75px; font-family: var(--font-mono); font-weight: 500; transition: background-color var(--dauer) var(--kurve), color var(--dauer) var(--kurve), border-color var(--dauer) var(--kurve); }
+  .knopf svg { width: 18px; height: 18px; transition: translate var(--dauer) var(--kurve); }
+  .knopf.rand { padding: 12px 21px; border: 2px solid var(--neon); color: var(--neon); font-size: 14px; } .knopf.rand:hover { background: var(--neon); color: var(--schwarz); }
+  .knopf.voll { padding: 14px 35px; min-height: 57px; background: var(--neon); color: var(--schwarz); font-size: 15.75px; } .knopf.voll:hover svg { translate: 3.5px 0; }
+  .knopf.hell { padding: 14px 35px; min-height: 57px; border: 2px solid #fff; color: #fff; font-size: 15.75px; } .knopf.hell:hover { background: #fff; color: var(--schwarz); }
+  .knopf.dunkel { padding: 14px 35px; min-height: 57px; background: var(--kohle); color: #fff; font-size: 15.75px; } .knopf.dunkel:hover { background: var(--neon); color: var(--schwarz); }
+
+  .kopf { position: sticky; top: 0; z-index: 20; height: 63px; display: flex; align-items: center; gap: 35px; padding: 0 max(21px, calc((100% - var(--breite)) / 2)); background: rgb(10 10 10 / .95); backdrop-filter: blur(12px); border-bottom: 1px solid rgb(255 255 255 / .1); color: #fff; }
+  .marke { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-weight: 600; font-size: 20.5px; letter-spacing: -.01em; }
+  .marke svg { width: 35px; height: 35px; color: var(--neon); }
+  .kopf nav { display: flex; margin-left: auto; }
+  .kopf nav a { position: relative; padding: 12px 14px; font-family: var(--font-mono); font-weight: 500; font-size: 13px; }
+  .kopf nav a::after { content: ''; position: absolute; left: 14px; right: 14px; bottom: 6px; height: 2px; background: var(--neon); scale: 0 1; transition: scale var(--dauer) var(--kurve); }
+  .kopf nav a:hover::after { scale: 1 1; }
+  .burger { display: none; margin-left: auto; width: 38px; height: 38px; padding: 7px; border: 0; background: none; color: #fff; cursor: pointer; } .burger svg { width: 24px; height: 24px; }
+  .mobil { position: absolute; top: 63px; left: 0; right: 0; display: grid; gap: 4px; padding: 14px 21px 21px; background: rgb(10 10 10 / .98); backdrop-filter: blur(12px); } .mobil[hidden] { display: none; }
+  .mobil a { padding: 12px 14px; font-family: var(--font-mono); font-weight: 500; font-size: 16px; } .mobil .knopf { margin-top: 10px; }
+
+  .start { position: relative; min-height: calc(100svh - 63px); display: grid; place-items: center; padding: 84px 21px; background: var(--schwarz); color: #fff; text-align: center; overflow: hidden; }
+  .start > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .start::before { content: ''; position: absolute; inset: 0; z-index: 1; background: rgb(10 10 10 / .7); }
+  .start .inhalt { position: relative; z-index: 2; max-width: 70rem; display: grid; justify-items: center; gap: 28px; }
+  .start h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(42px, 8vw, 84px); line-height: .95; letter-spacing: -.03em; max-width: 14em; }
+  .start p { max-width: 56rem; font-size: 15.75px; line-height: 1.6; color: #d0d0d0; }
+  .aktionen { display: flex; flex-wrap: wrap; gap: 21px; justify-content: center; margin-top: 14px; }
+
+  .leistungen { padding: 84px max(21px, calc((100% - var(--breite)) / 2)); text-align: center; }
+  .kopfzeile { max-width: 42rem; margin: 0 auto 70px; display: grid; gap: 18px; } .kopfzeile p { font-size: 15.75px; color: #555; }
+  .leistungen ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; text-align: left; margin-bottom: 70px; }
+  .leistungen li { position: relative; overflow: hidden; display: grid; align-content: start; gap: 10px; padding: 28px; border-radius: 21px; transition: scale var(--dauer) var(--kurve), background-color var(--dauer) var(--kurve); }
+  .leistungen li:hover { scale: 1.05; }
+  .leistungen .voll { background: var(--neon); color: var(--schwarz); }
+  .leistungen .grau { background: #f9fafb; } .leistungen .grau p { color: #555; transition: color var(--dauer) var(--kurve); }
+  .leistungen .grau:hover { background: #f3f4f6; } .leistungen .grau:hover p { color: var(--kohle); }
+  .leistungen p { font-size: 16px; line-height: 1.6; }
+  .ic { display: inline-grid; } .leistungen .ic svg { width: 35px; height: 35px; margin-bottom: 4px; }
+  .kreis { position: absolute; right: -8px; bottom: -8px; width: 56px; height: 56px; border-radius: 50%; background: var(--schwarz); opacity: .2; transition: scale var(--dauer) var(--kurve), opacity var(--dauer) var(--kurve); }
+  .grau .kreis { background: var(--neon); }
+  .leistungen li:hover .kreis { scale: 1.5; opacity: .1; }
+
+  .ablauf { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding: 70px max(21px, calc((100% - var(--breite)) / 2)); background: var(--kohle); color: #fff; }
+  .ablauf .intro { margin: 18px 0 35px; font-size: 21px; line-height: 1.5; color: #a8a8a8; }
+  .ablauf ol { display: grid; gap: 28px; margin-bottom: 42px; }
+  .ablauf li { display: flex; gap: 18px; align-items: flex-start; }
+  .ablauf .ic { flex: none; place-items: center; width: 42px; height: 42px; border-radius: 8.75px; border: 1px solid var(--neon); background: rgb(57 236 42 / .1); color: var(--neon); transition: background-color var(--dauer) var(--kurve); } .ablauf .ic svg { width: 21px; height: 21px; }
+  .ablauf h3 { font-size: 21px; transition: color var(--dauer) var(--kurve); } .ablauf li p { color: #a8a8a8; transition: color var(--dauer) var(--kurve); }
+  .ablauf li:hover .ic { background: rgb(57 236 42 / .2); } .ablauf li:hover h3 { color: var(--neon); } .ablauf li:hover p { color: #fff; }
+  .ablauf > img { width: 100%; height: 600px; object-fit: cover; border-radius: 14px; }
+
+  .betrieb { padding: 84px max(21px, calc((100% - var(--breite)) / 2)); }
+  .zwei { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; margin-bottom: 84px; }
+  .zwei > div { display: grid; gap: 18px; } .zwei p { font-size: 15.75px; color: #555; }
+  .zwei img { width: 100%; height: 600px; object-fit: cover; border-radius: 21px;  order: -1; }
+  .werte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 42px; text-align: center; }
+  .werte li { display: grid; justify-items: center; align-content: start; gap: 10px; } .werte p { color: #555; max-width: 22rem; }
+  .werte .ic { place-items: center; width: 70px; height: 70px; margin-bottom: 8px; border-radius: 14px; border: 2px solid var(--neon); color: var(--kohle); transition: background-color var(--dauer) var(--kurve), scale var(--dauer) var(--kurve), color var(--dauer) var(--kurve); } .werte .ic svg { width: 30px; height: 30px; }
+  .werte li:hover .ic { background: var(--neon); scale: 1.1; color: var(--schwarz); }
+
+  footer { padding: 70px max(21px, calc((100% - var(--breite)) / 2)) 35px; background: var(--schwarz); color: #fff; }
+  footer .raster { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 35px; padding-bottom: 56px; border-bottom: 1px solid rgb(255 255 255 / .1); }
+  .spalte-marke p { margin-top: 18px; color: #a8a8a8; line-height: 1.9; }
+  footer h2 { font-family: var(--font-mono); font-weight: 600; font-size: 16px; letter-spacing: 0; margin-bottom: 14px; }
+  footer ul { display: grid; gap: 10px; } footer .raster ul a { display: inline-block; color: #a8a8a8; transition: translate var(--dauer) var(--kurve); } footer .raster ul a:hover { translate: 3.5px 0; }
+  .fuss { display: flex; justify-content: space-between; align-items: center; gap: 21px; padding-top: 28px; color: #a8a8a8; }
+  .sozial { display: flex; gap: 14px; } .sozial a { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12.75px; border: 1px solid rgb(255 255 255 / .2); color: #fff; transition: scale var(--dauer) var(--kurve), color var(--dauer) var(--kurve), border-color var(--dauer) var(--kurve); }
+  .sozial a:hover { scale: 1.1; color: var(--neon); border-color: var(--neon); } .sozial svg { width: 19px; height: 19px; }
+
+  @media (max-width: 56rem) {
+    .kopf nav, .kopf > .knopf { display: none; } .burger { display: block; }
+    .leistungen ul, .werte { grid-template-columns: 1fr; }
+    .ablauf, .zwei { grid-template-columns: 1fr; gap: 42px; }
+    .ablauf > img, .zwei img { height: 360px; }
+    footer .raster { grid-template-columns: 1fr 1fr; } .spalte-marke { grid-column: 1 / -1; }
+    .fuss { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 36rem) { .aktionen { flex-direction: column; width: 100%; } .aktionen .knopf { width: 100%; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 1ms !important; } }
+</style>
+</body></html>

@@ -1,61 +1,210 @@
 ---
 /**
- * Ein Objekt in benannten Ansichten, dazu Farbe, Groesse und eine kurze Detailliste.
+ * Ein Objekt, das sich stufenlos drehen laesst, dazu Farbe, Groesse, Zoom und Details.
  * Nach dem 180-Grad-Produktbetrachter, vom Nutzer 2026-11-07 bestaetigt: starker Aufbau
- * der Produktansichten, gute Knoepfe. Regeln in 20-design/interface-benchmarks.md#B2.
- * Ansichten per Knopf, Pfeiltasten und Wischen; jede Ansicht ist direkt waehlbar.
- * Farben und Groessen sind echte Radioknoepfe; nicht verfuegbare bleiben sichtbar.
+ * der Produktansichten, gute Knoepfe. Regeln in 20-design/interface-benchmarks.md#B2,
+ * Messung in web-brain/.research/eingang/produktbetrachter-180/.
+ *
+ * Gemessen [M] am Original, 2026-11-07, echter Chrome:
+ *   Ziehen dreht 0,8 Grad je Pixel, nach rechts steigt der Winkel, modulo 360.
+ *   Acht benannte Stufen zu 45 Grad, Grenze bei +-22,5 Grad; die Stufe waehlt das Bild,
+ *   Wechsel hart, ohne Ueberblenden. Drei Bilder: Front 315/0/45, Seite 90/135/270,
+ *   Ruecken 180/225 (dieselbe Seite links und rechts, nicht gespiegelt).
+ *   Automatisch drehen ~31,5 Grad je Sekunde, Knopf wird zu "Anhalten" und gefuellt.
+ *   Zoom 50-200 % in 25er-Stufen, scale() mit 300 ms cubic-bezier(0,0,.2,1).
+ *   Hover: Kacheln nur Randfarbe, Knoepfe nur Grund, Segment weiss 50 %, je 150 ms
+ *   cubic-bezier(.4,0,.2,1). Kein Lift, kein Scale, keine Scrollanimation.
+ *   Layout: Steuerkarten links (1/3), Buehne rechts (2/3); schmal Buehne zuerst.
+ * Abweichungen [A], bewusst:
+ *   -45/+45 und die Segmente wirken hier (im Original ohne Wirkung).
+ *   Buehne schmal quadratisch statt fester 600 px Hoehe (Original: Leerflaechen bei 390 px).
+ *   Pfeiltasten, Pos1/Ende und Wischen kommen dazu; Original hat keine Tastatur.
+ *   Hinweis auf der Buehne nur auf Wunsch (im Original dauerhaft und unruhig).
+ *   Automatisches Drehen ist bei prefers-reduced-motion ausgeblendet.
+ *   Doppelklick setzt den Zoom zurueck (laut Hinweistext, nicht nachgemessen).
  */
 import type { Bild } from './_lib.ts';
-interface Props { titel: string; ansichten: { name: string; bild: Bild }[]; farben?: { name: string; wert: string }[]; groessen?: { name: string; verfuegbar?: boolean }[]; details?: string[]; id?: string }
-const { titel, ansichten, farben = [], groessen = [], details = [], id = 'produkt' } = Astro.props;
+interface Stufe { name: string; bild: number }
+interface Props {
+  titel: string;
+  unterzeile?: string;
+  bilder: Bild[];
+  /** acht Stufen zu je 45 Grad ab der Vorderansicht; ohne Angabe fuer drei Bilder wie im Original */
+  stufen?: Stufe[];
+  farben?: { name: string; wert: string; preis?: string }[];
+  groessen?: { name: string; verfuegbar?: boolean }[];
+  zoom?: boolean;
+  drehen?: boolean;
+  hinweis?: string;
+  details?: [string, string][];
+  hilfe?: [string, string][];
+  id?: string;
+}
+const NAMEN = ['Vorderansicht', 'Vorne rechts', 'Rechte Seite', 'Hinten rechts', 'Rückansicht', 'Hinten links', 'Linke Seite', 'Vorne links'];
+const p = Astro.props;
+const { titel, unterzeile, bilder, farben = [], groessen = [], zoom = false, drehen = true, hinweis, details = [], hilfe = [], id = 'produkt' } = p;
+const stufen: Stufe[] = p.stufen ?? NAMEN.map((name, i) => ({ name, bild: bilder.length === 3 ? [0, 0, 1, 1, 2, 2, 1, 0][i] : Math.round(i * bilder.length / 8) % bilder.length }));
+const ersteGroesse = Math.max(0, groessen.findIndex((g) => g.verfuegbar !== false));
 ---
-<section class="produktansicht" data-ansicht>
-  <div class="buehne">
-    <ul class="bilder">{ansichten.map((a, i) => <li class={i === 0 ? 'an' : ''}><img src={a.bild.src} alt={a.bild.alt} loading={i ? 'lazy' : undefined} /></li>)}</ul>
-    <p class="name" aria-live="polite">{ansichten[0].name}</p>
-    <div class="steuer"><button type="button" class="pf" data-schritt="-1" aria-label="Vorige Ansicht">←</button><span class="punkte">{ansichten.map((a, i) => <button type="button" aria-label={a.name} aria-pressed={i === 0 ? 'true' : 'false'} data-i={i}></button>)}</span><button type="button" class="pf" data-schritt="1" aria-label="Nächste Ansicht">→</button></div>
+<section class="produktansicht" data-ansicht data-stufen={JSON.stringify(stufen)} aria-labelledby={`${id}-titel`}>
+  <header class="kopf">
+    <h2 id={`${id}-titel`}>{titel}</h2>
+    {unterzeile && <p>{unterzeile}</p>}
+    {farben.length > 0 && <p class="stand"><output data-wahl>{farben[0].name}{groessen.length > 0 && ` · ${groessen[ersteGroesse].name}`}</output>{farben[0].preis && <b data-preis>{farben[0].preis}</b>}</p>}
+  </header>
+  <div class="raster">
+    <div class="spalte-buehne">
+      <div class="buehne" tabindex="0" role="group" aria-roledescription="Drehansicht" aria-label="Ansicht drehen: ziehen oder Pfeiltasten">
+        <div class="flaeche">
+          {bilder.map((b, i) => <img src={b.src} alt={b.alt} data-bild={i} hidden={i !== stufen[0].bild} loading={i ? 'lazy' : undefined} draggable="false" />)}
+        </div>
+        {zoom && <p class="marke links" aria-hidden="true">Zoom <span data-zoomwert>100 %</span></p>}
+        <p class="marke rechts"><span data-name aria-live="polite">{stufen[0].name}</span><small data-grad aria-hidden="true">0°</small></p>
+        {hinweis && <p class="hinweis">{hinweis}</p>}
+      </div>
+      <div class="steuer">
+        <div class="reihe">
+          <button type="button" class="knopf" data-schritt="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>−45°</button>
+          {drehen && <button type="button" class="knopf drehen" data-drehen aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" /></svg><span>Drehen</span></button>}
+          <button type="button" class="knopf" data-schritt="1">+45°<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg></button>
+        </div>
+        <div class="segmente" role="group" aria-label="Ansicht wählen">
+          {stufen.map((s, i) => <button type="button" data-stufe={i} aria-pressed={i === 0 ? 'true' : 'false'} aria-label={s.name}>{i * 45}°</button>)}
+        </div>
+      </div>
+    </div>
+    <div class="spalte-wahl">
+      {farben.length > 0 && <fieldset class="karte"><legend><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><circle cx="8.5" cy="10" r="1" /><circle cx="12" cy="7.5" r="1" /><circle cx="15.5" cy="10" r="1" /></svg>Farbe</legend>
+        <div class="farben">{farben.map((f, i) => <label><input type="radio" name={`${id}-farbe`} value={f.name} data-preis={f.preis} checked={i === 0} /><span class="kachel"><i style={`--f:${f.wert}`}></i><b>{f.name}</b>{f.preis && <small>{f.preis}</small>}</span></label>)}</div>
+      </fieldset>}
+      {groessen.length > 0 && <fieldset class="karte"><legend><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l6-6 12 12M7 11l2 2M10 8l2 2M13 5l2 2" /></svg>Größe</legend>
+        <div class="groessen">{groessen.map((g, i) => <label class={g.verfuegbar === false ? 'aus' : ''}><input type="radio" name={`${id}-groesse`} value={g.name} disabled={g.verfuegbar === false} checked={i === ersteGroesse} /><span class="kachel">{g.name}{g.verfuegbar === false && <small>ausverkauft</small>}</span></label>)}</div>
+      </fieldset>}
+      {zoom && <fieldset class="karte"><legend><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M21 21l-5-5M11 8v6M8 11h6" /></svg>Zoom</legend>
+        <input class="regler" type="range" min="50" max="200" step="25" value="100" aria-label="Zoom in Prozent" data-zoom />
+        <p class="skala" aria-hidden="true"><span>50 %</span><span data-zoomwert>100 %</span><span>200 %</span></p>
+        <div class="reihe"><button type="button" class="knopf" data-zoomschritt="-25" aria-label="Verkleinern">−</button><button type="button" class="knopf breit" data-zoomschritt="0">Zurücksetzen</button><button type="button" class="knopf" data-zoomschritt="25" aria-label="Vergrößern">+</button></div>
+      </fieldset>}
+    </div>
   </div>
-  <div class="wahl">
-    <h2>{titel}</h2>
-    {farben.length > 0 && <fieldset><legend>Farbe</legend><div class="farben">{farben.map((f, i) => <label><input type="radio" name={`${id}-farbe`} value={f.name} checked={i === 0} /><span style={`--f:${f.wert}`}></span><em>{f.name}</em></label>)}</div></fieldset>}
-    {groessen.length > 0 && <fieldset><legend>Größe</legend><div class="groessen">{groessen.map((g, i) => <label class={g.verfuegbar === false ? 'aus' : ''}><input type="radio" name={`${id}-groesse`} value={g.name} disabled={g.verfuegbar === false} checked={i === 1} /><span>{g.name}</span>{g.verfuegbar === false && <em>ausverkauft</em>}</label>)}</div></fieldset>}
-    {details.length > 0 && <ul class="details">{details.map((d) => <li>{d}</li>)}</ul>}
-  </div>
+  {(details.length > 0 || hilfe.length > 0) && <div class="karte details">
+    {details.length > 0 && <div><h3>Details</h3><dl>{details.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl></div>}
+    {hilfe.length > 0 && <div><h3>Größenhilfe</h3><dl>{hilfe.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl></div>}
+  </div>}
 </section>
 <script is:inline>
 (() => {
   document.querySelectorAll('[data-ansicht]').forEach((w) => {
-    const b = [...w.querySelectorAll('.bilder li')], p = [...w.querySelectorAll('.punkte button')], n = w.querySelector('.name'); let i = 0;
-    const zeig = (k) => { i = (k + b.length) % b.length; b.forEach((x, j) => x.classList.toggle('an', j === i)); p.forEach((x, j) => x.setAttribute('aria-pressed', String(j === i))); n.textContent = p[i].getAttribute('aria-label'); };
-    w.querySelectorAll('[data-schritt]').forEach((x) => x.addEventListener('click', () => zeig(i + Number(x.dataset.schritt))));
-    p.forEach((x) => x.addEventListener('click', () => zeig(Number(x.dataset.i))));
-    const s = w.querySelector('.buehne'); s.tabIndex = 0; s.setAttribute('aria-label', 'Ansichten, mit Pfeiltasten wechseln');
-    s.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') zeig(i + 1); if (e.key === 'ArrowLeft') zeig(i - 1); });
-    let x0 = null; s.addEventListener('pointerdown', (e) => { x0 = e.clientX; }); s.addEventListener('pointerup', (e) => { if (x0 !== null && Math.abs(e.clientX - x0) > 40) zeig(i + (e.clientX < x0 ? 1 : -1)); x0 = null; });
+    const stufen = JSON.parse(w.dataset.stufen), n = stufen.length, schritt = 360 / n;
+    const bilder = [...w.querySelectorAll('[data-bild]')], seg = [...w.querySelectorAll('[data-stufe]')];
+    const name = w.querySelector('[data-name]'), grad = w.querySelector('[data-grad]'), buehne = w.querySelector('.buehne');
+    const dreh = w.querySelector('[data-drehen]');
+    let winkel = 0, stufe = 0, lauf = null;
+    const setze = (g) => {
+      winkel = ((g % 360) + 360) % 360;
+      grad.textContent = Math.round(winkel) + '°';
+      const s = Math.round(winkel / schritt) % n;
+      if (s === stufe && name.textContent) return;
+      stufe = s; name.textContent = stufen[s].name;
+      bilder.forEach((b) => { b.hidden = Number(b.dataset.bild) !== stufen[s].bild; });
+      seg.forEach((b, i) => b.setAttribute('aria-pressed', String(i === s)));
+    };
+    const halt = () => { if (!lauf) return; cancelAnimationFrame(lauf); lauf = null; dreh.setAttribute('aria-pressed', 'false'); dreh.querySelector('span').textContent = 'Drehen'; };
+    if (dreh) dreh.addEventListener('click', () => {
+      if (lauf) return halt();
+      dreh.setAttribute('aria-pressed', 'true'); dreh.querySelector('span').textContent = 'Anhalten';
+      let t0 = performance.now();
+      const takt = (t) => { setze(winkel + (t - t0) * 0.0315); t0 = t; lauf = requestAnimationFrame(takt); };
+      lauf = requestAnimationFrame(takt);
+    });
+    const naechste = (d) => { halt(); setze((Math.round(winkel / schritt) + d) * schritt); };
+    w.querySelectorAll('[data-schritt]').forEach((b) => b.addEventListener('click', () => naechste(Number(b.dataset.schritt))));
+    seg.forEach((b, i) => b.addEventListener('click', () => { halt(); setze(i * schritt); }));
+    buehne.addEventListener('keydown', (e) => {
+      const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (k) { e.preventDefault(); naechste(k); }
+      if (e.key === 'Home') { e.preventDefault(); halt(); setze(0); }
+      if (e.key === 'End') { e.preventDefault(); halt(); setze((n - 1) * schritt); }
+    });
+    // Ziehen: 0,8 Grad je Pixel, wie gemessen. pan-y laesst senkrechtes Scrollen frei.
+    let x0 = null, g0 = 0;
+    buehne.addEventListener('pointerdown', (e) => { if (e.button) return; halt(); x0 = e.clientX; g0 = winkel; buehne.setPointerCapture(e.pointerId); buehne.classList.add('zieht'); });
+    buehne.addEventListener('pointermove', (e) => { if (x0 !== null) setze(g0 + (e.clientX - x0) * 0.8); });
+    const los = () => { x0 = null; buehne.classList.remove('zieht'); };
+    buehne.addEventListener('pointerup', los); buehne.addEventListener('pointercancel', los);
+    // Zoom
+    const regler = w.querySelector('[data-zoom]');
+    if (regler) {
+      const werte = w.querySelectorAll('[data-zoomwert]');
+      const zoom = (v) => { v = Math.min(200, Math.max(50, v)); regler.value = v; werte.forEach((x) => { x.textContent = v + ' %'; }); w.style.setProperty('--zoom', v / 100); };
+      regler.addEventListener('input', () => zoom(Number(regler.value)));
+      w.querySelectorAll('[data-zoomschritt]').forEach((b) => b.addEventListener('click', () => { const d = Number(b.dataset.zoomschritt); zoom(d ? Number(regler.value) + d : 100); }));
+      buehne.addEventListener('dblclick', () => zoom(100));
+    }
+    // Auswahl
+    const wahl = w.querySelector('[data-wahl]'), preis = w.querySelector('[data-preis]');
+    if (wahl) w.addEventListener('change', () => {
+      const f = w.querySelector('input[name$="-farbe"]:checked'), g = w.querySelector('input[name$="-groesse"]:checked');
+      wahl.textContent = [f?.value, g?.value].filter(Boolean).join(' · ');
+      if (preis && f?.dataset.preis) preis.textContent = f.dataset.preis;
+    });
   });
 })();
 </script>
 
 <style>
-  .produktansicht { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--space-8); align-items: center; max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter); }
-  .buehne { position: relative; border-radius: var(--radius-lg); background: var(--color-surface-alt); padding: var(--space-6) var(--space-6) var(--space-5); touch-action: pan-y; }
-  .buehne:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
-  .bilder { position: relative; aspect-ratio: 1; list-style: none; margin: 0; padding: 0; }
-  .bilder li { position: absolute; inset: 0; opacity: 0; transition: opacity var(--duration-slow) var(--ease-out); } .bilder li.an { opacity: 1; }
-  .bilder img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 24px 18px rgb(0 0 0 / .12)); }
-  .name { margin: var(--space-3) 0 0; text-align: center; font-size: var(--text-small); color: var(--color-text-secondary); }
-  .steuer { display: flex; justify-content: center; align-items: center; gap: var(--space-3); margin-top: var(--space-3); }
-  .pf { width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); cursor: pointer; transition: border-color var(--duration-fast); } .pf:hover { border-color: var(--color-text); }
-  .punkte { display: flex; gap: 6px; } .punkte button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: var(--color-border-hover); cursor: pointer; } .punkte [aria-pressed=true] { width: 22px; border-radius: 4px; background: var(--color-text); }
-  h2 { margin: 0 0 var(--space-5); font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); }
-  fieldset { border: 0; margin: 0 0 var(--space-5); padding: 0; } legend { font-size: var(--text-small); font-weight: 600; margin-bottom: var(--space-2); }
-  input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  .farben, .groessen { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-  .farben label { display: grid; justify-items: center; gap: 4px; cursor: pointer; } .farben span { width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--f); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .15); } .farben input:checked + span { box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-text); } .farben em { font-style: normal; font-size: 11px; color: var(--color-text-secondary); }
-  .groessen label { position: relative; display: grid; justify-items: center; cursor: pointer; } .groessen span { display: grid; place-content: center; min-width: 3rem; height: 3rem; padding: 0 var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface); font-weight: 600; transition: border-color var(--duration-fast); } .groessen input:checked + span { background: var(--color-text); color: var(--color-bg); border-color: var(--color-text); } .groessen label:hover span { border-color: var(--color-text); }
-  .aus span { color: var(--color-text-tertiary); text-decoration: line-through; cursor: not-allowed; } .aus em { font-style: normal; font-size: 10px; color: var(--color-text-tertiary); }
-  input:focus-visible + span { outline: 2px solid var(--color-focus); outline-offset: 3px; }
-  .details { margin: 0; padding: var(--space-4) 0 0; border-top: 1px solid var(--color-border); list-style: none; display: grid; gap: var(--space-2); font-size: var(--text-small); color: var(--color-text-secondary); }
-  @media (max-width: 52rem) { .produktansicht { grid-template-columns: 1fr; } }
+  .produktansicht { --zoom: 1; --kurve: cubic-bezier(.4, 0, .2, 1); max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter); }
+  .kopf { text-align: center; margin-bottom: var(--space-8); }
+  .kopf h2 { margin: 0; font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); letter-spacing: var(--text-h2--letter-spacing); }
+  .kopf p { margin: var(--space-2) 0 0; color: var(--color-text-secondary); }
+  .kopf .stand { display: flex; justify-content: center; gap: var(--space-3); align-items: baseline; font-size: var(--text-small); } .stand output { padding: 2px var(--space-2); border-radius: var(--radius-md); background: var(--color-surface-alt); color: var(--color-text); font-weight: 500; } .stand b { color: var(--color-text); font-weight: 600; }
+  .raster { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; }
+  .spalte-buehne { grid-column: 2; grid-row: 1; min-width: 0; } .spalte-wahl { grid-column: 1; grid-row: 1; display: grid; gap: var(--space-5); min-width: 0; }
+  .buehne { position: relative; border-radius: calc(var(--radius-lg) * 1.6); padding: var(--space-8); overflow: hidden; background: linear-gradient(to bottom right, var(--color-surface-alt), color-mix(in oklab, var(--color-surface-alt), var(--color-text) 5%)); cursor: grab; touch-action: pan-y; user-select: none; }
+  .buehne.zieht { cursor: grabbing; } .buehne:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+  .flaeche { height: 37.5rem; display: grid; place-items: center; }
+  .flaeche img { max-width: 100%; max-height: 100%; aspect-ratio: 1; object-fit: contain; transform: scale(var(--zoom)); transition: transform 300ms cubic-bezier(0, 0, .2, 1); pointer-events: none; }
+  .flaeche img[hidden] { display: none; }
+  .marke { position: absolute; top: var(--space-4); margin: 0; padding: var(--space-2) var(--space-3); border-radius: var(--radius-lg); background: color-mix(in oklab, var(--color-surface) 90%, transparent); backdrop-filter: blur(4px); box-shadow: 0 1px 3px rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1); font-size: var(--text-small); color: var(--color-text-secondary); display: grid; }
+  .marke.links { left: var(--space-4); display: block; } .marke.rechts { right: var(--space-4); text-align: right; } .marke small { font-size: 0.75rem; color: var(--color-text-tertiary); }
+  .hinweis { position: absolute; bottom: var(--space-4); left: 50%; translate: -50% 0; margin: 0; padding: var(--space-2) var(--space-4); border-radius: var(--radius-lg); background: rgb(0 0 0 / .7); color: #fff; font-size: var(--text-small); white-space: nowrap; }
+  .steuer { display: grid; gap: var(--space-4); margin-top: var(--space-6); }
+  .reihe { display: flex; gap: var(--space-2); justify-content: center; }
+  .knopf { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: 2.25rem; padding: 0 var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text); font: inherit; font-size: var(--text-small); font-weight: 500; cursor: pointer; transition: background-color 150ms var(--kurve), color 150ms var(--kurve); }
+  .knopf:hover { background: var(--color-surface-alt); } .knopf.breit { flex: 1; }
+  .knopf svg, legend svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .drehen[aria-pressed=true] { background: var(--color-text); color: var(--color-bg); border-color: var(--color-text); }
+  .knopf:focus-visible, .segmente button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .segmente { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; padding: 4px; border-radius: var(--radius-lg); background: var(--color-surface-alt); }
+  .segmente button { padding: var(--space-2) var(--space-1); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--color-text-secondary); font: inherit; font-size: 0.75rem; cursor: pointer; transition: background-color 150ms var(--kurve), color 150ms var(--kurve); }
+  .segmente button:hover { background: color-mix(in oklab, var(--color-surface) 50%, transparent); }
+  .segmente [aria-pressed=true] { background: var(--color-surface); color: var(--color-text); box-shadow: 0 1px 3px rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1); }
+  .karte { margin: 0; padding: var(--space-4); border: 0; border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: 0 1px 3px rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1); }
+  legend { float: left; width: 100%; display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); padding: 0; font-weight: 500; }
+  legend + * { clear: both; }
+  input[type=radio] { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .farben { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-2); }
+  .groessen { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+  label { position: relative; cursor: pointer; }
+  .kachel { display: grid; gap: 2px; padding: var(--space-3); border-radius: var(--radius-lg); border: 2px solid var(--color-border); background: var(--color-surface); transition: border-color 150ms var(--kurve), background-color 150ms var(--kurve); }
+  .farben .kachel i { width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--f); border: 1px solid var(--color-border); margin-bottom: var(--space-1); }
+  .farben .kachel b { font-weight: 500; font-size: var(--text-small); } .kachel small { font-size: 0.75rem; color: var(--color-text-tertiary); }
+  .groessen .kachel { border-width: 1px; padding: var(--space-2) var(--space-3); justify-items: center; font-weight: 500; }
+  label:hover .kachel { border-color: var(--color-border-hover); }
+  input:checked + .kachel { border-color: var(--color-accent); background: color-mix(in oklab, var(--color-accent) 8%, var(--color-surface)); }
+  input:focus-visible + .kachel { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .aus { cursor: not-allowed; } .aus .kachel { color: var(--color-text-tertiary); text-decoration: line-through; } .aus small { text-decoration: none; } .aus:hover .kachel { border-color: var(--color-border); }
+  .regler { width: 100%; accent-color: var(--color-text); margin: 0; }
+  .skala { display: flex; justify-content: space-between; margin: var(--space-1) 0 var(--space-3); font-size: 0.75rem; color: var(--color-text-tertiary); }
+  .details { margin-top: var(--space-8); padding: var(--space-6); display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-6); }
+  .details h3 { margin: 0 0 var(--space-3); font-size: var(--text-h3); line-height: var(--text-h3--line-height); font-weight: var(--text-h3--font-weight); }
+  dl { margin: 0; display: grid; gap: var(--space-2); font-size: var(--text-small); color: var(--color-text-secondary); } dl div { display: flex; justify-content: space-between; gap: var(--space-4); } dd { margin: 0; color: var(--color-text); text-align: right; }
+  @media (max-width: 56rem) {
+    .raster { grid-template-columns: 1fr; }
+    .spalte-buehne, .spalte-wahl { grid-column: 1; grid-row: auto; }
+    .buehne { padding: var(--space-5); } .flaeche { height: auto; aspect-ratio: 1; }
+    .hinweis { white-space: normal; width: max-content; max-width: calc(100% - 2 * var(--space-4)); text-align: center; }
+  }
+  @media (max-width: 30rem) { .segmente { grid-template-columns: repeat(4, 1fr); } }
+  @media (prefers-reduced-motion: reduce) { .drehen { display: none; } .flaeche img { transition: none; } }
 </style>

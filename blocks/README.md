@@ -57,7 +57,7 @@ dann `/elemente/`.
 | `Produktkacheln` | eckige hellgraue Kacheln mit Produkt, Marke, Titel, Plus | modulo-consulting.de: die eckigen Produktkacheln |
 | `Produktschritte` | Produkt in Schritten, Reiter links, Bildschirm rechts, neutrale Flächen | consile.app: Konzept der Produktvorstellung, ohne Orange und Verläufe |
 | `Schwebend` | Elemente schweben versetzt, Karten mit ruhigem Hover | saadsalman.org: schwebende Teile, Hover |
-| `Produktansicht` | Objekt in benannten Ansichten, Farbe, Größe, Details | 180-Grad-Produktbetrachter: Produktansichten, Knöpfe |
+| `Produktansicht` | Objekt stufenlos drehen (0,8° je Pixel, acht 45°-Stufen, harter Bildwechsel), Segmentleiste, −45°/+45°, Drehen, Zoom, Farb- und Größenkacheln, Details; Werte im echten Chrome gemessen 2026-11-07 | 180-Grad-Produktbetrachter: Produktansichten, Knöpfe |
 | `Bildwerte` | Hochformatbilder mit Namensschild und bis zu drei Werten in einer Glasleiste | espmedia.de: Creator-Bilder mit Zahlen im Overlay |
 | `Reservierung` | schwebendes Reservierungsfeld, einklappbar, auf dem Handy erst auf Tipp | tuluslotrek.de: die Idee, inhaltlich und gestalterisch verbessert |
 

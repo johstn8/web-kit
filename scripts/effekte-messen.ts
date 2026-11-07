@@ -13,9 +13,12 @@
  *   bibliothek  gsap-Tweens und ScrollTrigger mit Start, Ende, scrub und pin,
  *               Lenis, Swiper, soweit auf der Seite vorhanden
  *   hover       echte Mausbewegung ueber jede Aktion und jede klickbare Flaeche;
- *               gemessen wird, was sich am Element und an seinen Kindern aendert
+ *               gemessen wird, was sich am Element und an seinen Kindern aendert,
+ *               auch ueber die Einzel-Properties translate, scale und rotate, die
+ *               Tailwind v4 statt transform setzt
  *   scroll      in kleinen Schritten durch die Seite; gemeldet werden Elemente,
- *               deren Lage, Transform, Deckkraft, Farbe oder Clip sich mit dem
+ *               deren Lage, Transform (samt translate/scale/rotate), Deckkraft,
+ *               Farbe oder Clip sich mit dem
  *               Scrollen aendern, mit Scrollbereich und Anfangs- und Endwert
  *   kopf        feste und klebende Elemente, die sich beim Scrollen verwandeln
  * --film legt zusaetzlich alle 250 Pixel ein kleines Bild ab (film-NN.jpg).
@@ -161,9 +164,9 @@ try {
       for (const el of alle) {
         if (n > 2500) break; const r = el.getBoundingClientRect(); if (r.width < 8 || r.height < 8 || r.bottom < -innerHeight * 0.2 || r.top > innerHeight * 1.2) continue; n++;
         const s = getComputedStyle(el), fest = s.position === 'fixed' || s.position === 'sticky';
-        const sig = [s.transform, s.opacity, s.clipPath, s.filter, s.color, s.backgroundColor, fest ? '' : Math.round(r.top + y), Math.round(r.width), Math.round(r.height), fest ? Math.round(r.top) : '', s.borderTopLeftRadius].join('|');
+        const sig = [s.transform, s.translate, s.scale, s.rotate, s.opacity, s.clipPath, s.filter, s.color, s.backgroundColor, fest ? '' : Math.round(r.top + y), Math.round(r.width), Math.round(r.height), fest ? Math.round(r.top) : '', s.borderTopLeftRadius].join('|');
         let e = __fxs.get(el); if (!e) { e = { pfad: __fx.pfad(el), fest, folge: [] }; __fxs.set(el, e); }
-        const letzt = e.folge[e.folge.length - 1]; if (!letzt || letzt.sig !== sig) e.folge.push({ y, sig, w: fest || e.folge.length < 1 || true ? { transform: s.transform, opacity: s.opacity, clip: s.clipPath, filter: s.filter, color: s.color, bg: s.backgroundColor, top: Math.round(r.top + (fest ? 0 : y)), w: Math.round(r.width), h: Math.round(r.height), radius: s.borderTopLeftRadius } : null });
+        const letzt = e.folge[e.folge.length - 1]; if (!letzt || letzt.sig !== sig) e.folge.push({ y, sig, w: { transform: s.transform, translate: s.translate, scale: s.scale, rotate: s.rotate, opacity: s.opacity, clip: s.clipPath, filter: s.filter, color: s.color, bg: s.backgroundColor, top: Math.round(r.top + (fest ? 0 : y)), w: Math.round(r.width), h: Math.round(r.height), radius: s.borderTopLeftRadius } });
       }
       return n;
     })()`);

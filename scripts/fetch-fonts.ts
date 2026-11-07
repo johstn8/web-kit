@@ -48,7 +48,9 @@ for (const eintrag of tokens.font) {
   const name = familie(eintrag.value);
   if (/^(ui-monospace|monospace|sans-serif|serif|system-ui)$/.test(name)) continue;
   const menge = gebraucht.get(name) ?? new Set<number>();
-  for (const g of proRolle[eintrag.name] ?? [400]) menge.add(g);
+  // Ein Preset darf je Familie eigene Gewichte nennen, etwa fuer eine dritte Schrift
+  // in der Rolle mono, die Ueberschriften zweiter Ordnung und Knoepfe traegt.
+  for (const g of (eintrag as { gewichte?: number[] }).gewichte ?? proRolle[eintrag.name] ?? [400]) menge.add(g);
   gebraucht.set(name, menge);
   if ((eintrag as { kursiv?: boolean }).kursiv) kursiv.add(name);
 }

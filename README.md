@@ -12,7 +12,7 @@ eine vom Nutzer genannte Seite. Blöcke und Presets sind Hilfen dazu.
 ```
 tokens/     tokens.json als Quelle, tokens.css generiert, Theme-Ableitung
 tokens/presets/  acht Art-Direction-Presets als Datei
-vorlagen/   25 vollständige Startseiten, je nach dem Aufbau einer Website
+vorlagen/   26 vollständige Startseiten, je nach dem Aufbau einer Website
 blocks/     Kopfzeile, Kopfinsel, auftakt/ (neun Kompositionen), Leistungen,
             Öffnungszeiten, Anfahrt, Team, Kontaktformular, Bewertungen,
             Preise, Karte, FAQ, Fußzeile, dazu Wortlicht, Kennzahlen,

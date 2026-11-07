@@ -33,8 +33,9 @@ Seitenaufbau, damit sich nichts wieder angleicht.
 | `praxishell` | zahnarzt-wels.at | Praxis, Kanzlei, Dienstleister vor Ort | Bild bis an den oberen Rand, leichte Schrift, Auszeichnungen und Glasfeld im Auftakt |
 | `trattoria` | bigmammagroup.com | Restaurantgruppe, Gastronomie mit Standorten | Küchenbild, Standortkarten mit Zähler, dunkle Neuigkeiten, Farbe in `--tief` |
 | `licht` | pageou.de | gehobenes Restaurant, Hotel | Raumbild, dünne Antiqua, Ornament, Papierkarten, Gutschein |
+| `signal` | INIZIO Solar (Figma Make) | Anlagenbau, Energie, Technik, Betrieb mit fotografierbarem Gegenstand | Vollbild mit Abdunklung, eine Signalfarbe auf Schwarz, Leistungskacheln, Ablaufliste |
 
-Alle 25 auf einen Blick: [`uebersicht.webp`](uebersicht.webp).
+Alle 26 auf einen Blick: [`uebersicht.webp`](uebersicht.webp).
 
 Die Spalte „Passt zu" ist ein Hinweis. Ein Bäcker kann `hafen` tragen.
 
@@ -71,6 +72,7 @@ entsteht, und darf im Auftrag frei ersetzt werden. Die Notizen stehen im Brain u
 | `praxishell` | vor allem die Landingpages, Kacheln, Zufriedenheit, Team, leichte Schrift, Bilder bis an den Rand, Auszeichnungen und Glasfeld im Auftakt | – |
 | `trattoria` | ganze Seite, Auftakt, Einbindung der Elemente | die Farbe: Braun nur, wenn es passt |
 | `licht` | ästhetische Bilder, simpel und luxuriös | – |
+| `signal` | stark: Leitbild, Signalfarbe auf Schwarz, Wechsel hell und dunkel, Leistungskacheln mit Hover, Service-Liste | Ovale über Überschriften und Verläufe; Texte, Fotos und Ablauf sind Füllung |
 
 ## Benutzen
 
@@ -95,6 +97,7 @@ einsetzen. **Der Aufbau bleibt.** Am Ende neben das Original legen.
   Einwilligungsleiste. Die Kopffarbe steht in `--kopf`, damit sie je Betrieb wechseln kann.
 - `tageskarte` ersetzt Lenis durch ein kleines Skript ohne Abhängigkeit, nur am Mausrad.
 - `creator` nimmt keine kursiven Wörter in Überschriften, `raster` keine Rabattpille und kein farbiges Wort in der H1, `praxishell` keine Rubrik-Pillen über Kacheltiteln.
+- `signal` lässt Overline-Kicker, Badge-Pille, Verlaufsschrift, das farbige zweite Wort, unbelegte Kennzahlen, Kundenstimmen, Glaskarte, Scroll-Indikator und Newsletter weg. Grautext auf Weiß ist #555 statt #888, der Auftakt-Satz #d0d0d0 (Kontrast AA). Das Foto im Abschnitt „Betrieb" steht links, damit nicht zweimal Text links und Bild rechts folgen.
 - `trattoria` ersetzt das Braun des Originals durch ein tiefes Grün in `--tief`.
 - `gastgeber` zeigt ein Stockfoto. Die Seite lebt vom echten Porträt der Person.
 - Dachzeilen der Originale sind entfallen; der Nutzer hat sie als KI-typisch benannt.
@@ -117,6 +120,7 @@ am Original gemessen und danach eingestellt, nicht mehr aus Screenshots geschät
 | `verlauf` | Filmbild schrumpft beim Hereinscrollen auf 77 % | wie gemessen |
 | `kachel` | Knöpfe beim Hover Petrol zu Schwarz, 0,3 s; Wortmarke wird schwarz; Bilder im Ablauf wechseln mit Zoom von 120 %; Einblendungen 1 s mit power3 | wie gemessen |
 | `creator` | Knöpfe beim Hover Blau zu Weiß mit schwarzer Schrift, 0,3 s; Navigation wird blau; Logoband läuft; Zähler zählen hoch | wie gemessen; der erfundene Bildzoom ist entfernt |
+| `signal` | im echten Chrome des Nutzers, weil Figma-Make-Seiten headless nicht laden: alle Hover 300 ms `cubic-bezier(.4,0,.2,1)`; Kachel `scale` 1,05, Eckkreis 1,5 und Deckkraft .2 → .1; Nav-Unterstrich `scale-x` 0 → 1 von der Mitte; Pfeil 3,5 px; Service-Zeile Kachel 10 → 20 %; Wert-Kachel gefüllt und 1,1; kein Scrolleffekt | wie gemessen, nachgemessen 2026-11-07; Messung in `web-brain/.research/eingang/inizio-solar/` |
 
 ## Was eine Vorlage nicht enthält
 

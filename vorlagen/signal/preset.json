@@ -1,0 +1,260 @@
+{
+ "meta": {
+  "name": "signal",
+  "description": "Werte gemessen an INIZIO Solar (Figma Make), 2026-11-07",
+  "version": "1.0.0",
+  "updated": "2026-11-07"
+ },
+ "font": [
+  {
+   "name": "display",
+   "value": "Space Grotesk, sans-serif",
+   "usage": "H1 und H2, nach der Referenz",
+   "quelle": "Google Fonts, SIL OFL 1.1"
+  },
+  {
+   "name": "body",
+   "value": "Inter, sans-serif",
+   "usage": "Fließtext, nach der Referenz",
+   "quelle": "Google Fonts, SIL OFL 1.1"
+  },
+  {
+   "name": "mono",
+   "value": "Outfit, sans-serif",
+   "usage": "H3, Navigation, Knöpfe, nach der Referenz",
+   "quelle": "Google Fonts, SIL OFL 1.1",
+   "gewichte": [
+    500,
+    600
+   ]
+  }
+ ],
+ "color": [
+  {
+   "name": "bg",
+   "value": {
+    "light": "#ffffff",
+    "dark": "#ffffff"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "surface",
+   "value": {
+    "light": "#ffffff",
+    "dark": "#ffffff"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "surface-alt",
+   "value": {
+    "light": "#f9fafb",
+    "dark": "#f9fafb"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "text",
+   "value": {
+    "light": "#1a1a1a",
+    "dark": "#1a1a1a"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "text-secondary",
+   "value": {
+    "light": "#555555",
+    "dark": "#555555"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "text-tertiary",
+   "value": {
+    "light": "#666666",
+    "dark": "#666666"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "border",
+   "value": {
+    "light": "#e5e7eb",
+    "dark": "#e5e7eb"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "border-hover",
+   "value": {
+    "light": "#888888",
+    "dark": "#888888"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "accent",
+   "value": {
+    "light": "#39ec2a",
+    "dark": "#39ec2a"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "accent-subtle",
+   "value": {
+    "light": "#e8fde6",
+    "dark": "#e8fde6"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "accent-contrast",
+   "value": {
+    "light": "#0a0a0a",
+    "dark": "#0a0a0a"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "focus",
+   "value": {
+    "light": "#1f8f16",
+    "dark": "#1f8f16"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "success",
+   "value": {
+    "light": "#17713a",
+    "dark": "#17713a"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "success-subtle",
+   "value": {
+    "light": "#dcf3e4",
+    "dark": "#dcf3e4"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "warning",
+   "value": {
+    "light": "#8a5a00",
+    "dark": "#8a5a00"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "warning-subtle",
+   "value": {
+    "light": "#faeecc",
+    "dark": "#faeecc"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "danger",
+   "value": {
+    "light": "#a81b1b",
+    "dark": "#a81b1b"
+   },
+   "usage": "aus der Referenz"
+  },
+  {
+   "name": "danger-subtle",
+   "value": {
+    "light": "#f7dcdc",
+    "dark": "#f7dcdc"
+   },
+   "usage": "aus der Referenz"
+  }
+ ],
+ "typography": [
+  {
+   "name": "display",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "700",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "h1",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "700",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "h2",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "600",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "h3",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "600",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "lead",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "body",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "small",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "400",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  },
+  {
+   "name": "label",
+   "value": {
+    "size": "1rem",
+    "line-height": "1.3",
+    "weight": "500",
+    "tracking": "0"
+   },
+   "usage": "Gewicht fuer fetch-fonts"
+  }
+ ]
+}
