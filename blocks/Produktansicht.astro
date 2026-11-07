@@ -1,0 +1,61 @@
+---
+/**
+ * Ein Objekt in benannten Ansichten, dazu Farbe, Groesse und eine kurze Detailliste.
+ * Nach dem 180-Grad-Produktbetrachter, vom Nutzer 2026-11-07 bestaetigt: starker Aufbau
+ * der Produktansichten, gute Knoepfe. Regeln in 20-design/interface-benchmarks.md#B2.
+ * Ansichten per Knopf, Pfeiltasten und Wischen; jede Ansicht ist direkt waehlbar.
+ * Farben und Groessen sind echte Radioknoepfe; nicht verfuegbare bleiben sichtbar.
+ */
+import type { Bild } from './_lib.ts';
+interface Props { titel: string; ansichten: { name: string; bild: Bild }[]; farben?: { name: string; wert: string }[]; groessen?: { name: string; verfuegbar?: boolean }[]; details?: string[]; id?: string }
+const { titel, ansichten, farben = [], groessen = [], details = [], id = 'produkt' } = Astro.props;
+---
+<section class="produktansicht" data-ansicht>
+  <div class="buehne">
+    <ul class="bilder">{ansichten.map((a, i) => <li class={i === 0 ? 'an' : ''}><img src={a.bild.src} alt={a.bild.alt} loading={i ? 'lazy' : undefined} /></li>)}</ul>
+    <p class="name" aria-live="polite">{ansichten[0].name}</p>
+    <div class="steuer"><button type="button" class="pf" data-schritt="-1" aria-label="Vorige Ansicht">←</button><span class="punkte">{ansichten.map((a, i) => <button type="button" aria-label={a.name} aria-pressed={i === 0 ? 'true' : 'false'} data-i={i}></button>)}</span><button type="button" class="pf" data-schritt="1" aria-label="Nächste Ansicht">→</button></div>
+  </div>
+  <div class="wahl">
+    <h2>{titel}</h2>
+    {farben.length > 0 && <fieldset><legend>Farbe</legend><div class="farben">{farben.map((f, i) => <label><input type="radio" name={`${id}-farbe`} value={f.name} checked={i === 0} /><span style={`--f:${f.wert}`}></span><em>{f.name}</em></label>)}</div></fieldset>}
+    {groessen.length > 0 && <fieldset><legend>Größe</legend><div class="groessen">{groessen.map((g, i) => <label class={g.verfuegbar === false ? 'aus' : ''}><input type="radio" name={`${id}-groesse`} value={g.name} disabled={g.verfuegbar === false} checked={i === 1} /><span>{g.name}</span>{g.verfuegbar === false && <em>ausverkauft</em>}</label>)}</div></fieldset>}
+    {details.length > 0 && <ul class="details">{details.map((d) => <li>{d}</li>)}</ul>}
+  </div>
+</section>
+<script is:inline>
+(() => {
+  document.querySelectorAll('[data-ansicht]').forEach((w) => {
+    const b = [...w.querySelectorAll('.bilder li')], p = [...w.querySelectorAll('.punkte button')], n = w.querySelector('.name'); let i = 0;
+    const zeig = (k) => { i = (k + b.length) % b.length; b.forEach((x, j) => x.classList.toggle('an', j === i)); p.forEach((x, j) => x.setAttribute('aria-pressed', String(j === i))); n.textContent = p[i].getAttribute('aria-label'); };
+    w.querySelectorAll('[data-schritt]').forEach((x) => x.addEventListener('click', () => zeig(i + Number(x.dataset.schritt))));
+    p.forEach((x) => x.addEventListener('click', () => zeig(Number(x.dataset.i))));
+    const s = w.querySelector('.buehne'); s.tabIndex = 0; s.setAttribute('aria-label', 'Ansichten, mit Pfeiltasten wechseln');
+    s.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') zeig(i + 1); if (e.key === 'ArrowLeft') zeig(i - 1); });
+    let x0 = null; s.addEventListener('pointerdown', (e) => { x0 = e.clientX; }); s.addEventListener('pointerup', (e) => { if (x0 !== null && Math.abs(e.clientX - x0) > 40) zeig(i + (e.clientX < x0 ? 1 : -1)); x0 = null; });
+  });
+})();
+</script>
+
+<style>
+  .produktansicht { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--space-8); align-items: center; max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter); }
+  .buehne { position: relative; border-radius: var(--radius-lg); background: var(--color-surface-alt); padding: var(--space-6) var(--space-6) var(--space-5); touch-action: pan-y; }
+  .buehne:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+  .bilder { position: relative; aspect-ratio: 1; list-style: none; margin: 0; padding: 0; }
+  .bilder li { position: absolute; inset: 0; opacity: 0; transition: opacity var(--duration-slow) var(--ease-out); } .bilder li.an { opacity: 1; }
+  .bilder img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 24px 18px rgb(0 0 0 / .12)); }
+  .name { margin: var(--space-3) 0 0; text-align: center; font-size: var(--text-small); color: var(--color-text-secondary); }
+  .steuer { display: flex; justify-content: center; align-items: center; gap: var(--space-3); margin-top: var(--space-3); }
+  .pf { width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); cursor: pointer; transition: border-color var(--duration-fast); } .pf:hover { border-color: var(--color-text); }
+  .punkte { display: flex; gap: 6px; } .punkte button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: var(--color-border-hover); cursor: pointer; } .punkte [aria-pressed=true] { width: 22px; border-radius: 4px; background: var(--color-text); }
+  h2 { margin: 0 0 var(--space-5); font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); }
+  fieldset { border: 0; margin: 0 0 var(--space-5); padding: 0; } legend { font-size: var(--text-small); font-weight: 600; margin-bottom: var(--space-2); }
+  input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .farben, .groessen { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .farben label { display: grid; justify-items: center; gap: 4px; cursor: pointer; } .farben span { width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--f); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .15); } .farben input:checked + span { box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-text); } .farben em { font-style: normal; font-size: 11px; color: var(--color-text-secondary); }
+  .groessen label { position: relative; display: grid; justify-items: center; cursor: pointer; } .groessen span { display: grid; place-content: center; min-width: 3rem; height: 3rem; padding: 0 var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface); font-weight: 600; transition: border-color var(--duration-fast); } .groessen input:checked + span { background: var(--color-text); color: var(--color-bg); border-color: var(--color-text); } .groessen label:hover span { border-color: var(--color-text); }
+  .aus span { color: var(--color-text-tertiary); text-decoration: line-through; cursor: not-allowed; } .aus em { font-style: normal; font-size: 10px; color: var(--color-text-tertiary); }
+  input:focus-visible + span { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+  .details { margin: 0; padding: var(--space-4) 0 0; border-top: 1px solid var(--color-border); list-style: none; display: grid; gap: var(--space-2); font-size: var(--text-small); color: var(--color-text-secondary); }
+  @media (max-width: 52rem) { .produktansicht { grid-template-columns: 1fr; } }
+</style>

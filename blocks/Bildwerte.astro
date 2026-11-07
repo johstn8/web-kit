@@ -1,0 +1,34 @@
+---
+/**
+ * Hochformatige Personen- oder Objektbilder mit Namensschild oben und einer Glasleiste
+ * mit bis zu drei Werten unten. Nach den Creator-Karten von espmedia.de, vom Nutzer
+ * 2026-11-07 gelobt; die Werte koennen Reichweiten sein, aber ebenso jede andere Angabe:
+ * Baujahr, Flaeche, Preis, Erfahrung. Nur belegte Werte.
+ */
+import type { Bild } from './_lib.ts';
+interface Eintrag { bild: Bild; name: string; werte: { label: string; wert: string }[] }
+interface Props { titel?: string; lead?: string; eintraege: Eintrag[]; dunkel?: boolean }
+const { titel, lead, eintraege, dunkel = true } = Astro.props;
+---
+<section class:list={['bildwerte', { dunkel }]}>
+  {titel && <h2>{titel}</h2>}{lead && <p class="lead">{lead}</p>}
+  <ul>{eintraege.map((e) => (
+    <li><img src={e.bild.src} alt={e.bild.alt} loading="lazy" /><span class="name">{e.name}</span>
+      <dl>{e.werte.slice(0, 3).map((w) => <div><dt>{w.label}</dt><dd>{w.wert}</dd></div>)}</dl></li>
+  ))}</ul>
+</section>
+
+<style>
+  .bildwerte { padding: var(--space-12) var(--gutter); } .dunkel { background: #050505; color: #fff; }
+  h2, .lead, ul { max-width: var(--container); margin-inline: auto; }
+  h2 { margin-block: 0; font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); }
+  .lead { margin-top: var(--space-3); margin-bottom: 0; color: var(--color-text-secondary); } .dunkel .lead { color: #c9c9c9; }
+  ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); list-style: none; padding: 0; margin-top: var(--space-8); }
+  li { position: relative; aspect-ratio: 9 / 10; border-radius: var(--radius-md); overflow: hidden; }
+  img { width: 100%; height: 100%; object-fit: cover; transition: scale .8s var(--ease-out); } li:hover img { scale: 1.05; }
+  .name, dl { position: absolute; z-index: 1; color: #fff; background: rgb(28 28 28 / .7); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-radius: var(--radius-sm); }
+  .name { left: var(--space-3); top: var(--space-3); padding: 4px var(--space-3); font-weight: 600; font-size: var(--text-small); }
+  dl { left: var(--space-3); right: var(--space-3); bottom: var(--space-3); display: flex; justify-content: space-between; margin: 0; padding: var(--space-2) var(--space-3); }
+  dl div { display: flex; flex-direction: column-reverse; } dt { font-size: 11px; color: #d4d4d4; } dd { margin: 0; font-weight: 600; }
+  @media (max-width: 52rem) { ul { grid-template-columns: 1fr 1fr; gap: var(--space-2); } dl { flex-direction: column; gap: 2px; } dl div { flex-direction: row-reverse; justify-content: space-between; } }
+</style>

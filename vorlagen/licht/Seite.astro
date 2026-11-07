@@ -1,0 +1,55 @@
+---
+/**
+ * Vorlage "licht", Aufbau nach pageou.de.
+ * Sehr ruhig, sehr wenig Text, alles mittig: feste weisse Kopfzeile mit kleiner Wortmarke
+ * in der Mitte, lichtdurchflutetes Raumbild ueber die volle Breite, eine duenne Antiqua fuer
+ * die Titel, ein Ornament als einziges Schmuckstueck, Bilderdrittel, Raeume mit Bild und
+ * kurzem Text, Gericht ueber die volle Breite, zwei Karten als Papierkarten mit leichtem
+ * Schatten, ein Gutscheinformular auf warmem Grau. Vom Nutzer: simpel, aber sehr luxurioes.
+ * Der Gutschein rechnet im Browser mit; abgeschickt wird erst im Projekt.
+ */
+import '../styles/tokens.css';
+import '../styles/fonts.css';
+const b = (n: string) => `./bilder/${n}.webp`;
+const Orn = 'M12 2c2 3 2 5 0 8-2-3-2-5 0-8zm0 20c-2-3-2-5 0-8 2 3 2 5 0 8zM2 12c3-2 5-2 8 0-3 2-5 2-8 0zm20 0c-3 2-5 2-8 0 3-2 5-2 8 0z';
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>LUMEN – Restaurant</title></head>
+<body>
+<header><nav aria-label="Links"><a href="#karte">Menü</a><a href="#">Reservieren</a><a href="#haus">Der Koch</a></nav><a class="wm" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={Orn} /></svg>LUMEN</a><nav aria-label="Rechts"><a href="#">Kochschule</a><a href="#">Jobs</a><span>DE <a href="#">EN</a></span></nav></header>
+<main>
+  <section class="start"><img src={b('625')} alt="Der Gastraum am Abend" /></section>
+  <section class="haus" id="haus"><svg class="orn" viewBox="0 0 24 24" aria-hidden="true"><path d={Orn} /></svg><h1>Das Lumen</h1><p>Der Name geht auf das Dorf zurück, in dem unser Koch seine Kindheit verbrachte: ein einfacher Ort, geprägt von Natur, Familie und den Gerichten seiner Großmutter. Diese Erinnerungen sind bis heute die Quelle seiner Küche.</p><a class="pille" href="#">Reservieren</a>
+    <ul class="drittel">{['1059','312','835'].map((n, i) => <li style={`--v:${[0, 40, 0][i]}px`}><img src={b(n)} alt="" loading="lazy" /></li>)}</ul></section>
+  <section class="raeume"><ul>{[['635','Restaurant','Das Restaurant bietet Platz für 70 Gäste und für bis zu 100 Personen bei geschlossenen Gesellschaften.'],['395','Galerie','Eine Galerie für bis zu 20 Personen für private Feiern, Essen oder Geschäftstermine.'],['437','Terrasse','An warmen Tagen öffnet sich das Lumen nach draußen: Die Terrasse im Hof wird zur Oase.']].map(([n, t, p]) => <li><img src={b(n)} alt="" loading="lazy" /><h2>{t}</h2><p>{p}</p></li>)}</ul></section>
+  <section class="gericht"><img src={b('488')} alt="Ein Gericht auf weißem Teller" loading="lazy" /><p>Das Lumen ist das Restaurant unseres Kochs in Musterstadt. Die Idee seiner Küche: aus wenigen, erstklassigen Zutaten das Beste machen, klar, modern und zugänglich.</p></section>
+  <section class="karte" id="karte"><h2>Speisekarte</h2><ul>{['Abendkarte','Abendkarte à la carte'].map((t) => <li><a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={Orn} /></svg><b>LUMEN</b><span>{t}</span></a></li>)}</ul></section>
+  <section class="schenken"><h2>Freude verschenken</h2><form data-gutschein><p class="w"><label><input type="checkbox" name="g" checked /> Gutschein</label><input type="range" min="25" max="300" step="25" value="100" aria-label="Betrag des Gutscheins" /><output>100 €</output></p><h3>Bücher</h3>{[['Mezze vegetarisch','24,95'],['Mittelmeer, 100 Rezepte','24,95'],['Mittelmeer schnell','24,95']].map(([t, p]) => <p class="z"><label><input type="checkbox" data-preis={p.replace(',', '.')} /> {t}</label><span>{p} € inkl. MwSt.</span></p>)}<p class="summe">Summe <b>0,00 €</b></p><p class="z"><label><input type="checkbox" required /> Ich bestelle verbindlich und überweise den Betrag nach Erhalt der Bestätigung.</label></p><button class="pille" type="submit">Bestellen</button></form></section>
+  <svg class="orn schluss" viewBox="0 0 24 24" aria-hidden="true"><path d={Orn} /></svg>
+</main>
+<footer><div><h2>Öffnungszeiten</h2><p>Dienstag bis Samstag<br />18:00 – 00:00 Uhr<br />Küche bis 22:00 Uhr</p></div><div><h2>Anfahrt</h2><p>Musterstraße 10<br />12345 Musterstadt<br /><a href="#">Karte öffnen</a></p></div><div><h2>Kontakt</h2><p><a href="#">000 000 00</a><br /><a href="#">hallo@lumen.example</a></p></div><div><h2>Folgen</h2><p><a href="#">Instagram</a></p></div><p class="u">Beispielinhalte, das Restaurant ist erfunden. <a href="#">Datenschutz</a> · <a href="#">Impressum</a></p></footer>
+<script is:inline>
+(() => {
+  const f = document.querySelector('[data-gutschein]'), r = f.querySelector('input[type=range]'), o = f.querySelector('output'), g = f.querySelector('input[name=g]'), s = f.querySelector('.summe b');
+  const eur = (x) => x.toFixed(2).replace('.', ',') + ' €';
+  const neu = () => { o.textContent = r.value + ' €'; let t = g.checked ? Number(r.value) : 0; f.querySelectorAll('[data-preis]').forEach((c) => { if (c.checked) t += Number(c.dataset.preis); }); s.textContent = eur(t); };
+  f.addEventListener('input', neu); f.addEventListener('submit', (e) => e.preventDefault()); neu();
+})();
+</script>
+<style is:global>
+  * { box-sizing: border-box; } html { overflow-x: clip; scroll-padding-top: 110px; } body { margin: 0; background: #fff; color: #2b2b2b; font-family: var(--font-body); font-size: 17px; line-height: 1.6; font-weight: 300; letter-spacing: .01em; } img { display: block; width: 100%; height: 100%; object-fit: cover; } h1, h2, h3, p, ul { margin: 0; padding: 0; font-weight: 400; } ul { list-style: none; } a { color: inherit; }
+  h1, h2 { font-family: var(--font-display); font-weight: 400; line-height: 1.15; } h1, .karte h2, .schenken h2 { font-size: clamp(40px, 4.4vw, 64px); } .orn { display: block; width: 34px; margin: 0 auto 18px; fill: #c9c0b6; }
+  .pille { display: inline-block; padding: 9px 22px; border: 1px solid #2b2b2b; border-radius: 22px; background: none; font: inherit; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background .25s, color .25s; } .pille:hover { background: #2b2b2b; color: #fff; }
+  header { position: fixed; inset: 0 0 auto; z-index: 10; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 96px; padding: 0 3%; background: #fff; } header nav { display: flex; gap: 30px; font-size: 13px; } header nav:last-child { justify-content: flex-end; } header a { text-decoration: none; } .wm { display: grid; justify-items: center; font-family: var(--font-body); font-weight: 600; font-size: 22px; letter-spacing: .06em; } .wm svg { width: 18px; fill: #2b2b2b; margin-bottom: 2px; }
+  .start { height: 720px; margin-top: 96px; }
+  .haus { text-align: center; padding: 70px 24px 0; } .haus > p { max-width: 680px; margin: 20px auto 30px; font-size: 15px; } .drittel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; max-width: 1160px; margin: 70px auto 0; } .drittel li { aspect-ratio: 1; translate: 0 var(--v); }
+  .raeume ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; max-width: 1160px; margin: 110px auto 0; padding: 0 24px; } .raeume img { aspect-ratio: 1; margin-bottom: 18px; } .raeume h2 { font-size: 36px; margin-bottom: 8px; } .raeume p { font-size: 14px; }
+  .gericht { margin-top: 110px; } .gericht img { height: 560px; } .gericht p { max-width: 820px; margin: 40px auto 0; padding: 0 24px; text-align: center; font-size: 15px; }
+  .karte { text-align: center; padding: 110px 24px; } .karte ul { display: flex; justify-content: center; gap: 22px; margin-top: 40px; } .karte a { display: grid; justify-items: center; align-content: space-between; width: 190px; height: 270px; padding: 34px 16px; border-radius: 12px; background: #ede8e3; box-shadow: 2px 2px 10px rgb(0 0 0 / .1); text-decoration: none; transition: translate .3s; } .karte a:hover { translate: 0 -4px; } .karte svg { width: 26px; fill: #2b2b2b; } .karte b { font-family: var(--font-body); font-weight: 600; font-size: 28px; letter-spacing: .06em; } .karte span { font-size: 13px; }
+  .schenken { background: #ede8e3; padding: 90px 24px; } .schenken h2 { text-align: center; margin-bottom: 40px; } form { max-width: 760px; margin: 0 auto; font-size: 14px; } .w { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; padding-bottom: 26px; border-bottom: 1px solid #ccc; } input[type=range] { accent-color: #2b2b2b; } h3 { margin: 26px 0 10px; font-size: 14px; } .z { display: flex; justify-content: space-between; gap: 20px; padding: 10px 0; } .z span { color: #5e5e5e; white-space: nowrap; } .summe { text-align: right; margin: 26px 0 10px; padding-top: 20px; border-top: 1px solid #ccc; } form .pille { display: block; margin: 20px 0 0 auto; }
+  .schluss { width: 40px; margin: 80px auto; }
+  footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin: 0 3%; padding: 30px 0; border-top: 1px solid #e3e3e3; font-size: 13px; } footer h2 { font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; } .u { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid #e3e3e3; font-size: 12px; color: #5e5e5e; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #2b2b2b; outline-offset: 3px; } @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 860px) { header { grid-template-columns: 1fr auto; height: 72px; } header nav:first-child { display: none; } header nav:last-child { gap: 14px; font-size: 12px; } .wm { justify-items: start; } .start { height: 440px; margin-top: 72px; } .drittel, .raeume ul, footer { grid-template-columns: 1fr; } .drittel { gap: 14px; margin-top: 40px; } .drittel li { translate: none; aspect-ratio: 4 / 3; } .raeume ul { margin-top: 60px; } .gericht img { height: 320px; } .karte ul { gap: 12px; } .karte a { width: 150px; height: 220px; } .w { grid-template-columns: 1fr auto; } .w input[type=range] { grid-column: 1 / -1; grid-row: 2; } .z { flex-direction: column; gap: 2px; } }
+</style>
+</body></html>

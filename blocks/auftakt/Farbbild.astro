@@ -1,0 +1,45 @@
+---
+/**
+ * Auftakt, in dem die Markenfarbe als Flaeche ueber dem Foto liegt, mit Partnerlogos
+ * auf dem Bild und einer Zahlenreihe darunter, deren Bild auf einer runden Farbform
+ * sitzt. Nach opti-mice.de, vom Nutzer 2026-11-07 gelobt ("Einbindung der Farbelemente
+ * mit Bildern, der Zahlen"). Die Farbe deckt nicht ganz: das Foto bleibt erkennbar.
+ * Zahlen nur, wenn sie belegt sind.
+ */
+import type { Bild, Aktion } from '../_lib.ts';
+interface Props { titel: string; lead: string; bild: Bild; aktion?: Aktion; partner?: string[]; zahlen?: { wert: string; label: string }[]; zweitbild?: Bild }
+const { titel, lead, bild, aktion, partner = [], zahlen = [], zweitbild } = Astro.props;
+---
+<section class="farbbild">
+  <div class="flaeche">
+    <img src={bild.src} alt={bild.alt} />
+    <div class="text"><h1>{titel}</h1><p>{lead}</p>{aktion && <a href={aktion.ziel}>{aktion.label}</a>}</div>
+    {partner.length > 0 && <ul class="partner" aria-label="Partner">{partner.map((p) => <li>{p}</li>)}</ul>}
+  </div>
+  {zahlen.length > 0 && (
+    <div class="zahlen">
+      <ul>{zahlen.map((z) => <li><b>{z.wert}</b><span>{z.label}</span></li>)}</ul>
+      {zweitbild && <figure><img src={zweitbild.src} alt={zweitbild.alt} loading="lazy" /></figure>}
+    </div>
+  )}
+</section>
+
+<style>
+  .flaeche { position: relative; min-height: min(46rem, 92vh); display: grid; align-content: center; color: var(--color-accent-contrast); overflow: hidden; }
+  .flaeche > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* Deckend genug, dass weisse Schrift auf jedem Foto lesbar bleibt; rechts schimmert das Bild durch. */
+  .flaeche::before { content: ''; position: absolute; z-index: 1; inset: 0 42% 0 0; background: var(--color-accent); opacity: .9; }
+  .flaeche::after { content: ''; position: absolute; z-index: 1; inset: 0 0 0 58%; background: var(--color-accent); opacity: .45; }
+  .text { position: relative; z-index: 2; max-width: 40rem; padding: var(--space-12) var(--gutter) var(--space-8); }
+  h1 { margin: 0 0 var(--space-4); font-size: var(--text-h1); line-height: 1.15; font-weight: var(--text-h1--font-weight); }
+  .text p { margin: 0 0 var(--space-5); max-width: 32rem; }
+  .text a { display: inline-block; padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-full)); background: #fff; color: var(--color-text); font-weight: 600; text-decoration: none; }
+  .partner { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-8); list-style: none; margin: 0; padding: 0 var(--gutter) var(--space-6); font-weight: 700; letter-spacing: .04em; }
+  .zahlen { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--space-8); align-items: center; max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter); }
+  .zahlen ul { display: flex; gap: var(--space-8); list-style: none; margin: 0; padding: 0; }
+  .zahlen b { display: block; font: 300 clamp(2.5rem, 5vw, 3.75rem)/1 var(--font-display); color: var(--color-accent); }
+  .zahlen span { font-size: var(--text-small); color: var(--color-text-secondary); }
+  figure { position: relative; margin: 0; } figure::before { content: ''; position: absolute; inset: -8% -6% -10% 10%; border-radius: 46% 54% 42% 58% / 52% 40% 60% 48%; background: var(--color-accent); opacity: .35; }
+  figure img { position: relative; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-lg); }
+  @media (max-width: 52rem) { .flaeche::before { inset: 0; opacity: .86; } .flaeche::after { display: none; } .zahlen { grid-template-columns: 1fr; } .zahlen ul { flex-wrap: wrap; gap: var(--space-5); } }
+</style>

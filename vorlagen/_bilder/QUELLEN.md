@@ -56,3 +56,8 @@ Vorlage mit echten Fotos wirkt, und werden im Kundenprojekt ersetzt.
 | 946.webp | Padurariu Alexandru | https://unsplash.com/photos/2UE1givDiPM |
 | 1059.webp | Clark Street Mercantile | https://unsplash.com/photos/vC-GqGbakJo |
 | 627.webp | Sonja Langford | https://unsplash.com/photos/H5k8PoC1BBc |
+| 669.webp | Luke Pamer | https://unsplash.com/photos/oUhr-qMTJoc |
+| 1011.webp | Roberto Nickson | https://unsplash.com/photos/7BjmDICVloE |
+| 1012.webp | Scott Webb | https://unsplash.com/photos/uAgLGG1WBd4 |
+| 338.webp | Patryk Sobczak | https://unsplash.com/photos/9VPtNW84vGI |
+| 445.webp | Aleksi Tappura | https://unsplash.com/photos/mCg0ZgD7BgU |

@@ -1,0 +1,32 @@
+---
+/**
+ * Ein Produkt steht fest, und beim Scrollen steigt ein Satz von unten aus ihm heraus.
+ * Nach modulo-consulting.de, vom Nutzer 2026-11-07 nur dieses Element und die Produkt-
+ * kacheln gelobt. Das Bild liegt ueber dem Text, damit der Satz hinter dem Produkt
+ * hervorkommt. Ohne scroll-gebundene Animation steht der Satz einfach unter dem Bild.
+ */
+import type { Bild } from './_lib.ts';
+interface Props { bild: Bild; satz: string }
+const { bild, satz } = Astro.props;
+---
+<section class="aufstieg">
+  <div class="buehne">
+    <img src={bild.src} alt={bild.alt} loading="lazy" />
+    <p>{satz}</p>
+  </div>
+</section>
+
+<style>
+  .aufstieg { height: 220vh; }
+  .buehne { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; overflow: hidden; }
+  img { position: relative; z-index: 1; width: min(34rem, 70vw); max-height: 56vh; object-fit: contain; }
+  p { position: absolute; z-index: 0; left: 50%; top: 52%; width: min(52rem, 90vw); margin: 0; translate: -50% 0; text-align: center; font: var(--text-h2--font-weight) var(--text-h2)/1.15 var(--font-display); color: var(--color-text); }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .aufstieg { view-timeline: --aufstieg block; }
+      p { animation: steigen linear both; animation-timeline: --aufstieg; animation-range: contain 0% contain 80%; }
+      @keyframes steigen { from { translate: -50% 20%; opacity: 0; } 35% { opacity: 1; } to { translate: -50% -125%; opacity: 1; } }
+    }
+  }
+  @supports not (animation-timeline: view()) { .aufstieg { height: auto; } .buehne { position: static; height: auto; padding: var(--space-12) var(--gutter); gap: var(--space-6); } p { position: static; translate: none; } }
+</style>

@@ -12,7 +12,7 @@ eine vom Nutzer genannte Seite. Blöcke und Presets sind Hilfen dazu.
 ```
 tokens/     tokens.json als Quelle, tokens.css generiert, Theme-Ableitung
 tokens/presets/  acht Art-Direction-Presets als Datei
-vorlagen/   zwanzig vollständige Startseiten, je nach dem Aufbau einer Website
+vorlagen/   25 vollständige Startseiten, je nach dem Aufbau einer Website
 blocks/     Kopfzeile, Kopfinsel, auftakt/ (neun Kompositionen), Leistungen,
             Öffnungszeiten, Anfahrt, Team, Kontaktformular, Bewertungen,
             Preise, Karte, FAQ, Fußzeile, dazu Wortlicht, Kennzahlen,
@@ -53,8 +53,8 @@ derselben Anordnung. `qa.sh` führt die Prüfung immer aus. Macht das Vorbild de
 Website es selbst so, stuft `--erlaubt nummernmarke,teilauszeichnung` diese
 Sperren zum Befund herab.
 
-Geeicht an realen Seiten: minerestaurant.de, pageou.de, barraberlin.com,
-lilianewyork.com und carbonenewyork.com bestehen, impastorosso.de fällt
+Geeicht an realen Seiten: minerestaurant.de, pageou.de und
+carbonenewyork.com bestehen, impastorosso.de fällt
 mit zwei Dachzeilen durch.
 
 **Die unveränderte Startseite des Starters besteht die Prüfung nicht.**

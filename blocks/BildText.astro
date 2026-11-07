@@ -1,0 +1,32 @@
+---
+/**
+ * Text neben Bild, am Desktop immer nebeneinander. Nach "Unsere Loesung" auf
+ * sales-culture.de; der Nutzer lobt ausdruecklich nur die Fassung, in der der Text
+ * neben dem Bild steht. Auf dem Handy folgt das Bild deshalb nach dem Text und wird
+ * flach, statt ueber dem Text zu stehen.
+ */
+import type { Bild, Aktion } from './_lib.ts';
+interface Props { titel: string; text: string[]; punkte?: string[]; bild: Bild; aktion?: Aktion; bildSeite?: 'links' | 'rechts' }
+const { titel, text, punkte = [], bild, aktion, bildSeite = 'rechts' } = Astro.props;
+---
+<section class:list={['bildtext', bildSeite]}>
+  <div class="text">
+    <h2>{titel}</h2>
+    {text.map((t) => <p>{t}</p>)}
+    {punkte.length > 0 && <ul>{punkte.map((p) => <li>{p}</li>)}</ul>}
+    {aktion && <a href={aktion.ziel}>{aktion.label} <span aria-hidden="true">→</span></a>}
+  </div>
+  <img src={bild.src} alt={bild.alt} loading="lazy" />
+</section>
+
+<style>
+  .bildtext { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center; max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter); }
+  .links img { order: -1; }
+  h2 { margin: 0 0 var(--space-4); font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); }
+  p { margin: 0 0 var(--space-3); color: var(--color-text-secondary); max-width: var(--prose); }
+  ul { margin: var(--space-4) 0 var(--space-5); padding: 0; list-style: none; display: grid; gap: var(--space-2); }
+  li { padding-left: 1.5rem; position: relative; } li::before { content: ''; position: absolute; left: 0; top: .55em; width: .55rem; height: .55rem; border-radius: 50%; background: var(--color-accent); }
+  a { display: inline-flex; gap: var(--space-2); padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-full)); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; font-weight: 600; }
+  img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-lg); }
+  @media (max-width: 52rem) { .bildtext { grid-template-columns: 1fr; gap: var(--space-5); } .links img { order: 0; } img { aspect-ratio: 16 / 9; } }
+</style>

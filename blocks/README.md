@@ -39,6 +39,28 @@ Aufbau und gemessene Werte, nicht Quelltext, Texte oder Bilder.
 | `Freisteller` | freigestellte Objekte oder Rechteckbilder am Rand direkt auf hellem Grund | lagalante-restaurant.de, standard-berlin.de | sehr gute Bilder |
 | `Farbfelder` | bildschirmhohe Farbfelder fahren übereinander, riesiges Wort, kurzer Text | the1.amsterdam, meracinque.com | Preset mit `grammar.farbfelder` |
 
+## Elemente aus dem Eingang vom 2026-11-07
+
+Hier hat der Nutzer an einer Seite nur einzelne Teile gelobt. Deshalb gibt es dafür
+keine Vorlage, sondern genau diese Teile als Block, damit sie sich in eine neue
+Website einsetzen lassen. Alle auf einer Seite: `scripts/muster-bauen.sh <preset>`,
+dann `/elemente/`.
+
+| Block | Wirkung | Herkunft, was gelobt wurde |
+|---|---|---|
+| `auftakt/Pfadflug` | Gegenstand fliegt auf gestrichelter Bahn durch nummerierte Schritte | sales-culture.de: der bewegte Flieger im Auftakt |
+| `BildText` | Text neben Bild, auf dem Handy Bild nach dem Text | sales-culture.de: „Unsere Lösung", nur nebeneinander |
+| `auftakt/Farbbild` | Markenfarbe liegt über dem Foto, Partner darauf, Zahlen mit Bild auf runder Farbform | opti-mice.de: Farbelemente mit Bildern, die Zahlen |
+| `auftakt/Profil` | Profilbild vor Farbfläche, schwebendes Feld mit Wachstumskurve, Knopf mit Unterzeile | martinahalek.de: genau diese drei Teile |
+| `Schwarzblende` | schwarzer Grund, Bild läuft ins Schwarz, Flächen blenden weich auf, blasses Wort im Grund | agencyinvest.de: schwarze Überlagerungen mit Fade; `--erlaubt verlaufsschleier` |
+| `Aufstieg` | Satz steigt beim Scrollen hinter einem Produkt hervor | modulo-consulting.de: diese Scrollanimation |
+| `Produktkacheln` | eckige hellgraue Kacheln mit Produkt, Marke, Titel, Plus | modulo-consulting.de: die eckigen Produktkacheln |
+| `Produktschritte` | Produkt in Schritten, Reiter links, Bildschirm rechts, neutrale Flächen | consile.app: Konzept der Produktvorstellung, ohne Orange und Verläufe |
+| `Schwebend` | Elemente schweben versetzt, Karten mit ruhigem Hover | saadsalman.org: schwebende Teile, Hover |
+| `Produktansicht` | Objekt in benannten Ansichten, Farbe, Größe, Details | 180-Grad-Produktbetrachter: Produktansichten, Knöpfe |
+| `Bildwerte` | Hochformatbilder mit Namensschild und bis zu drei Werten in einer Glasleiste | espmedia.de: Creator-Bilder mit Zahlen im Overlay |
+| `Reservierung` | schwebendes Reservierungsfeld, einklappbar, auf dem Handy erst auf Tipp | tuluslotrek.de: die Idee, inhaltlich und gestalterisch verbessert |
+
 ## Material
 
 `glas.css` ist das gemeinsame Glas (`.glas`, `.glas-dunkel`) mit Werten von

@@ -1,0 +1,50 @@
+---
+/**
+ * Ein Produkt in Schritten vorgestellt: links die Schritte als Reiter, rechts der
+ * echte Bildschirm im Rahmen, der mit dem Schritt wechselt. Nach dem Konzept von
+ * consile.app, das der Nutzer 2026-11-07 stark fand. Ausdruecklich nicht uebernommen:
+ * eine Markenfarbe auf jeder Flaeche und Verlaeufe; der Nutzer erkennt daran die KI.
+ * Deshalb hier neutrale Flaechen, die Akzentfarbe nur am gewaehlten Schritt.
+ * Reiter nach dem WAI-Muster, mit Pfeiltasten bedienbar.
+ */
+import type { Bild } from './_lib.ts';
+interface Schritt { titel: string; text: string; bild: Bild }
+interface Props { titel: string; lead?: string; schritte: Schritt[]; id?: string }
+const { titel, lead, schritte, id = 'produktschritte' } = Astro.props;
+---
+<section class="produktschritte" data-schritte>
+  <h2>{titel}</h2>{lead && <p class="lead">{lead}</p>}
+  <div class="raum">
+    <div role="tablist" aria-label={titel} aria-orientation="vertical">{schritte.map((s, i) => (
+      <button role="tab" type="button" id={`${id}-r${i}`} aria-controls={`${id}-p${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}><b>{s.titel}</b><span>{s.text}</span></button>
+    ))}</div>
+    <div class="schirm">{schritte.map((s, i) => (
+      <div role="tabpanel" id={`${id}-p${i}`} aria-labelledby={`${id}-r${i}`} hidden={i !== 0}><img src={s.bild.src} alt={s.bild.alt} loading="lazy" /></div>
+    ))}</div>
+  </div>
+</section>
+<script is:inline>
+(() => {
+  document.querySelectorAll('[data-schritte]').forEach((w) => {
+    const r = [...w.querySelectorAll('[role=tab]')], p = [...w.querySelectorAll('[role=tabpanel]')];
+    const wahl = (i) => { r.forEach((x, k) => { x.setAttribute('aria-selected', String(k === i)); x.tabIndex = k === i ? 0 : -1; p[k].hidden = k !== i; }); r[i].focus(); };
+    r.forEach((x, i) => { x.addEventListener('click', () => wahl(i)); x.addEventListener('keydown', (e) => { if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); wahl((i + 1) % r.length); } if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); wahl((i - 1 + r.length) % r.length); } }); });
+  });
+})();
+</script>
+
+<style>
+  .produktschritte { max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter); }
+  h2 { margin: 0; font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: var(--text-h2--font-weight); max-width: 22ch; }
+  .lead { margin: var(--space-3) 0 0; color: var(--color-text-secondary); max-width: var(--prose); }
+  .raum { display: grid; grid-template-columns: 1fr 1.6fr; gap: var(--space-6); margin-top: var(--space-8); align-items: start; }
+  [role=tablist] { display: grid; gap: var(--space-2); }
+  [role=tab] { display: grid; gap: 4px; text-align: left; padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font: inherit; cursor: pointer; transition: border-color var(--duration-base), translate var(--duration-base) var(--ease-out); }
+  [role=tab] span { font-size: var(--text-small); color: var(--color-text-secondary); }
+  [role=tab]:hover { border-color: var(--color-border-hover); translate: 2px 0; }
+  [role=tab][aria-selected=true] { border-color: var(--color-accent); box-shadow: inset 3px 0 0 var(--color-accent); background: var(--color-surface); }
+  [role=tab]:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .schirm { position: sticky; top: var(--space-6); padding: var(--space-3); border-radius: var(--radius-lg); background: var(--color-surface-alt); }
+  .schirm img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface); }
+  @media (max-width: 52rem) { .raum { grid-template-columns: 1fr; } .schirm { position: static; order: -1; } }
+</style>

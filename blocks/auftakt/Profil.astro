@@ -1,0 +1,39 @@
+---
+/**
+ * Auftakt einer Person: Profilbild vor einer Farbflaeche, daneben ein schwebendes
+ * Feld mit einer kleinen Wachstumskurve, ein Knopf mit Unterzeile. Nach martinahalek.de,
+ * vom Nutzer 2026-11-07 nur diese drei Teile gelobt. Die Kurve zeigt nur echte Werte;
+ * ohne sie entfaellt das Feld.
+ */
+import type { Bild } from '../_lib.ts';
+interface Props { titel: string; text: string; bild: Bild; aktion: { label: string; unterzeile?: string; ziel: string }; kurve?: { titel: string; werte: number[] } }
+const { titel, text, bild, aktion, kurve } = Astro.props;
+const max = kurve ? Math.max(...kurve.werte) : 1;
+const pfad = kurve ? kurve.werte.map((w, i) => `${i ? 'L' : 'M'}${(i / (kurve.werte.length - 1)) * 200} ${70 - (w / max) * 60}`).join(' ') : '';
+---
+<section class="profil">
+  <div class="text"><h1>{titel}</h1><p>{text}</p><a href={aktion.ziel}><b>{aktion.label}</b>{aktion.unterzeile && <small>{aktion.unterzeile}</small>}</a></div>
+  <div class="bild">
+    <span class="farbe" aria-hidden="true"></span>
+    <img src={bild.src} alt={bild.alt} />
+    {kurve && <figure class="feld"><figcaption>{kurve.titel}</figcaption><svg viewBox="0 0 200 76" role="img" aria-label={`${kurve.titel}: ${kurve.werte.join(', ')}`}><path class="flaeche" d={`${pfad} L200 76 L0 76z`} /><path class="linie" d={pfad} /></svg><p>{kurve.werte.map((w) => <i style={`height:${(w / max) * 100}%`}></i>)}</p></figure>}
+  </div>
+</section>
+
+<style>
+  .profil { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-8); align-items: center; max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter); }
+  h1 { margin: 0 0 var(--space-4); font-size: var(--text-h1); line-height: 1.2; font-weight: var(--text-h1--font-weight); }
+  .text p { margin: 0 0 var(--space-6); max-width: 32rem; color: var(--color-text-secondary); }
+  .text a { display: inline-grid; padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-sm)); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; transition: translate var(--duration-base) var(--ease-out); }
+  .text a:hover { translate: 0 -2px; } .text small { font-size: 11px; opacity: .9; }
+  .bild { position: relative; justify-self: center; width: min(26rem, 80vw); }
+  .farbe { position: absolute; left: 6%; right: 6%; bottom: 0; height: 46%; border-radius: var(--radius-sm); background: var(--color-accent); }
+  .bild img { position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; border-radius: var(--radius-sm); }
+  .feld { position: absolute; right: -14%; top: 8%; width: 12rem; margin: 0; padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-surface); box-shadow: 0 12px 30px rgb(0 0 0 / .12); animation: schweben 6s ease-in-out infinite alternate; }
+  figcaption { font-size: 12px; font-weight: 600; margin-bottom: var(--space-2); }
+  .linie { fill: none; stroke: var(--color-accent); stroke-width: 2.5; } .flaeche { fill: var(--color-accent-subtle); }
+  .feld p { display: flex; align-items: flex-end; gap: 4px; height: 1.4rem; margin: var(--space-2) 0 0; } .feld i { flex: 1; border-radius: 2px; background: var(--color-border); } .feld i:last-child { background: var(--color-accent); }
+  @keyframes schweben { to { translate: 0 -10px; } }
+  @media (prefers-reduced-motion: reduce) { .feld { animation: none; } }
+  @media (max-width: 52rem) { .profil { grid-template-columns: 1fr; } .feld { right: 0; width: 10rem; } }
+</style>

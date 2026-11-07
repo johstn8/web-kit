@@ -1,0 +1,53 @@
+---
+/**
+ * Schwebendes Reservierungsfeld unten rechts: Personen, Tag, Uhrzeit, ein Knopf.
+ * Die Idee stammt von tuluslotrek.de; der Nutzer mag sie, wollte sie aber inhaltlich
+ * und gestalterisch verbessert (2026-11-07). Anders als dort: echte Beschriftungen auf
+ * Deutsch, das Feld laesst sich zu einem kleinen Knopf einklappen und verdeckt auf dem
+ * Handy den Auftakt nicht, es oeffnet erst auf Tipp. Abgeschickt wird per GET an den
+ * Buchungsdienst des Betriebs (ziel); ohne Dienst ist ziel die Kontaktseite.
+ */
+interface Props { ziel: string; gutschein?: string; zeiten?: string[]; maxPersonen?: number }
+const { ziel, gutschein, zeiten = ['17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'], maxPersonen = 8 } = Astro.props;
+---
+<div class="reservierung" data-reservierung>
+  <button class="auf" type="button" aria-expanded="false" aria-controls="reservierung-feld">Tisch reservieren</button>
+  <form id="reservierung-feld" action={ziel} method="get" aria-label="Tisch reservieren">
+    <p class="kopf"><b>Tisch reservieren</b><button class="zu" type="button" aria-label="Reservierung einklappen">×</button></p>
+    <label>Personen<select name="personen">{Array.from({ length: maxPersonen }, (_, i) => <option value={i + 1} selected={i === 1}>{i + 1} {i ? 'Personen' : 'Person'}</option>)}</select></label>
+    <label>Tag<input type="date" name="tag" required /></label>
+    <label>Uhrzeit<select name="zeit">{zeiten.map((z) => <option>{z}</option>)}</select></label>
+    <button class="los" type="submit">Freie Tische zeigen</button>
+    {gutschein && <a href={gutschein}>Gutschein verschenken</a>}
+  </form>
+</div>
+<script is:inline>
+(() => {
+  document.querySelectorAll('[data-reservierung]').forEach((r) => {
+    const auf = r.querySelector('.auf'), zu = r.querySelector('.zu'), tag = r.querySelector('input[type=date]');
+    tag.min = new Date().toISOString().slice(0, 10); tag.value = tag.min;
+    let offen = matchMedia('(min-width: 52rem)').matches;
+    try { if (sessionStorage.getItem('reservierung-zu')) offen = false; } catch (e) {}
+    const setze = (o) => { r.classList.toggle('offen', o); auf.setAttribute('aria-expanded', String(o)); };
+    auf.addEventListener('click', () => { setze(true); r.querySelector('select').focus(); });
+    zu.addEventListener('click', () => { setze(false); auf.focus(); try { sessionStorage.setItem('reservierung-zu', '1'); } catch (e) {} });
+    r.addEventListener('keydown', (e) => { if (e.key === 'Escape' && r.classList.contains('offen')) zu.click(); });
+    setze(offen);
+  });
+})();
+</script>
+
+<style>
+  .reservierung { position: fixed; right: var(--space-4); bottom: var(--space-4); z-index: 40; }
+  .auf, .los { padding: var(--space-3) var(--space-5); border: 0; border-radius: var(--aktion-radius, var(--radius-sm)); background: var(--color-text); color: var(--color-bg); font: 600 var(--text-small) var(--font-body); cursor: pointer; box-shadow: 0 8px 24px rgb(0 0 0 / .2); }
+  form { display: none; width: 17rem; padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text); box-shadow: 0 16px 40px rgb(0 0 0 / .22); }
+  .offen form { display: grid; gap: var(--space-3); } .offen .auf { display: none; }
+  .kopf { display: flex; justify-content: space-between; align-items: center; margin: 0; }
+  .zu { width: 2rem; height: 2rem; border: 0; border-radius: 50%; background: var(--color-surface-alt); font-size: 1.1rem; cursor: pointer; color: inherit; }
+  label { display: grid; gap: 4px; font-size: 12px; color: var(--color-text-secondary); }
+  select, input { padding: var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text); font: inherit; font-size: var(--text-small); }
+  .los { box-shadow: none; width: 100%; }
+  form a { font-size: 12px; text-align: center; color: var(--color-text-secondary); }
+  button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  @media (max-width: 52rem) { .reservierung { left: var(--space-3); right: var(--space-3); bottom: var(--space-3); } .auf { width: 100%; } form { width: auto; } }
+</style>

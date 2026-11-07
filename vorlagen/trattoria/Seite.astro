@@ -1,0 +1,59 @@
+---
+/**
+ * Vorlage "trattoria", Aufbau nach bigmammagroup.com.
+ * Kuechenbild ueber die volle Hoehe mit einem Satz in schmaler Antiqua, schwebende
+ * Kopfzeile mit drei kleinen Rahmenknoepfen, danach Karten mit 16 Pixel Radius zum Wischen:
+ * Standort als Foto, als Farbkarte mit Adresse, als dunkle Karte mit Zeichnung und als
+ * Zaehler bis zur Eroeffnung. Neuigkeiten als dunkle Tafel mit Bild, Newsletter, Fuss.
+ * Der Nutzer findet die Seite insgesamt stark, die Farbkombination mit Braun aber altmodisch.
+ * Deshalb steht hier statt Braun ein tiefes Gruen in --tief; Braun nur, wenn es zum Betrieb
+ * passt. Die italienische Zeile als Ueberschrift ist entfallen (S6).
+ */
+import '../styles/tokens.css';
+import '../styles/fonts.css';
+const b = (n: string) => `./bilder/${n}.webp`;
+const fisch = 'M8 34c18-18 46-22 70-10 10-8 18-12 26-12-4 8-6 14-6 20 0 6 2 12 6 20-8 0-16-4-26-12-24 12-52 8-70-6z';
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Famiglia Muster – Restaurants</title></head>
+<body style="--tief:#1f2a24;--rot:#b3122b;--creme:#fffdf4">
+<header><button type="button" class="menue" aria-label="Menü"><i></i><i></i><i></i></button><a class="wm" href="#">FAMIGLIA MUSTER</a><nav aria-label="Aktionen"><a href="#">Gutschein</a><a href="#">Feiern</a><a class="voll" href="#orte">Tisch buchen</a></nav><span class="sp">DE</span></header>
+<main>
+  <section class="start"><img src={b('674')} alt="Hände in der Küche bei der Arbeit" /><h1>Eine Geschichte von Freunden</h1><a class="ton" href="#" aria-label="Ton ein">◉</a></section>
+  <section class="orte" id="orte"><h2>Entdecken Sie unsere Restaurants</h2>
+    <ul tabindex="0" aria-label="Restaurants, waagerecht scrollbar">
+      <li class="foto"><img src={b('635')} alt="Gastraum am Markt" loading="lazy" /><div><h3>Am Markt</h3><p>Marktplatz 3, Musterstadt</p><p class="st"><i></i>Neu eröffnet</p><p class="z"><a href="#">Karte</a><a class="r" href="#">Tisch buchen</a></p></div></li>
+      <li class="farbe"><b class="schrift">Circolo</b><p>Hauptstraße 21<br />Am Eck<br />10719 Musterstadt</p></li>
+      <li class="tief"><svg viewBox="0 0 112 70" aria-hidden="true"><path d={fisch} /><circle cx="26" cy="32" r="2.5" /></svg><div><h3>Am Hafen</h3><p>Uferweg 8, Musterhafen</p><p class="st"><i></i>Eröffnet bald</p><p class="z"><a class="r" href="#">Mehr sehen</a></p></div></li>
+      <li class="farbe zaehler"><b class="schrift">Trattoria Nord</b><p>Eröffnung in</p><p class="uhr" data-bis="2026-12-01T18:00:00"><span><b>24</b>Tage</span><span><b>06</b>Stunden</span><span><b>12</b>Minuten</span><span><b>40</b>Sekunden</span></p></li>
+      <li class="foto"><img src={b('625')} alt="Gastraum mit Holztischen" loading="lazy" /><div><h3>Altstadt</h3><p>Kirchgasse 1, Musterdorf</p><p class="st"><i></i>Geöffnet</p><p class="z"><a href="#">Karte</a><a class="r" href="#">Tisch buchen</a></p></div></li>
+    </ul></section>
+  <section class="neu"><h2>Neues aus der Familie</h2><article><div><h3>Ein Stück Italien für zu Hause</h3><p>Unsere Keramik zum Jahresende ist da: handgemachte Teller, Becher und Schalen, in kleiner Auflage, rechtzeitig vor Weihnachten.</p><a class="rahmen" href="#">Zum Laden</a><p class="steuer"><span>1 / 3</span><button type="button" aria-label="Vorige Meldung">←</button><button type="button" aria-label="Nächste Meldung">→</button></p></div><img src={b('395')} alt="" loading="lazy" /></article></section>
+  <section class="brief"><svg viewBox="0 0 112 70" aria-hidden="true"><path d={fisch} /><circle cx="26" cy="32" r="2.5" /></svg><form><label for="mail">Unser Newsletter<br />mit Neuigkeiten, Rezepten und allem anderen</label><p><input id="mail" type="email" placeholder="Ihre E-Mail" autocomplete="email" /><button type="submit">Los</button></p><label class="ok"><input type="checkbox" required /> Ich akzeptiere die Datenschutzerklärung.</label></form></section>
+</main>
+<footer><ul class="links"><li><a href="#">Laden</a></li><li><a href="#">Fragen und Kontakt</a></li><li><a href="#">Wer wir sind</a></li><li><a href="#">Jobs</a></li><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li><li><a href="#">Barrierefreiheit</a></li></ul>{[['Nord',['Musterstadt','Hafenstadt','Seedorf']],['Mitte',['Altdorf','Neustadt','Markt']],['Süd',['Bergheim','Talort']]].map(([r, o]) => <div><h2>{r}</h2><ul>{(o as string[]).map((x) => <li>{x}</li>)}</ul></div>)}<small>Beispielinhalte, die Restaurants sind erfunden.</small></footer>
+<script is:inline>
+(() => {
+  const k = document.querySelector('header'), h = document.querySelector('.start');
+  const kopf = () => k.classList.toggle('hell', h.getBoundingClientRect().bottom < 60);
+  addEventListener('scroll', kopf, { passive: true }); kopf();
+  const u = document.querySelector('[data-bis]'); if (!u) return;
+  const ziel = new Date(u.dataset.bis).getTime(), f = [...u.querySelectorAll('b')];
+  const z = () => { let d = Math.max(0, ziel - Date.now()) / 1000; const w = [Math.floor(d / 86400), Math.floor(d % 86400 / 3600), Math.floor(d % 3600 / 60), Math.floor(d % 60)]; w.forEach((x, i) => { f[i].textContent = String(x).padStart(2, '0'); }); };
+  z(); if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(z, 1000);
+})();
+</script>
+<style is:global>
+  * { box-sizing: border-box; } html { overflow-x: clip; } body { margin: 0; background: var(--creme); color: var(--tief); font-family: var(--font-body); font-size: 16px; line-height: 1.55; } img { display: block; width: 100%; height: 100%; object-fit: cover; } h1, h2, h3, p, ul { margin: 0; padding: 0; font-weight: 400; } ul { list-style: none; } a { color: inherit; text-decoration: none; } button { font: inherit; color: inherit; }
+  h1, h2, h3, .schrift { font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; line-height: 1.05; } h2 { font-size: clamp(30px, 3vw, 44px); }
+  header { position: fixed; inset: 0 0 auto; z-index: 20; display: flex; align-items: center; gap: 18px; height: 52px; padding: 0 22px; color: #fff; transition: background .3s, color .3s; } header.hell { background: var(--creme); color: var(--tief); } header.hell nav .voll { background: var(--tief); color: #fff; } .menue { display: grid; gap: 3px; width: 26px; padding: 4px; background: none; border: 0; cursor: pointer; } .menue i { height: 1.5px; background: currentColor; } .wm { font-family: var(--font-body); font-weight: 700; font-size: 12px; letter-spacing: .18em; margin-right: auto; } header nav { display: flex; gap: 8px; font-size: 12px; } header nav a { padding: 7px 12px; border: 1px solid currentColor; border-radius: 3px; } header nav .voll { background: #fff; color: #000; } .sp { font-size: 12px; }
+  .start { position: relative; height: 100vh; min-height: 560px; color: #fff; overflow: hidden; } .start img { filter: brightness(.7); animation: zieh 30s ease-out both; } @keyframes zieh { from { scale: 1.1; } } h1 { position: absolute; inset: auto 0 18%; text-align: center; font-size: clamp(48px, 6vw, 92px); padding: 0 24px; text-wrap: balance; } .ton { position: absolute; right: 22px; bottom: 22px; color: #ff8a8a; font-size: 18px; }
+  .orte { padding: 90px 0 70px 8%; } .orte h2 { margin-bottom: 30px; } .orte ul { display: flex; gap: 16px; overflow-x: auto; padding: 0 8% 10px 0; scrollbar-width: none; scroll-snap-type: x proximity; } .orte li { position: relative; flex: 0 0 340px; height: 470px; border-radius: 16px; overflow: hidden; scroll-snap-align: start; color: #fff; } .orte li div { position: absolute; inset: auto 0 0; padding: 16px; } .foto::after { content: ''; position: absolute; inset: 40% 0 0; background: linear-gradient(transparent, rgb(0 0 0 / .65)); } .foto div { z-index: 1; } .st { display: flex; align-items: center; gap: 6px; margin-top: 6px; } .st i { width: 6px; height: 6px; border-radius: 50%; background: #ffcf6e; } .orte h3 { font-size: 30px; margin: 10px 0 2px; } .orte p { font-size: 13px; } .z { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-top: 12px; border-top: 1px solid rgb(255 255 255 / .4); } .z a { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; } .z .r { margin-left: auto; padding: 7px 12px; border-radius: 3px; background: #fff; color: #000; text-transform: none; letter-spacing: 0; }
+  .farbe { background: var(--rot); display: grid; place-content: center; text-align: center; gap: 14px; padding: 20px; } .schrift { font-style: italic; font-size: 36px; } .tief { background: var(--tief); } .tief svg { position: absolute; left: 50%; top: 40%; translate: -50% -50%; width: 170px; fill: none; stroke: #fff; stroke-width: 1.4; } .uhr { display: flex; gap: 16px; justify-content: center; margin-top: 30px; } .uhr span { display: grid; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; } .uhr b { font-family: var(--font-display); font-size: 44px; font-weight: 400; line-height: 1; }
+  .neu { padding: 30px 8% 90px; } .neu h2 { margin-bottom: 30px; } .neu article { display: grid; grid-template-columns: 1fr 1fr; min-height: 420px; border-radius: 16px; overflow: hidden; background: var(--tief); color: #fff; } .neu article > div { padding: 40px; display: flex; flex-direction: column; align-items: flex-start; } .neu h3 { font-size: 36px; max-width: 320px; } .neu article p { max-width: 360px; font-size: 15px; margin: 18px 0 26px; } .rahmen { padding: 8px 14px; border-radius: 3px; background: #fff; color: #000; font-size: 13px; } .steuer { display: flex !important; align-items: center; gap: 10px; width: 100%; max-width: none !important; margin: auto 0 0 !important; padding-top: 18px; border-top: 1px solid rgb(255 255 255 / .3); } .steuer span { margin-right: auto; font-size: 12px; } .steuer button { width: 40px; height: 26px; border-radius: 14px; border: 0; background: #fff; color: #000; cursor: pointer; } .steuer button:first-of-type { background: rgb(255 255 255 / .35); color: #fff; }
+  .brief { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin: 0 8%; padding: 50px 0; border-top: 1px solid #d9d2bd; } .brief svg { width: 120px; fill: none; stroke: var(--tief); stroke-width: 1.4; } .brief label:first-child { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1.1; margin-bottom: 16px; } .brief p { display: flex; max-width: 420px; border: 1px solid var(--tief); border-radius: 3px; } .brief input[type=email] { flex: 1; padding: 12px; border: 0; background: transparent; font: inherit; color: inherit; } .brief button { border: 0; background: none; padding: 0 16px; cursor: pointer; } .ok { display: flex; gap: 8px; margin-top: 12px; font-size: 12px; }
+  footer { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; margin: 0 8%; padding: 40px 0 50px; border-top: 1px solid #d9d2bd; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; } footer h2 { font-family: var(--font-body); font-size: 11px; color: #4f5650; margin-bottom: 8px; letter-spacing: .06em; } footer li { margin-bottom: 4px; } footer small { grid-column: 1 / -1; background: none; padding: 0; color: #4f5650; text-transform: none; letter-spacing: 0; font-size: 12px; }
+  a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--rot); outline-offset: 3px; } @media (prefers-reduced-motion: reduce) { .start img { animation: none; } }
+  @media (max-width: 860px) { header { padding: 0 12px; gap: 10px; } header nav a:not(.voll), .sp { display: none; } .orte { padding: 60px 0 50px 16px; } .orte li { flex-basis: 280px; height: 420px; } .neu { padding: 20px 16px 60px; } .neu article, .brief, footer { grid-template-columns: 1fr; } .neu article img { height: 260px; order: -1; } .neu article > div { padding: 26px; } .brief, footer { margin: 0 16px; } }
+</style>
+</body></html>

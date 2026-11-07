@@ -1,0 +1,36 @@
+---
+/** Musterseite der Elemente aus dem Eingang vom 2026-11-07. Wird nicht ausgeliefert:
+ *  scripts/muster-bauen.sh baut sie mit, die Fotos kommen aus vorlagen/_bilder. */
+import '../styles/global.css';
+import Pfadflug from '../../../blocks/auftakt/Pfadflug.astro';
+import Farbbild from '../../../blocks/auftakt/Farbbild.astro';
+import Profil from '../../../blocks/auftakt/Profil.astro';
+import BildText from '../../../blocks/BildText.astro';
+import Schwarzblende from '../../../blocks/Schwarzblende.astro';
+import Aufstieg from '../../../blocks/Aufstieg.astro';
+import Produktkacheln from '../../../blocks/Produktkacheln.astro';
+import Produktschritte from '../../../blocks/Produktschritte.astro';
+import Schwebend from '../../../blocks/Schwebend.astro';
+import Produktansicht from '../../../blocks/Produktansicht.astro';
+import Bildwerte from '../../../blocks/Bildwerte.astro';
+import Reservierung from '../../../blocks/Reservierung.astro';
+const f = (n: string, alt = '') => ({ src: `../fotos/${n}.webp`, alt });
+---
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Elemente aus dem Eingang</title></head>
+<body>
+  <main>
+    <Pfadflug titel={['Plan.', 'Umsetzung.', 'Ergebnis.']} lead="Ein Gegenstand fliegt auf einer Bahn durch die Schritte eines Angebots. Nach Sales Culture." aktion={{ label: 'Gespräch anfragen', ziel: '#' }} schritte={['Analyse', 'Plan', 'Umsetzung', 'Mehr Aufträge']} />
+    <BildText titel="Text neben dem Bild" text={['Am Desktop stehen Text und Bild immer nebeneinander, auf dem Handy folgt das Bild dem Text. Nach Sales Culture.']} punkte={['Flexibel für einzelne Schritte', 'Erfahrung aus vielen Projekten']} bild={f('1011', 'Zwei Menschen am Tablet')} aktion={{ label: 'Mehr erfahren', ziel: '#' }} />
+    <Farbbild titel="Die Markenfarbe liegt über dem Foto" lead="Partner stehen auf dem Bild, darunter folgen belegte Zahlen neben einem Bild auf runder Farbform. Nach optiMICE." bild={f('856', 'Person im Anzug')} aktion={{ label: 'Beratung vereinbaren', ziel: '#' }} partner={['Partner eins', 'Partner zwei', 'Verband']} zahlen={[{ wert: '5', label: 'Beispielwert' }, { wert: '18', label: 'Jahre Erfahrung' }, { wert: '2000+', label: 'Beispielorte' }]} zweitbild={f('395', '')} />
+    <Profil titel="Mit Erfahrung zu mehr Kunden und Aufträgen" text="Profilbild vor einer Farbfläche, ein schwebendes Feld mit echten Werten und ein Knopf mit Unterzeile. Nach Martina Halek." bild={f('1027', 'Porträt')} aktion={{ label: 'Jetzt Kunden gewinnen', unterzeile: 'kostenloses Erstgespräch vereinbaren', ziel: '#' }} kurve={{ titel: 'Aufträge je Quartal', werte: [4, 6, 5, 9, 12, 15] }} />
+    <Schwarzblende wort="Muster" titel="Dunkle Flächen blenden über dem Bild auf" text={['Schwarzer Grund, das Bild läuft ins Schwarz aus, Text und Bild erscheinen weich. Nach Agency Invest.']} bild={f('338', 'Person auf einer Bühne')} aktion={{ label: 'Erstgespräch vereinbaren', ziel: '#' }} />
+    <Aufstieg bild={f('445', 'Ein Gerät')} satz="Beim Scrollen steigt dieser Satz hinter dem Produkt hervor. Nach Modulo." />
+    <Produktkacheln titel="Projekte in eckigen Kacheln" kacheln={[{ marke: 'Marke eins', titel: 'Vernetzte Küchenmaschine', text: 'Ein Satz zum Projekt.', bild: f('445', '') }, { marke: 'Marke zwei', titel: 'App für Bestellungen', text: 'Ein Satz zum Projekt.', bild: f('0', '') }, { marke: 'Marke drei', titel: 'Box mit Bluetooth', text: 'Ein Satz zum Projekt.', bild: f('60', '') }, { marke: 'Marke vier', titel: 'Wasserkocher mit Steuerung', text: 'Ein Satz zum Projekt.', bild: f('180', '') }]} />
+    <Produktschritte titel="Ein Produkt in Schritten zeigen" lead="Reiter links, der echte Bildschirm rechts, neutrale Flächen. Nach dem Konzept von Consile." schritte={[{ titel: 'Aufgaben', text: 'Was heute ansteht, an einem Ort.', bild: f('0', 'Bildschirm mit Aufgaben') }, { titel: 'Anwesenheit', text: 'Wer da ist, ohne Nachfragen.', bild: f('180', 'Bildschirm mit Anwesenheit') }, { titel: 'Auswertung', text: 'Zahlen für die Woche.', bild: f('60', 'Bildschirm mit Auswertung') }]} />
+    <Schwebend titel="Einzelne Elemente schweben" text="Teile liegen versetzt über dem Grund und verschieben sich beim Scrollen leicht. Darunter Karten mit ruhigem Hover. Nach Saad Salman." elemente={[{ bild: f('1059') }, { text: 'Eine kurze Notiz' }, { bild: f('312') }, { bild: f('445') }, { text: 'Noch ein Hinweis' }, { bild: f('180') }]} karten={[{ titel: 'Über mich', text: 'Ein Satz.', ziel: '#' }, { titel: 'Projekte', text: 'Ein Satz.', ziel: '#' }, { titel: 'Kontakt', text: 'Ein Satz.', ziel: '#' }]} />
+    <Produktansicht titel="Ein Objekt in Ansichten" ansichten={[{ name: 'Vorderansicht', bild: f('488', 'Schale von vorn') }, { name: 'Seitenansicht', bild: f('493', 'Schale von der Seite') }, { name: 'Draufsicht', bild: f('429', 'Schale von oben') }]} farben={[{ name: 'Weiß', wert: '#f4f2ee' }, { name: 'Ton', wert: '#b9704a' }, { name: 'Schwarz', wert: '#1d1d1d' }]} groessen={[{ name: 'S' }, { name: 'M' }, { name: 'L' }, { name: 'XL', verfuegbar: false }]} details={['Steinzeug, handgemacht', 'Spülmaschinenfest']} />
+    <Bildwerte titel="Bilder mit Werten" lead="Namensschild oben, bis zu drei Werte unten. Nach ESP Media." eintraege={[{ bild: f('1005', 'Porträt'), name: 'Jonas Beispiel', werte: [{ label: 'Video', wert: '84.000' }, { label: 'Bild', wert: '31.000' }, { label: 'Kurz', wert: '12.400' }] }, { bild: f('1027', 'Porträt'), name: 'Lena Muster', werte: [{ label: 'Baujahr', wert: '1912' }, { label: 'Fläche', wert: '140 m²' }, { label: 'Lage', wert: 'Mitte' }] }, { bild: f('856', 'Porträt'), name: 'Tom Probe', werte: [{ label: 'Jahre', wert: '12' }, { label: 'Projekte', wert: '80' }] }]} />
+  </main>
+  <Reservierung ziel="#" gutschein="#" />
+</body></html>

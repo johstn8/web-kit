@@ -1,0 +1,49 @@
+---
+/**
+ * Auftakt mit einem Gegenstand, der auf einer gestrichelten Bahn durch die Schritte
+ * fliegt. Nach dem Auftakt von sales-culture.de, vom Nutzer 2026-11-07 gelobt
+ * ("Landing Page mit dem bewegenden Flieger"). Text links, Bahn rechts, darunter die
+ * Schritte als Leiste. Statt des Papierfliegers darf jedes einfache SVG im Slot stehen,
+ * das zum Betrieb passt: ein Paket, ein Blatt, ein Auto.
+ * Die letzte Zeile ist im Original farbig; das faellt unter S3 und entfaellt.
+ * Bewegung ueber offset-path; bei reduzierter Bewegung steht der Gegenstand am Ziel.
+ */
+import type { Aktion } from '../_lib.ts';
+interface Props { titel: string[]; lead: string; aktion: Aktion; schritte: string[] }
+const { titel, lead, aktion, schritte } = Astro.props;
+const bahn = 'M30 300 C 120 300 140 180 230 190 S 360 260 400 150 S 470 40 560 70';
+const punkte = [[30, 300], [230, 190], [400, 150], [560, 70]];
+---
+<section class="pfadflug">
+  <div class="text">
+    <h1>{titel.map((z) => <span>{z}</span>)}</h1>
+    <p>{lead}</p>
+    <a class="aktion" href={aktion.ziel}>{aktion.label} <span aria-hidden="true">→</span></a>
+  </div>
+  <svg class="szene" viewBox="0 0 600 360" aria-hidden="true">
+    <path class="bahn" d={bahn} />
+    {punkte.slice(0, schritte.length).map(([x, y], i) => <g><circle cx={x} cy={y} r="13" /><text x={x} y={y + 5}>{i + 1}</text></g>)}
+    <g class="flieger" style={`offset-path: path('${bahn}')`}><slot><path d="M-22 -10 24 0 -22 12 -12 0z M-12 0 24 0" /></slot></g>
+  </svg>
+  <ol class="leiste">{schritte.map((s, i) => <li><span>{i + 1}</span>{s}</li>)}</ol>
+</section>
+
+<style>
+  .pfadflug { display: grid; grid-template-columns: 1fr 1.1fr; gap: var(--space-6) var(--space-8); align-items: center; max-width: var(--container); margin-inline: auto; padding: var(--space-12) var(--gutter) var(--space-8); }
+  h1 { margin: 0; font-size: var(--text-display); line-height: 1.08; font-weight: var(--text-display--font-weight); letter-spacing: var(--text-display--letter-spacing); }
+  h1 span { display: block; }
+  .text p { margin: var(--space-5) 0 var(--space-6); max-width: 34rem; color: var(--color-text-secondary); }
+  .aktion { display: inline-flex; gap: var(--space-2); padding: var(--space-3) var(--space-5); border-radius: var(--aktion-radius, var(--radius-full)); background: var(--color-accent); color: var(--color-accent-contrast); text-decoration: none; font-weight: 600; transition: translate var(--duration-base) var(--ease-out); }
+  .aktion:hover { translate: 0 -2px; }
+  .szene { width: 100%; overflow: visible; }
+  .bahn { fill: none; stroke: var(--color-border-hover); stroke-width: 2; stroke-dasharray: 6 8; }
+  circle { fill: var(--color-surface); stroke: var(--color-text); stroke-width: 1.5; }
+  text { font: 600 13px var(--font-body); fill: var(--color-text); text-anchor: middle; }
+  .flieger { offset-rotate: auto; offset-distance: 100%; fill: var(--color-accent-subtle); stroke: var(--color-accent); stroke-width: 1.6; stroke-linejoin: round; animation: flug 5.5s var(--ease-in-out) .4s both; }
+  @keyframes flug { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+  .leiste { grid-column: 1 / -1; display: flex; gap: var(--space-4); list-style: none; margin: 0; padding: var(--space-5) 0 0; border-top: 1px solid var(--color-border); font-size: var(--text-small); }
+  .leiste li { flex: 1; display: flex; align-items: center; gap: var(--space-2); }
+  .leiste span { display: grid; place-content: center; flex: none; width: 1.6rem; height: 1.6rem; border-radius: 50%; border: 1px solid var(--color-text); font-size: 12px; }
+  @media (prefers-reduced-motion: reduce) { .flieger { animation: none; } }
+  @media (max-width: 52rem) { .pfadflug { grid-template-columns: 1fr; } .leiste { flex-wrap: wrap; } .leiste li { flex: 1 1 45%; } }
+</style>
