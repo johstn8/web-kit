@@ -8,7 +8,7 @@ Seitenaufbau, damit sich nichts wieder angleicht.
 
 | Vorlage | Aufbau nach | Passt zu | Trägt die Seite |
 |---|---|---|---|
-| `hafen` | the1.amsterdam | Büro, Kultur, Coworking, Kreative | riesige Schrift, Farbbänder, große Fotos |
+| `hafen` | the1.amsterdam | **nur künstlerische Projekte**: Kultur, Galerie, Atelier, Kreativbüro. Nicht für Handwerk und Dienstleister | riesige Schrift, Farbbänder, große Fotos |
 | `rahmen` | lightshiprv.com | Produkt, Fahrzeug, Handwerk mit Objekt | Foto im Rahmen, klebender Riesensatz, Bildstapel |
 | `kuehl` | mercury.com | Software, Finanzen, Beratung | Spalte, wechselnde Bänder, Glas, Gerät im Foto |
 | `schmal` | meracinque.com | Lebensmittel, Hofladen, Marke | schmale Antiqua, festes Produkt, Farbe |
@@ -37,7 +37,7 @@ Seitenaufbau, damit sich nichts wieder angleicht.
 
 Alle 26 auf einen Blick: [`uebersicht.webp`](uebersicht.webp).
 
-Die Spalte „Passt zu" ist ein Hinweis. Ein Bäcker kann `hafen` tragen.
+Die Spalte „Passt zu" ist ein Hinweis, mit einer Ausnahme: `hafen` ist seit 2026-11-13 gesperrt für alles, was kein künstlerisches Projekt ist. Der Nutzer hat die Website des Malerbetriebs Münchner Putzteufel in dieser Vorlage als „Quatsch" verworfen: Riesenschrift, Farbbänder und Scrollstrecken passen nicht zu einem Handwerksbetrieb, der Vertrauen und schnellen Kontakt braucht.
 
 ## Was gelobt wurde und was nur Füllung ist
 
